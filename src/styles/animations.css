@@ -1,0 +1,24 @@
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Status blink */
+@keyframes statusBlink {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.4; }
+}
+
+/* Subtle card lift on hover */
+@keyframes cardHoverFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-3px); }
+}
