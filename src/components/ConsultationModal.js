@@ -63,9 +63,9 @@ export function renderContact() {
                 </svg>
               </div>
               <div class="contact-detail-body">
-                <span class="contact-detail-label">RDB Registration</span>
+                <span class="contact-detail-label">TIN Number</span>
                 <span class="contact-detail-value" style="font-family: var(--font-mono); font-size: 0.88rem;">
-                  Serial No. 1628324
+                  1628324
                 </span>
               </div>
             </div>
@@ -73,7 +73,7 @@ export function renderContact() {
             <div class="rdb-verify">
               <p class="rdb-verify-text">
                 Verify our certificate on the Rwanda Development Board portal using
-                <strong>Serial No. 1628324</strong>.
+                <strong>TIN Number 1628324</strong>.
               </p>
               <a href="http://www.rdb.rw/" target="_blank" rel="noopener noreferrer">
                 Verify at RDB

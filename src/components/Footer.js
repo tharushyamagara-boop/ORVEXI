@@ -62,7 +62,7 @@ export function renderFooter() {
         <div class="footer-bottom">
           <div>&copy; ${currentYear} ORVEXI Technologies Ltd. &mdash; Kigali, Rwanda</div>
           <div class="compliance-badges">
-            <span class="badge-tag">RDB 1628324</span>
+            <span class="badge-tag">TIN 1628324</span>
             <span class="badge-tag">PRIVATE LIMITED</span>
             <span class="badge-tag">RWANDA</span>
           </div>

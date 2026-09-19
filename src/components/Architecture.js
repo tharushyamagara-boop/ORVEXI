@@ -41,7 +41,7 @@ export function renderAbout() {
               <p class="reg-card-title">Registration Details</p>
 
               <div class="reg-row">
-                <span class="reg-label">Serial Number</span>
+                <span class="reg-label">TIN Number</span>
                 <span class="reg-value mono">1628324</span>
               </div>
               <div class="reg-row">
