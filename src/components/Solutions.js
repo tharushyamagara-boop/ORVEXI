@@ -58,9 +58,7 @@ export function renderServices() {
 
   const cardsHtml = services.map(s => `
     <div class="service-card ${s.primary ? 'primary-activity' : ''} reveal">
-      <div class="service-icon">${s.icon}</div>
       ${s.primary ? '<span class="service-tag">Main Activity</span>' : ''}
-      <div class="service-code">${s.code}</div>
       <h3 class="service-title">${s.title}</h3>
       <p class="service-desc">${s.desc}</p>
     </div>

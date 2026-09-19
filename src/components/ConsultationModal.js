@@ -51,7 +51,7 @@ export function renderContact() {
               <div class="contact-detail-body">
                 <span class="contact-detail-label">Email</span>
                 <span class="contact-detail-value">
-                  <a href="mailto:hatheophile2020@yahoo.fr">hatheophile2020@yahoo.fr</a>
+                  <a href="mailto:orvexi@loprok.com">orvexi@loprok.com</a>
                 </span>
               </div>
             </div>

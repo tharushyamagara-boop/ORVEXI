@@ -71,7 +71,7 @@ export function renderFooter() {
                 <a href="tel:+250788810675" class="footer-link">+250 788 810 675</a>
               </li>
               <li>
-                <a href="mailto:hatheophile2020@yahoo.fr" class="footer-link">hatheophile2020@yahoo.fr</a>
+                <a href="mailto:orvexi@loprok.com" class="footer-link">orvexi@loprok.com</a>
               </li>
               <li style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-subtle);">
                 <span style="font-size: 0.75rem; color: var(--text-dim); display:block; margin-bottom:0.2rem;">RDB Certificate</span>

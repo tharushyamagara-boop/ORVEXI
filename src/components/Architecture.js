@@ -62,32 +62,8 @@ export function renderAbout() {
                 <span class="reg-label">Managing Director</span>
                 <span class="reg-value">Theophile HARUSHYAMAGARA</span>
               </div>
-              <div class="reg-row">
-                <span class="reg-label">Share Capital</span>
-                <span class="reg-value">RWF 1,000,000,000</span>
-              </div>
-              <div class="reg-row">
-                <span class="reg-label">Main Activity</span>
-                <span class="reg-value">Software Publishing (J5820)</span>
-              </div>
-              <div class="reg-row">
-                <span class="reg-label">Governing Law</span>
-                <span class="reg-value">Law N&deg; 007/2021 of 05/02/2021</span>
-              </div>
             </div>
 
-            <div class="rdb-verify" style="margin-top:1rem;">
-              <p class="rdb-verify-text">
-                Verify this certificate on the Rwanda Development Board portal using
-                <strong>Serial No. 1628324</strong>.
-              </p>
-              <a href="http://www.rdb.rw/" target="_blank" rel="noopener noreferrer">
-                Verify at RDB
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </a>
-            </div>
           </div>
         </div>
       </div>
