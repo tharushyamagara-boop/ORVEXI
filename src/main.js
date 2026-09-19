@@ -6,12 +6,13 @@ import './styles/animations.css';
 // Firebase — initialises app & analytics on load
 import './firebase.js';
 
-import { renderNavbar }  from './components/Navbar.js';
-import { renderHero }    from './components/Hero.js';
-import { renderAbout }   from './components/Architecture.js';
-import { renderServices } from './components/Solutions.js';
-import { renderContact } from './components/ConsultationModal.js';
-import { renderFooter }  from './components/Footer.js';
+import { renderNavbar }    from './components/Navbar.js';
+import { renderHero }      from './components/Hero.js';
+import { renderAbout }     from './components/Architecture.js';
+import { renderServices }  from './components/Solutions.js';
+import { renderPortfolio } from './components/Portfolio.js';
+import { renderContact }   from './components/ConsultationModal.js';
+import { renderFooter }    from './components/Footer.js';
 
 function initApp() {
   const app = document.getElementById('app');
@@ -31,6 +32,7 @@ function initApp() {
       ${renderHero()}
       ${renderAbout()}
       ${renderServices()}
+      ${renderPortfolio()}
       ${renderContact()}
     </main>
 

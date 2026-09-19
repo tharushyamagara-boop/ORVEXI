@@ -21,10 +21,11 @@ export function renderFooter() {
           <div class="footer-col">
             <h4 class="footer-col-title">Navigation</h4>
             <ul class="footer-links">
-              <li><a href="#home"     class="footer-link">Home</a></li>
-              <li><a href="#about"    class="footer-link">About</a></li>
-              <li><a href="#services" class="footer-link">Services</a></li>
-              <li><a href="#contact"  class="footer-link">Contact</a></li>
+              <li><a href="#home"      class="footer-link">Home</a></li>
+              <li><a href="#about"     class="footer-link">About</a></li>
+              <li><a href="#services"  class="footer-link">Services</a></li>
+              <li><a href="#portfolio" class="footer-link">Portfolio</a></li>
+              <li><a href="#contact"   class="footer-link">Contact</a></li>
             </ul>
           </div>
 
