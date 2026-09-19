@@ -53,11 +53,7 @@ export function renderFooter() {
               <li>
                 <a href="mailto:orvexi@loprok.com" class="footer-link">orvexi@loprok.com</a>
               </li>
-              <li style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-subtle);">
-                <span style="font-size: 0.75rem; color: var(--text-dim); display:block; margin-bottom:0.2rem;">RDB Certificate</span>
-                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #7b96fb;">No. 1628324</span>
-                <span style="font-size: 0.75rem; color: var(--text-dim); display:block; margin-top:0.1rem;">Issued 20 Oct 2025</span>
-              </li>
+
             </ul>
           </div>
 
