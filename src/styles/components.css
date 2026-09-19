@@ -332,55 +332,30 @@
 .about-intro p:last-child { margin-bottom: 0; }
 
 .reg-card {
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-glass-card);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-lg);
-  padding: 1.85rem;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
-}
-
-.reg-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
-  opacity: 0.9;
-}
-
-.reg-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--brand-blue-light);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 0 24px rgba(62, 181, 241, 0.18);
 }
 
 .reg-card-title {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--brand-blue-dark);
+  color: var(--text-muted);
   margin-bottom: 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .reg-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 0.85rem 0;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-subtle);
   gap: 1rem;
 }
 
@@ -388,34 +363,22 @@
 .reg-row:first-of-type { padding-top: 0; }
 
 .reg-label {
-  font-size: 0.84rem;
-  color: #64748b;
-  font-weight: 500;
+  font-size: 0.82rem;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
 .reg-value {
-  font-size: 0.9rem;
-  color: #0f172a;
+  font-size: 0.88rem;
+  color: var(--text-primary);
   font-weight: 600;
   text-align: right;
 }
 
-/* Monospace TIN value uses high-contrast brand blue with hover */
+/* Monospace values use brand light blue */
 .reg-value.mono {
   font-family: var(--font-mono);
-  color: var(--brand-blue-dark);
-  font-weight: 700;
-}
-
-.reg-value.mono a {
-  color: var(--brand-blue-dark);
-  transition: color var(--transition-fast);
-}
-
-.reg-value.mono a:hover {
   color: var(--brand-blue-light);
-  text-decoration: underline;
 }
 
 /* ==========================================================================
@@ -717,10 +680,10 @@
 }
 
 .portfolio-card {
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 1.85rem;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -728,7 +691,6 @@
   transition: border-color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .portfolio-card::before {
@@ -737,20 +699,20 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 2px;
   background: var(--gradient-primary);
-  opacity: 0.9;
-  transition: opacity var(--transition-normal), height var(--transition-normal);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
 }
 
 .portfolio-card:hover {
-  border-color: var(--brand-blue-light);
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 0 24px rgba(62, 181, 241, 0.2);
+  border-color: rgba(62, 181, 241, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(62, 181, 241, 0.08);
 }
 
 .portfolio-card:hover::before {
-  height: 4px;
+  opacity: 1;
 }
 
 .portfolio-header {
@@ -765,95 +727,94 @@
   font-family: var(--font-mono);
   font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--brand-blue-dark);    /* high-contrast dark brand blue on white */
-  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--brand-blue-light);
+  font-weight: 600;
 }
 
 .portfolio-badge-pill {
   font-size: 0.68rem;
-  font-weight: 700;
-  padding: 0.22rem 0.6rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
   border-radius: var(--radius-full);
-  background: rgba(62, 181, 241, 0.12);
-  color: #0f56a8;
-  border: 1px solid rgba(26, 111, 212, 0.25);
+  background: rgba(62, 181, 241, 0.1);
+  color: var(--brand-blue-light);
+  border: 1px solid rgba(62, 181, 241, 0.2);
 }
 
 .portfolio-body {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.5rem;
   flex-grow: 1;
 }
 
 .portfolio-title {
   font-family: var(--font-display);
-  font-size: 1.28rem;
-  font-weight: 800;
+  font-size: 1.22rem;
+  font-weight: 700;
   line-height: 1.3;
 }
 
 .portfolio-title-link {
-  color: #0f172a;                    /* deep rich slate text */
+  color: var(--text-primary);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   transition: color var(--transition-fast);
 }
 
 .portfolio-title-link:hover {
-  color: var(--brand-blue-dark);
+  color: var(--brand-blue-light);
 }
 
 .portfolio-arrow-icon {
-  color: #94a3b8;
+  color: var(--text-dim);
   transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
 .portfolio-title-link:hover .portfolio-arrow-icon {
   transform: translate(2px, -2px);
-  color: var(--brand-blue-dark);
+  color: var(--brand-blue-light);
 }
 
 .portfolio-subtitle {
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: #334155;                    /* dark charcoal on white */
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .portfolio-desc {
   font-size: 0.88rem;
-  color: #475569;                    /* rich neutral text on white */
-  line-height: 1.62;
+  color: var(--text-secondary);
+  line-height: 1.6;
   margin-top: 0.35rem;
 }
 
 .portfolio-footer {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1rem;
   margin-top: auto;
-  padding-top: 1.1rem;
-  border-top: 1px solid #f1f5f9;     /* subtle divider on white */
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .portfolio-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .portfolio-tag {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  font-weight: 500;
-  padding: 0.22rem 0.55rem;
+  padding: 0.18rem 0.5rem;
   border-radius: var(--radius-sm);
-  background: #f8fafc;
-  color: #475569;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
 }
 
 .portfolio-visit-btn {
@@ -861,13 +822,13 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  padding: 0.65rem 1.1rem;
+  padding: 0.55rem 1rem;
   border-radius: var(--radius-md);
-  background: #f0f7ff;
-  border: 1.5px solid rgba(26, 111, 212, 0.35);
-  color: #0f56a8;
-  font-size: 0.84rem;
-  font-weight: 700;
+  background: rgba(62, 181, 241, 0.08);
+  border: 1px solid rgba(62, 181, 241, 0.25);
+  color: var(--brand-blue-light);
+  font-size: 0.82rem;
+  font-weight: 600;
   text-decoration: none;
   transition: all var(--transition-fast);
   width: 100%;
@@ -877,8 +838,7 @@
   background: var(--gradient-primary);
   color: #ffffff;
   border-color: transparent;
-  box-shadow: 0 4px 14px rgba(26, 111, 212, 0.35);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(62, 181, 241, 0.25);
 }
 
 
