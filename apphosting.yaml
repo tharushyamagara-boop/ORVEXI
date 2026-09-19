@@ -1,0 +1,6 @@
+# Settings for Firebase App Hosting
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  cpu: 1
+  memoryMiB: 512
