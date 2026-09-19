@@ -65,18 +65,18 @@ export function renderContact() {
               <div class="contact-detail-body">
                 <span class="contact-detail-label">TIN Number</span>
                 <span class="contact-detail-value" style="font-family: var(--font-mono); font-size: 0.88rem;">
-                  1628324
+                  <a href="https://etax.rra.gov.rw/nidAssignedTIN/" target="_blank" rel="noopener noreferrer">1628324</a>
                 </span>
               </div>
             </div>
 
             <div class="rdb-verify">
               <p class="rdb-verify-text">
-                Verify our certificate on the Rwanda Development Board portal using
+                Verify our TIN on the Rwanda Revenue Authority (RRA) portal using
                 <strong>TIN Number 1628324</strong>.
               </p>
-              <a href="http://www.rdb.rw/" target="_blank" rel="noopener noreferrer">
-                Verify at RDB
+              <a href="https://etax.rra.gov.rw/nidAssignedTIN/" target="_blank" rel="noopener noreferrer">
+                Verify on RRA Portal
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
                 </svg>

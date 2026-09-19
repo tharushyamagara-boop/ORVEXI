@@ -42,7 +42,9 @@ export function renderAbout() {
 
               <div class="reg-row">
                 <span class="reg-label">TIN Number</span>
-                <span class="reg-value mono">1628324</span>
+                <span class="reg-value mono">
+                  <a href="https://etax.rra.gov.rw/nidAssignedTIN/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">1628324</a>
+                </span>
               </div>
               <div class="reg-row">
                 <span class="reg-label">Date of Issuance</span>
