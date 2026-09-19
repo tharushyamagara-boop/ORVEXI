@@ -8,7 +8,8 @@ export function renderPortfolio() {
       desc: "Comprehensive digital studio and social platform for artists, producers, and beatmakers. Enables creators to stream instrumentals, record vocals, share beats, and collaborate worldwide.",
       url: "https://loprok.com/home",
       tags: ["Next.js", "PWA", "Live Audio Streaming", "Mobile Studio"],
-      badge: "Flagship Platform"
+      badge: "Flagship Platform",
+      btnText: "Visit"
     },
     {
       id: "sanex",
@@ -18,7 +19,8 @@ export function renderPortfolio() {
       desc: "Specialized enterprise web platform powering sustainable liquid waste management, decentralized wastewater treatment monitoring, and professional sanitation logistics across Rwanda.",
       url: "https://sanex.rw/",
       tags: ["Enterprise Web", "Environmental Systems", "Operations Tracker"],
-      badge: "Enterprise"
+      badge: "Enterprise",
+      btnText: "Visit"
     },
     {
       id: "asserwa",
@@ -28,7 +30,8 @@ export function renderPortfolio() {
       desc: "Official institutional web platform uniting Rwanda's professional sewage emptiers and sanitation service providers. Features certified member directories, compliance frameworks, and national advocacy initiatives.",
       url: "https://asserwa.com/",
       tags: ["Member Directory", "Institutional Portal", "Governance"],
-      badge: "National Forum"
+      badge: "National Forum",
+      btnText: "Visit"
     },
     {
       id: "equiterra",
@@ -38,7 +41,8 @@ export function renderPortfolio() {
       desc: "Executive consultancy analytics platform delivering data-driven insights, capacity-building intelligence, and strategic advisory across climate change finance, universal health systems, and public governance.",
       url: "https://equiterraconsulting.com/",
       tags: ["Analytics Dashboard", "Strategic Intelligence", "SDGs & Climate"],
-      badge: "Consulting Dashboard"
+      badge: "Consulting Dashboard",
+      btnText: "Visit"
     },
     {
       id: "tontine",
@@ -48,7 +52,8 @@ export function renderPortfolio() {
       desc: "Cloud-hosted community microfinance system designed to track cooperative tontine contribution cycles, member balances, rotating savings, and group loan distributions seamlessly.",
       url: "https://studio--studio-1670844393-18cbb.us-central1.hosted.app/",
       tags: ["Cloud Hosted", "Microfinance App", "Cooperative Tontine"],
-      badge: "Fintech Application"
+      badge: "Fintech Application",
+      btnText: "Live Demo"
     }
   ];
 
@@ -77,7 +82,7 @@ export function renderPortfolio() {
           ${p.tags.map(t => `<span class="portfolio-tag">${t}</span>`).join('')}
         </div>
         <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn">
-          <span>Live Demo</span>
+          <span>${p.btnText}</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/>
             <polyline points="12 5 19 12 12 19"/>
