@@ -40,7 +40,6 @@ function initApp() {
   initNavbarScroll();
   initMobileDrawer();
   initContactForm();
-  initWorldClocks();
   initScrollReveal();
   initActiveNavLinks();
 }
@@ -103,28 +102,7 @@ function initContactForm() {
   });
 }
 
-/* -------------------------------------------------------------------------- */
-/* 4. World Clocks                                                             */
-/* -------------------------------------------------------------------------- */
-function initWorldClocks() {
-  const clockKGL = document.getElementById('clockKGL');
-  const clockLON = document.getElementById('clockLON');
-  const clockDXB = document.getElementById('clockDXB');
-  const clockSGP = document.getElementById('clockSGP');
 
-  const fmt = { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-
-  function tick() {
-    const now = new Date();
-    if (clockKGL) clockKGL.textContent = new Intl.DateTimeFormat('en-GB', { ...fmt, timeZone: 'Africa/Kigali'  }).format(now);
-    if (clockLON) clockLON.textContent = new Intl.DateTimeFormat('en-GB', { ...fmt, timeZone: 'Europe/London'  }).format(now);
-    if (clockDXB) clockDXB.textContent = new Intl.DateTimeFormat('en-GB', { ...fmt, timeZone: 'Asia/Dubai'     }).format(now);
-    if (clockSGP) clockSGP.textContent = new Intl.DateTimeFormat('en-GB', { ...fmt, timeZone: 'Asia/Singapore' }).format(now);
-  }
-
-  tick();
-  setInterval(tick, 1000);
-}
 
 /* -------------------------------------------------------------------------- */
 /* 5. Scroll Reveal                                                            */

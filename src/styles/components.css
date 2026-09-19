@@ -664,24 +664,3 @@
   color: var(--text-dim);
 }
 
-/* Office clocks */
-.office-clocks { display: flex; flex-direction: column; gap: 0.5rem; }
-
-.clock-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.clock-card:last-child { border-bottom: none; }
-
-.clock-city { color: var(--text-muted); }
-
-.clock-time {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--brand-blue-light);    /* brand blue on clock times */
-}

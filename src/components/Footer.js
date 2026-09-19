@@ -14,27 +14,7 @@ export function renderFooter() {
             <p style="font-size: 0.88rem; max-width: 280px; color: var(--text-muted); line-height: 1.6;">
               We deliver technology solutions from Kigali &mdash; software, IT consultancy, data hosting, and web services.
             </p>
-            <div style="margin-top: 1.25rem;">
-              <p class="footer-col-title">Kigali Office</p>
-              <div class="office-clocks">
-                <div class="clock-card">
-                  <span class="clock-city">Kigali (CAT)</span>
-                  <span class="clock-time" id="clockKGL">--:--:--</span>
-                </div>
-                <div class="clock-card">
-                  <span class="clock-city">London (GMT)</span>
-                  <span class="clock-time" id="clockLON">--:--:--</span>
-                </div>
-                <div class="clock-card">
-                  <span class="clock-city">Dubai (GST)</span>
-                  <span class="clock-time" id="clockDXB">--:--:--</span>
-                </div>
-                <div class="clock-card">
-                  <span class="clock-city">Singapore (SGT)</span>
-                  <span class="clock-time" id="clockSGP">--:--:--</span>
-                </div>
-              </div>
-            </div>
+
           </div>
 
           <!-- Navigation -->
