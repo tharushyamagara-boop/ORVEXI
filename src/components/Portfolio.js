@@ -54,6 +54,17 @@ export function renderPortfolio() {
       tags: ["Cloud Hosted", "Microfinance App", "Cooperative Tontine"],
       badge: "Fintech Application",
       btnText: "Live Demo"
+    },
+    {
+      id: "nbs-dashboard",
+      title: "SUNCASA Kigali (NbS)",
+      subtitle: "Nature-Based Solutions Impact Dashboard",
+      category: "Environmental & Climate Analytics",
+      desc: "Interactive environmental impact PWA and GIS dashboard communicating Nature-based Solutions (NbS) across the Lower Nyabarongo watershed, tracking terracing, afforestation, flood resilience, and green employment.",
+      url: "https://nbs-455962--nbs-project-7deac.us-central1.hosted.app/",
+      tags: ["Impact Dashboard", "GIS Mapping", "PWA", "Climate Analytics"],
+      badge: "Demo Dashboard",
+      btnText: "Live Demo"
     }
   ];
 
