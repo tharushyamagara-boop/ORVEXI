@@ -1,62 +1,51 @@
 export function renderHero() {
   return `
     <section class="section hero-section" id="home">
+      <!-- Animated background elements -->
+      <div class="hero-bg-effects">
+        <div class="hero-glow"></div>
+        <div class="hero-ring hero-ring-1"></div>
+        <div class="hero-ring hero-ring-2"></div>
+        <div class="hero-ring hero-ring-3"></div>
+        <div class="hero-float-shape hero-shape-1"></div>
+        <div class="hero-float-shape hero-shape-2"></div>
+        <div class="hero-float-shape hero-shape-3"></div>
+        <div class="hero-float-shape hero-shape-4"></div>
+        <div class="hero-scan-line"></div>
+      </div>
+
       <div class="container">
         <div class="hero-content reveal active">
-
           <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <polyline points="20 6 9 17 4 12"/>
             </svg>
-            RDB Registered &mdash; TIN Number 1628324
+            RDB Registered &mdash; TIN 1628324
           </div>
 
           <h1 class="hero-title">
-            Technology Solutions<br>
-            Built for <em>East Africa</em>
+            <span class="hero-title-line hero-anim-1">Technology Solutions</span>
+            <span class="hero-title-line hero-anim-2">Built for <em>Africa</em></span>
           </h1>
 
-          <p class="hero-subtitle">
-            We are a privately registered Rwandan technology company delivering
-            software publishing, IT consultancy, data processing and web services
-            from Kigali.
+          <p class="hero-subtitle hero-anim-3">
+            A privately registered Rwandan technology company delivering
+            software publishing, IT consultancy, data processing, and web
+            services from Kigali.
           </p>
 
-          <div class="hero-cta-group">
-            <a href="#services" class="btn btn-primary">
+          <div class="hero-cta-group hero-anim-4">
+            <a href="#services" class="btn btn-primary btn-hero">
               <span>Our Services</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <a href="#contact" class="btn btn-secondary">Contact Us</a>
+            <a href="#portfolio" class="btn btn-secondary btn-hero">Explore Portfolio</a>
           </div>
-
-          <div class="hero-divider"></div>
-
-          <div class="hero-meta">
-            <span>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-              </svg>
-              Niboye, Kicukiro, Kigali
-            </span>
-            <span>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-              Incorporated 20 October 2025
-            </span>
-            <span>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-              Private Limited by Shares
-            </span>
-          </div>
-
         </div>
-      </div>
     </section>
   `;
 }
+

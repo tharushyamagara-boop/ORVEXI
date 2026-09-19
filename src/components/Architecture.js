@@ -35,8 +35,18 @@ export function renderAbout() {
             </p>
           </div>
 
-          <!-- Right: registration card -->
-          <div class="reveal">
+          <!-- Right: Visual Office Photo & Registration card -->
+          <div class="about-side-col reveal">
+            <div class="about-photo-card">
+              <img src="/images/about_office.jpg" alt="ORVEXI Technology Workspace in Kigali" class="about-photo" loading="lazy">
+              <div class="about-photo-overlay">
+                <div class="about-photo-badge">
+                  <span class="photo-pulse-dot"></span>
+                  <span>Kigali Innovation Hub &bull; Rwanda</span>
+                </div>
+              </div>
+            </div>
+
             <div class="reg-card">
               <p class="reg-card-title">Registration Details</p>
 
