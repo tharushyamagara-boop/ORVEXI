@@ -142,82 +142,94 @@ function renderLoginScreen() {
   return `
     <div class="admin-login-backdrop">
       <div class="admin-login-box">
-        <div class="admin-login-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        </div>
-        <h2 class="admin-login-title">ORVEXI Admin Console</h2>
-        <p class="admin-login-desc">Sign in to control and manage all website content.</p>
+        
+        <!-- ================= VIEW 1: SIGN IN VIEW ================= -->
+        <div id="adminSignInView" style="${showResetView ? 'display:none;' : 'display:block;'}">
+          <div class="admin-login-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <h2 class="admin-login-title">ORVEXI Admin Console</h2>
+          <p class="admin-login-desc">Sign in to control and manage all website content.</p>
 
-        <!-- Google Sign In Button -->
-        <button type="button" class="btn-google-login" id="googleSignInBtn">
-          <svg viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          <span>Continue with Google</span>
-        </button>
+          <!-- Google Sign In Button -->
+          <button type="button" class="btn-google-login" id="googleSignInBtn">
+            <svg viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
 
-        <div class="admin-auth-divider">
-          <span>Or with Admin Password</span>
-        </div>
+          <div class="admin-auth-divider">
+            <span>Or with Admin Password</span>
+          </div>
 
-        <div class="admin-login-error" id="adminLoginError"></div>
+          <div class="admin-login-error" id="adminLoginError"></div>
 
-        <!-- Password Form -->
-        <form id="adminLoginForm">
-          <div class="admin-form-group">
-            <div class="admin-password-wrap">
-              <input type="password" id="adminPassphraseInput" class="admin-input" placeholder="Enter password" required autofocus autocomplete="current-password">
-              <button type="button" class="admin-password-toggle" id="togglePasswordVisibilityBtn" aria-label="Toggle password visibility">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <!-- Password Form -->
+          <form id="adminLoginForm">
+            <div class="admin-form-group">
+              <div class="admin-password-wrap">
+                <input type="password" id="adminPassphraseInput" class="admin-input" placeholder="Enter password" required autofocus autocomplete="current-password">
+                <button type="button" class="admin-password-toggle" id="togglePasswordVisibilityBtn" aria-label="Toggle password visibility">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+              <div style="display:flex; align-items:center; gap:0.45rem;">
+                <input type="checkbox" id="adminRememberMe" style="accent-color:var(--brand-blue-light); cursor:pointer;">
+                <label for="adminRememberMe" style="font-size:0.84rem; color:var(--text-secondary); cursor:pointer;">Remember me</label>
+              </div>
+              <button type="button" class="admin-login-link" id="toggleResetPasswordBtn" style="background:none; border:none; padding:0; cursor:pointer;">
+                Reset password?
               </button>
             </div>
-          </div>
 
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
-            <div style="display:flex; align-items:center; gap:0.45rem;">
-              <input type="checkbox" id="adminRememberMe" style="accent-color:var(--brand-blue-light); cursor:pointer;">
-              <label for="adminRememberMe" style="font-size:0.84rem; color:var(--text-secondary); cursor:pointer;">Remember me</label>
+            <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; padding: 0.75rem;">
+              <span>Unlock Dashboard</span>
+            </button>
+          </form>
+
+          <div style="margin-top: 1.5rem; text-align:center;">
+            <a href="#home" style="color: var(--text-muted); font-size: 0.84rem; text-decoration: none;">&larr; Return to Website</a>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 2: RESET PASSWORD VIEW ================= -->
+        <div id="adminResetView" style="${showResetView ? 'display:block;' : 'display:none;'}">
+          <div class="admin-login-icon" style="background:rgba(62,181,241,0.12); color:var(--brand-blue-light);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2l-2 2m-1.5 1.5L16 7l-4 4-2-2-4 4 2 2-4 4 3 3 4-4 2 2 4-4-2-2 4-4 1.5-1.5z"></path></svg>
+          </div>
+          <h2 class="admin-login-title">Reset Admin Password</h2>
+          <p class="admin-login-desc">Enter your registered admin email to receive a password reset link from Firebase.</p>
+
+          <form id="adminResetForm" style="margin-top:1.5rem;">
+            <div class="admin-form-group">
+              <label class="admin-label">Admin Email</label>
+              <input type="email" id="resetEmailInput" class="admin-input" placeholder="Enter your registered admin email" value="" required autocomplete="email">
             </div>
-            <button type="button" class="admin-login-link" id="toggleResetPasswordBtn" style="background:none; border:none; padding:0;">
-              Reset password?
+
+            <button type="submit" class="btn-admin btn-admin-primary" id="sendEmailResetBtn" style="width:100%; justify-content:center; padding:0.75rem; margin-top:0.5rem;">
+              <span>Send Password Reset Link</span>
             </button>
-          </div>
 
-          <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; padding: 0.75rem;">
-            <span>Unlock Dashboard</span>
-          </button>
-        </form>
+            <div style="text-align:center; margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:0.86rem; color:var(--text-secondary);">Remember your password?</span>
+              <button type="button" class="admin-login-link" id="backToLoginBtn" style="background:none; border:none; margin-left:0.35rem; font-weight:600; font-size:0.86rem; cursor:pointer;">
+                Log In
+              </button>
+            </div>
+          </form>
 
-        <!-- Reset Password Panel -->
-        <div class="admin-reset-panel" id="adminResetPanel">
-          <h4 style="font-size:0.98rem; color:#fff; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.4rem;">
-            <span>🔑</span> Reset Admin Password
-          </h4>
-          <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:1rem; line-height:1.4;">
-            Enter your admin email to receive a password reset link. Check your inbox to set a new password.
-          </p>
-
-          <div class="admin-form-group">
-            <label class="admin-label">Admin Email</label>
-            <input type="email" id="resetEmailInput" class="admin-input" placeholder="Enter your registered admin email" value="" required autocomplete="email">
-          </div>
-
-          <div style="display:flex; flex-direction:column; gap:0.6rem;">
-            <button type="button" class="btn-admin btn-admin-primary btn-admin-sm" id="sendEmailResetBtn" style="justify-content:center;">
-              Send Password Reset Link
-            </button>
-            <button type="button" class="admin-login-link" id="cancelResetBtn" style="text-align:center; margin-top:0.35rem; background:none; border:none; cursor:pointer;">
-              Cancel
-            </button>
+          <div style="margin-top: 1.25rem; text-align:center;">
+            <a href="#home" style="color: var(--text-muted); font-size: 0.84rem; text-decoration: none;">&larr; Return to Website</a>
           </div>
         </div>
 
-        <div style="margin-top: 1.5rem;">
-          <a href="#home" style="color: var(--text-muted); font-size: 0.84rem; text-decoration: none;">&larr; Return to Website</a>
-        </div>
       </div>
     </div>
   `;
@@ -1176,37 +1188,44 @@ export function initAdminEvents(onContentChange) {
     };
   }
 
-  // 4. Toggle Reset Password Panel
+  // 4. Toggle between Sign In View and Reset Password View
   const toggleResetBtn = document.getElementById('toggleResetPasswordBtn');
-  const resetPanel = document.getElementById('adminResetPanel');
-  const cancelResetBtn = document.getElementById('cancelResetBtn');
+  const backToLoginBtn = document.getElementById('backToLoginBtn');
+  const signInView = document.getElementById('adminSignInView');
+  const resetView = document.getElementById('adminResetView');
+  const resetEmailInput = document.getElementById('resetEmailInput');
 
-  if (toggleResetBtn && resetPanel) {
-    toggleResetBtn.onclick = () => {
-      const isVisible = resetPanel.style.display === 'block';
-      resetPanel.style.display = isVisible ? 'none' : 'block';
-      if (!isVisible) {
-        const emailInput = document.getElementById('resetEmailInput');
-        if (emailInput) {
-          emailInput.value = '';
-          emailInput.focus();
-        }
-      }
-    };
+  function showResetScreen() {
+    showResetView = true;
+    if (signInView) signInView.style.display = 'none';
+    if (resetView) resetView.style.display = 'block';
+    if (resetEmailInput) {
+      resetEmailInput.value = '';
+      resetEmailInput.focus();
+    }
   }
 
-  if (cancelResetBtn && resetPanel) {
-    cancelResetBtn.onclick = () => {
-      resetPanel.style.display = 'none';
-      const emailInput = document.getElementById('resetEmailInput');
-      if (emailInput) emailInput.value = '';
-    };
+  function showLoginScreen() {
+    showResetView = false;
+    if (resetView) resetView.style.display = 'none';
+    if (signInView) signInView.style.display = 'block';
+    const pwdInput = document.getElementById('adminPassphraseInput');
+    if (pwdInput) pwdInput.focus();
   }
 
-  // 5. Reset via Firebase Email
-  const sendEmailResetBtn = document.getElementById('sendEmailResetBtn');
-  if (sendEmailResetBtn) {
-    sendEmailResetBtn.onclick = async () => {
+  if (toggleResetBtn) {
+    toggleResetBtn.onclick = () => showResetScreen();
+  }
+
+  if (backToLoginBtn) {
+    backToLoginBtn.onclick = () => showLoginScreen();
+  }
+
+  // 5. Reset via Firebase Email Form
+  const resetForm = document.getElementById('adminResetForm');
+  if (resetForm) {
+    resetForm.onsubmit = async (e) => {
+      e.preventDefault();
       const email = document.getElementById('resetEmailInput').value.trim();
       if (!email) {
         showAdminToast('Please enter an admin email address.', 'error');
@@ -1216,7 +1235,7 @@ export function initAdminEvents(onContentChange) {
         if (auth) {
           await sendPasswordResetEmail(auth, email);
           showAdminToast(`Password reset link sent to ${email}. Check your inbox!`, 'success');
-          resetPanel.style.display = 'none';
+          setTimeout(() => showLoginScreen(), 1800);
         } else {
           showAdminToast('Firebase Auth service is offline. Please try again later or sign in with Google.', 'error');
         }
