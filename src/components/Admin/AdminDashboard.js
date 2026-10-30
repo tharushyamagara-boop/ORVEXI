@@ -197,22 +197,19 @@ function renderLoginScreen() {
             <span>🔑</span> Reset Admin Password
           </h4>
           <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:1rem; line-height:1.4;">
-            Send a recovery link to your admin email or restore the default master password.
+            Enter your admin email to receive a password reset link. Check your inbox to set a new password.
           </p>
 
           <div class="admin-form-group">
             <label class="admin-label">Admin Email</label>
-            <input type="email" id="resetEmailInput" class="admin-input" value="orvexi@loprok.com" placeholder="admin email">
+            <input type="email" id="resetEmailInput" class="admin-input" value="orvexi@loprok.com" placeholder="admin email" required>
           </div>
 
           <div style="display:flex; flex-direction:column; gap:0.6rem;">
             <button type="button" class="btn-admin btn-admin-primary btn-admin-sm" id="sendEmailResetBtn" style="justify-content:center;">
-              Send Password Reset Email
+              Send Password Reset Link
             </button>
-            <button type="button" class="btn-admin btn-admin-secondary btn-admin-sm" id="restoreDefaultPasswordBtn" style="justify-content:center;">
-              Restore Default ("Gavyn#123@Olga")
-            </button>
-            <button type="button" class="admin-login-link" id="cancelResetBtn" style="text-align:center; margin-top:0.35rem; background:none; border:none;">
+            <button type="button" class="admin-login-link" id="cancelResetBtn" style="text-align:center; margin-top:0.35rem; background:none; border:none; cursor:pointer;">
               Cancel
             </button>
           </div>
@@ -1208,32 +1205,18 @@ export function initAdminEvents(onContentChange) {
       try {
         if (auth) {
           await sendPasswordResetEmail(auth, email);
-          showAdminToast(`Password reset link sent to ${email}!`, 'success');
+          showAdminToast(`Password reset link sent to ${email}. Check your inbox!`, 'success');
           resetPanel.style.display = 'none';
         } else {
-          showAdminToast('Firebase Auth is offline. Use "Restore Default" instead.', 'info');
+          showAdminToast('Firebase Auth service is offline. Please try again later or sign in with Google.', 'error');
         }
       } catch (err) {
-        showAdminToast(err.message || 'Could not send reset email. Use "Restore Default".', 'error');
+        showAdminToast(err.message || 'Could not send reset email. Please verify the email address.', 'error');
       }
     };
   }
 
-  // 6. Restore Master Default Password Button in Login screen
-  const restoreDefaultBtn = document.getElementById('restoreDefaultPasswordBtn');
-  if (restoreDefaultBtn) {
-    restoreDefaultBtn.onclick = async () => {
-      await contentStore.resetAdminPassword(MASTER_DEFAULT_PASSWORD);
-      showAdminToast(`Password restored to default: "${MASTER_DEFAULT_PASSWORD}"`, 'success');
-      const passInput = document.getElementById('adminPassphraseInput');
-      if (passInput) passInput.value = MASTER_DEFAULT_PASSWORD;
-      if (resetPanel) resetPanel.style.display = 'none';
-      const err = document.getElementById('adminLoginError');
-      if (err) err.style.display = 'none';
-    };
-  }
-
-  // 7. Change Password in Settings Tab
+  // 6. Change Password in Settings Tab
   const pwdChangeForm = document.getElementById('adminPasswordChangeForm');
   if (pwdChangeForm) {
     pwdChangeForm.onsubmit = async (e) => {
