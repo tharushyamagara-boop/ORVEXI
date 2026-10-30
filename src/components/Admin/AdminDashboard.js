@@ -202,7 +202,7 @@ function renderLoginScreen() {
 
           <div class="admin-form-group">
             <label class="admin-label">Admin Email</label>
-            <input type="email" id="resetEmailInput" class="admin-input" value="orvexi@loprok.com" placeholder="admin email" required>
+            <input type="email" id="resetEmailInput" class="admin-input" placeholder="Enter your registered admin email" value="" required autocomplete="email">
           </div>
 
           <div style="display:flex; flex-direction:column; gap:0.6rem;">
@@ -1183,13 +1183,23 @@ export function initAdminEvents(onContentChange) {
 
   if (toggleResetBtn && resetPanel) {
     toggleResetBtn.onclick = () => {
-      resetPanel.style.display = resetPanel.style.display === 'block' ? 'none' : 'block';
+      const isVisible = resetPanel.style.display === 'block';
+      resetPanel.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible) {
+        const emailInput = document.getElementById('resetEmailInput');
+        if (emailInput) {
+          emailInput.value = '';
+          emailInput.focus();
+        }
+      }
     };
   }
 
   if (cancelResetBtn && resetPanel) {
     cancelResetBtn.onclick = () => {
       resetPanel.style.display = 'none';
+      const emailInput = document.getElementById('resetEmailInput');
+      if (emailInput) emailInput.value = '';
     };
   }
 
