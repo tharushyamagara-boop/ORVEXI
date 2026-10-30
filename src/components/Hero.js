@@ -16,14 +16,6 @@ export function renderHero() {
 
       <div class="container">
         <div class="hero-content reveal active">
-          <div class="hero-badge">
-            <span class="hero-badge-dot"></span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            RDB Registered &mdash; TIN 1628324
-          </div>
-
           <h1 class="hero-title">
             <span class="hero-title-line hero-anim-1">Technology Solutions</span>
             <span class="hero-title-line hero-anim-2">Built for <em>Africa</em></span>

@@ -2,22 +2,46 @@ import './styles/variables.css';
 import './styles/base.css';
 import './styles/components.css';
 import './styles/animations.css';
+import './styles/slider.css';
+import './styles/admin.css';
 
 // Firebase — initialises app & analytics on load
 import './firebase.js';
 
-import { renderNavbar }    from './components/Navbar.js';
-import { renderHero }      from './components/Hero.js';
-import { renderAbout }     from './components/Architecture.js';
-import { renderServices }  from './components/Solutions.js';
-import { renderPortfolio } from './components/Portfolio.js';
-import { renderContact }   from './components/ConsultationModal.js';
-import { renderFooter }    from './components/Footer.js';
+// Content Store
+import { contentStore } from './store/contentStore.js';
 
-function initApp() {
+// Components
+import { renderNavbar }         from './components/Navbar.js';
+import { renderHeroSlider, initHeroSlider } from './components/HeroSlider.js';
+import { renderAbout }          from './components/Architecture.js';
+import { renderServices }       from './components/Solutions.js';
+import { renderPortfolio }      from './components/Portfolio.js';
+import { renderContact }        from './components/ConsultationModal.js';
+import { renderFooter }         from './components/Footer.js';
+import { renderAdminPortal, initAdminEvents, renderFloatingAdminBar } from './components/Admin/AdminDashboard.js';
+
+function isCurrentRouteAdmin() {
+  const hash = window.location.hash.toLowerCase();
+  const path = window.location.pathname.toLowerCase();
+  return hash === '#admin' || path === '/admin';
+}
+
+function renderApp() {
   const app = document.getElementById('app');
   if (!app) return;
 
+  const content = contentStore.getContent();
+  const isAdmin = contentStore.isAdminAuthenticated();
+
+  if (isCurrentRouteAdmin()) {
+    // Render Admin Portal / CMS View
+    app.innerHTML = renderAdminPortal();
+    initAdminEvents(renderApp);
+    return;
+  }
+
+  // Render Public Website
   app.innerHTML = `
     <div class="ambient-background">
       <div class="ambient-grid"></div>
@@ -26,24 +50,28 @@ function initApp() {
       <div class="ambient-orb ambient-orb-3"></div>
     </div>
 
-    ${renderNavbar()}
+    ${renderNavbar(isAdmin)}
 
     <main id="mainContent">
-      ${renderHero()}
-      ${renderAbout()}
-      ${renderServices()}
-      ${renderPortfolio()}
-      ${renderContact()}
+      ${renderHeroSlider(content.heroSlider)}
+      ${renderAbout(content.about)}
+      ${renderServices(content.services)}
+      ${renderPortfolio(content.portfolio)}
+      ${renderContact(content.contact)}
     </main>
 
-    ${renderFooter()}
+    ${renderFooter(content.settings, content.contact)}
+    ${renderFloatingAdminBar()}
   `;
 
+  // Initialize interactive behaviors
   initNavbarScroll();
   initMobileDrawer();
+  initHeroSlider();
   initContactForm();
   initScrollReveal();
   initActiveNavLinks();
+  initAdminEvents(renderApp);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -85,29 +113,26 @@ function initContactForm() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name    = document.getElementById('contactName').value.trim();
-    const email   = document.getElementById('contactEmail').value.trim();
-    const message = document.getElementById('contactMessage').value.trim();
+    const name    = document.getElementById('contactName')?.value.trim();
+    const email   = document.getElementById('contactEmail')?.value.trim();
+    const message = document.getElementById('contactMessage')?.value.trim();
 
     if (!name || !email || !message) return;
 
-    // Show success state (no backend yet — UI only)
-    container.style.display = 'none';
-    success.style.display   = 'block';
+    // Show success state (UI confirmation)
+    if (container) container.style.display = 'none';
+    if (success) success.style.display   = 'block';
 
-    // Reset after 10 seconds
     setTimeout(() => {
       form.reset();
-      container.style.display = 'block';
-      success.style.display   = 'none';
+      if (container) container.style.display = 'block';
+      if (success) success.style.display   = 'none';
     }, 10000);
   });
 }
 
-
-
 /* -------------------------------------------------------------------------- */
-/* 5. Scroll Reveal                                                            */
+/* 4. Scroll Reveal                                                            */
 /* -------------------------------------------------------------------------- */
 function initScrollReveal() {
   const els = document.querySelectorAll('.reveal');
@@ -129,7 +154,7 @@ function initScrollReveal() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 6. Active Nav Link Highlighting on Scroll                                  */
+/* 5. Active Nav Link Highlighting on Scroll                                  */
 /* -------------------------------------------------------------------------- */
 function initActiveNavLinks() {
   const sections = document.querySelectorAll('section[id]');
@@ -149,9 +174,44 @@ function initActiveNavLinks() {
   highlightActive();
 }
 
-// Bootstrap
+/* -------------------------------------------------------------------------- */
+/* 6. Routing & Store Subscriptions                                            */
+/* -------------------------------------------------------------------------- */
+window.addEventListener('hashchange', () => {
+  renderApp();
+  if (!isCurrentRouteAdmin() && window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+});
+
+// Keyboard shortcut: Ctrl + Shift + A to open Admin Console
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+    e.preventDefault();
+    if (isCurrentRouteAdmin()) {
+      window.location.hash = '#home';
+    } else {
+      window.location.hash = '#admin';
+    }
+  }
+});
+
+// Subscribe to store updates for automatic reactivity
+contentStore.subscribe(() => {
+  // If not currently typing in a modal or form, re-render
+  const activeEl = document.activeElement;
+  const isInputActive = activeEl && ['INPUT', 'TEXTAREA'].includes(activeEl.tagName);
+  if (!isInputActive) {
+    renderApp();
+  }
+});
+
+// Bootstrap application
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
+  document.addEventListener('DOMContentLoaded', renderApp);
 } else {
-  initApp();
+  renderApp();
 }

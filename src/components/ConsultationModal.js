@@ -1,4 +1,10 @@
-export function renderContact() {
+export function renderContact(contactData = {}) {
+  const address = contactData.address || 'Niboye, Kicukiro\nUmujyi wa Kigali, Rwanda';
+  const phone = contactData.phone || '+250 788 810 675';
+  const email = contactData.email || 'orvexi@loprok.com';
+  const tin = contactData.tin || '1628324';
+  const rraLink = contactData.rraLink || 'https://etax.rra.gov.rw/nidAssignedTIN/';
+
   return `
     <section class="section" id="contact">
       <div class="container">
@@ -22,8 +28,7 @@ export function renderContact() {
               <div class="contact-detail-body">
                 <span class="contact-detail-label">Registered Address</span>
                 <span class="contact-detail-value">
-                  Niboye, Kicukiro<br>
-                  Umujyi wa Kigali, Rwanda
+                  ${address.replace(/\n/g, '<br>')}
                 </span>
               </div>
             </div>
@@ -37,7 +42,7 @@ export function renderContact() {
               <div class="contact-detail-body">
                 <span class="contact-detail-label">Phone</span>
                 <span class="contact-detail-value">
-                  <a href="tel:+250788810675">+250 788 810 675</a>
+                  <a href="tel:${phone.replace(/\s+/g, '')}">${phone}</a>
                 </span>
               </div>
             </div>
@@ -51,7 +56,7 @@ export function renderContact() {
               <div class="contact-detail-body">
                 <span class="contact-detail-label">Email</span>
                 <span class="contact-detail-value">
-                  <a href="mailto:orvexi@loprok.com">orvexi@loprok.com</a>
+                  <a href="mailto:${email}">${email}</a>
                 </span>
               </div>
             </div>
@@ -65,7 +70,7 @@ export function renderContact() {
               <div class="contact-detail-body">
                 <span class="contact-detail-label">TIN Number</span>
                 <span class="contact-detail-value" style="font-family: var(--font-mono); font-size: 0.88rem;">
-                  <a href="https://etax.rra.gov.rw/nidAssignedTIN/" target="_blank" rel="noopener noreferrer">1628324</a>
+                  <a href="${rraLink}" target="_blank" rel="noopener noreferrer">${tin}</a>
                 </span>
               </div>
             </div>
@@ -73,9 +78,9 @@ export function renderContact() {
             <div class="rdb-verify">
               <p class="rdb-verify-text">
                 Verify our TIN on the Rwanda Revenue Authority (RRA) portal using
-                <strong>TIN Number 1628324</strong>.
+                <strong>TIN Number ${tin}</strong>.
               </p>
-              <a href="https://etax.rra.gov.rw/nidAssignedTIN/" target="_blank" rel="noopener noreferrer">
+              <a href="${rraLink}" target="_blank" rel="noopener noreferrer">
                 Verify on RRA Portal
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>

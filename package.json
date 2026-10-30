@@ -8,7 +8,10 @@
     "build": "vite build",
     "start": "node index.js",
     "preview": "vite preview",
-    "deploy": "vite build && firebase deploy --only hosting"
+    "deploy": "vite build && firebase deploy --only hosting",
+    "backup:local": "node scripts/cloud-backup.mjs",
+    "backup:cloud": "node scripts/cloud-backup.mjs",
+    "restore:cloud": "node scripts/cloud-restore.mjs"
   },
   "devDependencies": {
     "vite": "^6.2.0"

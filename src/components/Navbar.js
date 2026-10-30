@@ -1,4 +1,4 @@
-export function renderNavbar() {
+export function renderNavbar(isAdmin = false) {
   return `
     <header class="header-navbar" id="headerNavbar">
       <div class="container nav-container">
@@ -13,6 +13,7 @@ export function renderNavbar() {
             <li><a href="#services"  class="nav-link">Services</a></li>
             <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
             <li><a href="#contact"   class="nav-link">Contact</a></li>
+            ${isAdmin ? `<li><a href="#admin" class="nav-link admin-nav-link" style="color: var(--brand-blue-light); font-weight: 600;"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; margin-right:6px;"></span>Admin Panel</a></li>` : ''}
           </ul>
         </nav>
 
@@ -34,6 +35,7 @@ export function renderNavbar() {
         <a href="#services"  class="nav-link mobile-link">Services</a>
         <a href="#portfolio" class="nav-link mobile-link">Portfolio</a>
         <a href="#contact"   class="nav-link mobile-link">Contact</a>
+        ${isAdmin ? `<a href="#admin" class="nav-link mobile-link" style="color: var(--brand-blue-light); font-weight: 600;">Admin Panel</a>` : ''}
         <a href="#contact"  class="btn btn-primary" style="width:100%; margin-top:0.5rem; text-align:center;">Get in Touch</a>
       </div>
     </header>

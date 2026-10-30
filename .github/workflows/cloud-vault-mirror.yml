@@ -1,0 +1,38 @@
+name: Multi-Cloud Source Code Vault Mirror
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  cloud-vault-sync:
+    name: Package & Cloud Mirror Snapshot
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Generate Clean Codebase Snapshot
+        run: |
+          mkdir -p backups
+          TIMESTAMP=$(date +'%Y-%m-%d_%H%M%S')
+          ZIP_NAME="orvexi-corporate-release-${TIMESTAMP}.zip"
+          zip -r "backups/${ZIP_NAME}" . -x "node_modules/*" ".git/*" "dist/*" ".gemini/*" "*.log"
+          echo "Created snapshot: backups/${ZIP_NAME}"
+          ls -lh "backups/${ZIP_NAME}"
+
+      - name: Upload Snapshot as GitHub Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: orvexi-codebase-archive
+          path: backups/*.zip
+          retention-days: 90
+
