@@ -8,6 +8,13 @@ export function renderServices(servicesData = {}) {
     <div class="service-card reveal">
       <h3 class="service-title">${s.title}</h3>
       <p class="service-desc">${s.desc}</p>
+      <a href="#contact" class="service-request-link" data-service="${s.title}">
+        <span>Request Service</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
     </div>
   `).join('');
 

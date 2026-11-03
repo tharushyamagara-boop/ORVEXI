@@ -8,8 +8,9 @@ import './styles/admin.css';
 // Firebase — initialises app & analytics on load
 import './firebase.js';
 
-// Content Store
+// Content & Booking Stores
 import { contentStore } from './store/contentStore.js';
+import { bookingStore } from './store/bookingStore.js';
 
 // Components
 import { renderNavbar }         from './components/Navbar.js';
@@ -102,32 +103,100 @@ function initMobileDrawer() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 3. Contact Form                                                             */
+/* 3. Online Service Request & Appointment Booking Form                        */
 /* -------------------------------------------------------------------------- */
 function initContactForm() {
   const form      = document.getElementById('contactForm');
   const container = document.getElementById('contactFormContainer');
   const success   = document.getElementById('contactSuccess');
+  const bookAnotherBtn = document.getElementById('bookAnotherBtn');
+
+  // Pre-select service when clicking "Request Service" on any service card
+  document.querySelectorAll('.service-request-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const serviceName = link.getAttribute('data-service');
+      const select = document.getElementById('bookingService');
+      if (select && serviceName) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value.toLowerCase().includes(serviceName.toLowerCase()) || 
+              serviceName.toLowerCase().includes(select.options[i].value.toLowerCase())) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    });
+  });
+
+  if (bookAnotherBtn) {
+    bookAnotherBtn.onclick = () => {
+      if (form) form.reset();
+      if (success) success.style.display = 'none';
+      if (container) container.style.display = 'block';
+    };
+  }
 
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name    = document.getElementById('contactName')?.value.trim();
-    const email   = document.getElementById('contactEmail')?.value.trim();
-    const message = document.getElementById('contactMessage')?.value.trim();
+    const name        = document.getElementById('contactName')?.value.trim();
+    const phone       = document.getElementById('contactPhone')?.value.trim();
+    const email       = document.getElementById('contactEmail')?.value.trim();
+    const service     = document.getElementById('bookingService')?.value.trim();
+    const preferredDate = document.getElementById('bookingDate')?.value;
+    const timeSlot    = document.getElementById('bookingTimeSlot')?.value;
+    const channel     = document.getElementById('bookingChannel')?.value;
+    const notes       = document.getElementById('contactMessage')?.value.trim();
+    const locationUrl = document.getElementById('bookingLocationUrl')?.value.trim();
 
-    if (!name || !email || !message) return;
+    if (!name || !email || !phone || !service || !notes) {
+      alert('Please fill in all required fields (Name, Phone, Email, Service, and Project Scope).');
+      return;
+    }
 
-    // Show success state (UI confirmation)
-    if (container) container.style.display = 'none';
-    if (success) success.style.display   = 'block';
+    const submitBtn = document.getElementById('contactSubmitBtn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Submitting Request...</span>';
+    }
 
-    setTimeout(() => {
-      form.reset();
-      if (container) container.style.display = 'block';
-      if (success) success.style.display   = 'none';
-    }, 10000);
+    try {
+      const booking = await bookingStore.addBooking({
+        customerName: name,
+        phone,
+        email,
+        service,
+        preferredDate,
+        timeSlot,
+        channel,
+        notes,
+        locationUrl
+      });
+
+      // Update success card details
+      const refEl = document.getElementById('successRefCode');
+      const srvEl = document.getElementById('successService');
+      const apptEl = document.getElementById('successAppointment');
+
+      if (refEl) refEl.textContent = booking.reference;
+      if (srvEl) srvEl.textContent = booking.service;
+      if (apptEl) apptEl.textContent = `${booking.preferredDateFormatted} (${booking.timeSlot})`;
+
+      if (container) container.style.display = 'none';
+      if (success) success.style.display   = 'block';
+    } catch (err) {
+      console.error('Error submitting service request:', err);
+      alert('Could not submit request. Please try again or email us directly.');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Submit Service Request</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>`;
+      }
+    }
   });
 }
 

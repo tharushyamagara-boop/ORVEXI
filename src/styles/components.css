@@ -1396,3 +1396,73 @@
   min-height: 28px;
   flex-wrap: nowrap;
 }
+
+
+/* Online Service Request & Booking Form additions */
+.form-select {
+  background: #0f1629;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--brand-blue-light);
+  box-shadow: 0 0 0 3px rgba(62, 181, 241, 0.1);
+}
+
+.form-select option {
+  background: #0b0e17;
+  color: #fff;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .form-row-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.booking-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand-blue-light);
+  background: rgba(62, 181, 241, 0.1);
+  border: 1px solid rgba(62, 181, 241, 0.2);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.service-request-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--brand-blue-light);
+  text-decoration: none;
+  margin-top: 0.85rem;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.service-request-link:hover {
+  transform: translateX(3px);
+  color: #fff;
+}
