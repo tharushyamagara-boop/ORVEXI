@@ -1615,8 +1615,8 @@ function renderSendEmailTab() {
           <!-- Bottom Action Bar (Screenshot 2) -->
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2rem; padding-top:1.25rem; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:1rem;">
             <label style="display:flex; align-items:center; gap:0.45rem; font-size:0.84rem; color:var(--text-secondary); cursor:pointer;">
-              <input type="checkbox" id="sendTestCopyMyself" checked style="accent-color:#84cc16;">
-              <span>Send test copy to myself first (orvexi@gmail.com)</span>
+              <input type="checkbox" id="sendTestCopyMyself" style="accent-color:#84cc16;">
+              <span>Also send a test copy to myself (orvexi@gmail.com)</span>
             </label>
 
             <div style="display:flex; gap:0.75rem;">
@@ -2159,6 +2159,101 @@ function renderEmailPreviewModal(htmlContent) {
       </div>
     </div>
   `;
+}
+
+function renderDispatchSuccessModal(record) {
+  const mount = document.getElementById('adminModalMount');
+  if (!mount) return;
+
+  const mailtoLink = `mailto:${record.recipients.join(',')}?subject=${encodeURIComponent(record.subject)}&body=${encodeURIComponent(`Dear Partner,\n\nPlease find our latest official announcement and newsletter from ORVEXI:\nhttps://orvexi.com/publications/${record.seoSlug || 'newsletter'}\n\nWarm regards,\nORVEXI LTD\ninfo@orvexi.com`)}`;
+
+  mount.innerHTML = `
+    <div class="admin-modal-backdrop" id="adminModalBackdrop">
+      <div class="admin-modal" style="max-width:580px; width:95vw;">
+        <div class="admin-modal-header" style="border-bottom-color:rgba(132,204,22,0.3);">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div style="width:32px; height:32px; border-radius:50%; background:rgba(132,204,22,0.15); color:#84cc16; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1rem;">✓</div>
+            <h3 class="admin-modal-title" style="color:#fff;">Campaign Dispatched Successfully!</h3>
+          </div>
+          <button class="admin-modal-close" id="modalCloseBtn">&times;</button>
+        </div>
+
+        <div style="padding:1.5rem;">
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; margin-bottom:1.5rem;">
+            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">SUBJECT:</div>
+            <div style="font-size:1.05rem; font-weight:700; color:#fff; margin:0.25rem 0 0.85rem;">${escapeHtml(record.subject)}</div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; font-size:0.84rem; border-top:1px solid rgba(255,255,255,0.06); padding-top:0.75rem;">
+              <div>
+                <span style="color:var(--text-secondary);">Recipients:</span>
+                <strong style="color:#84cc16; margin-left:0.35rem;">${record.recipientCount} Dispatched</strong>
+              </div>
+              <div>
+                <span style="color:var(--text-secondary);">Date:</span>
+                <span style="color:#fff; margin-left:0.35rem;">${escapeHtml(record.dispatchedAtFormatted)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-bottom:0.5rem;">Target Recipients (${record.recipients.length}):</div>
+            <div style="max-height:120px; overflow-y:auto; display:flex; flex-wrap:wrap; gap:0.35rem; background:rgba(7,9,15,0.6); padding:0.6rem; border-radius:6px; border:1px solid rgba(255,255,255,0.06);">
+              ${record.recipients.map(r => `<span style="background:rgba(132,204,22,0.1); color:#84cc16; font-size:0.76rem; padding:0.2rem 0.5rem; border-radius:4px; font-family:var(--font-mono);">${escapeHtml(r)}</span>`).join('')}
+            </div>
+          </div>
+
+          <!-- Outbound Delivery Actions -->
+          <div style="display:flex; flex-direction:column; gap:0.6rem;">
+            <a href="${mailtoLink}" target="_blank" class="btn-admin btn-admin-primary" style="background:#84cc16; color:#0b1402; font-weight:700; justify-content:center; text-decoration:none; padding:0.8rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <span>Open in Default Mail Client (Gmail / Outlook / Mailto)</span>
+            </a>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem;">
+              <button type="button" id="copyDispatchedHtmlBtn" class="btn-admin btn-admin-secondary" style="justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy HTML Code</span>
+              </button>
+              <button type="button" id="previewDispatchedEmailBtn" class="btn-admin btn-admin-secondary" style="justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span>Preview Dispatched Email</span>
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:flex-end;">
+            <button type="button" id="modalCloseBtn2" class="btn-admin btn-admin-secondary">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const closeBtn = mount.querySelector('#modalCloseBtn');
+  const closeBtn2 = mount.querySelector('#modalCloseBtn2');
+  const dismiss = () => { mount.innerHTML = ''; };
+  if (closeBtn) closeBtn.onclick = dismiss;
+  if (closeBtn2) closeBtn2.onclick = dismiss;
+
+  const copyBtn = mount.querySelector('#copyDispatchedHtmlBtn');
+  if (copyBtn) {
+    copyBtn.onclick = () => {
+      const html = emailStore.generateHtml();
+      navigator.clipboard?.writeText(html);
+      showAdminToast('Email HTML code copied to clipboard!', 'success');
+    };
+  }
+
+  const prevBtn = mount.querySelector('#previewDispatchedEmailBtn');
+  if (prevBtn) {
+    prevBtn.onclick = () => {
+      const prevWin = window.open('', '_blank');
+      if (prevWin) {
+        prevWin.document.write(emailStore.generateHtml());
+        prevWin.document.close();
+      }
+    };
+  }
 }
 
 function renderBlockEditModal(block) {
@@ -3926,12 +4021,63 @@ export function initAdminEvents(onContentChange) {
 
     const dispatchForm = document.getElementById('sendEmailDispatchForm');
     if (dispatchForm) {
-      dispatchForm.onsubmit = async (e) => {
+      dispatchForm.onsubmit = (e) => {
         e.preventDefault();
-        const sendTest = document.getElementById('sendTestCopyMyself')?.checked || false;
+
+        // 1. Gather all current values from inputs
+        const subject = document.getElementById('campaignSubjectInput')?.value.trim();
+        const orgName = document.getElementById('campaignOrgNameInput')?.value.trim();
+        const slug = document.getElementById('campaignSlugInput')?.value.trim();
+        const category = document.getElementById('campaignCategorySelect')?.value;
+        const publishOnline = document.getElementById('campaignPublishOnlineCheck')?.checked;
+        const includeBrowserView = document.getElementById('campaignBrowserViewCheck')?.checked;
+        const recipientsRaw = document.getElementById('campaignRecipientsTextarea')?.value.trim();
+        const sendTestCopy = document.getElementById('sendTestCopyMyself')?.checked;
+
+        if (!subject) {
+          alert('Please enter an Email Subject Line.');
+          document.getElementById('campaignSubjectInput')?.focus();
+          return;
+        }
+
+        // Parse recipients list
+        let parsedRecipients = (recipientsRaw || '')
+          .split(/[,;\n]/)
+          .map(r => r.trim().toLowerCase())
+          .filter(r => r.includes('@'));
+
+        if (sendTestCopy && !parsedRecipients.includes('orvexi@gmail.com')) {
+          parsedRecipients.push('orvexi@gmail.com');
+        }
+
+        if (parsedRecipients.length === 0) {
+          alert('Please add at least one recipient email address or click one of the saved contact group buttons.');
+          document.getElementById('campaignRecipientsTextarea')?.focus();
+          return;
+        }
+
+        // Update campaign state
+        emailStore.saveCampaign({
+          subject,
+          organizationName: orgName,
+          seoSlug: slug,
+          category,
+          publishOnline,
+          includeBrowserViewHeader: includeBrowserView,
+          recipientsText: parsedRecipients.join(', ')
+        });
+
+        // 2. Dispatch synchronously (instant, never hanging)
         try {
-          const record = await emailStore.dispatchCampaign({ testOnly: sendTest });
+          const record = emailStore.dispatchCampaign({
+            testOnly: false,
+            recipients: parsedRecipients,
+            subject,
+            organizationName: orgName
+          });
+
           showAdminToast(`Campaign dispatched to ${record.recipientCount} recipient(s)!`, 'success');
+          renderDispatchSuccessModal(record);
           onContentChange();
         } catch (err) {
           alert(err.message);
@@ -4020,9 +4166,13 @@ function setupDesignerEvents(onContentChange, closeModal) {
   const saveAndSendBtn = document.getElementById('designerSaveAndSendBtn');
   if (saveAndSendBtn) {
     saveAndSendBtn.onclick = () => {
-      showAdminToast('Email saved! Returning to Campaign Dispatcher...', 'success');
       closeModal();
       onContentChange();
+      showAdminToast('Design saved! Ready to dispatch campaign.', 'success');
+      setTimeout(() => {
+        const btn = document.getElementById('dispatchCampaignBtn');
+        if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 150);
     };
   }
 

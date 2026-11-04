@@ -175,20 +175,25 @@ class EmailStore {
   async initFirestoreSync() {
     if (!db) return;
     try {
-      const q = query(collection(db, 'email_campaigns'), orderBy('createdAt', 'desc'));
+      const q = query(collection(db, 'email_campaigns'), orderBy('dispatchedAt', 'desc'));
       const snap = await getDocs(q);
       if (!snap.empty) {
         const remote = [];
         snap.forEach(d => remote.push({ id: d.id, ...d.data() }));
         if (remote.length > 0) {
-          this.history = remote;
+          const map = new Map(this.history.map(h => [h.id, h]));
+          remote.forEach(r => {
+            const existing = map.get(r.id);
+            map.set(r.id, existing ? { ...r, ...existing } : r);
+          });
+          this.history = Array.from(map.values());
           try {
-            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(remote));
+            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(this.history));
           } catch (e) {}
         }
       }
     } catch (e) {
-      console.warn('Could not sync email campaigns from Firestore:', e);
+      console.warn('Could not sync email campaigns from Firestore:', e.message || e);
     }
   }
 
@@ -515,15 +520,28 @@ class EmailStore {
   /* ------------------------------------------------------------------------ */
   /* Dispatch Campaign & Track Outbound Broadcast                             */
   /* ------------------------------------------------------------------------ */
-  async dispatchCampaign({ testOnly = false } = {}) {
+  dispatchCampaign({ testOnly = false, recipients = null, subject = null, organizationName = null } = {}) {
     const b = this.campaign;
-    const recipientList = (b.recipientsText || '')
-      .split(/[,;\n]/)
-      .map(r => r.trim().toLowerCase())
-      .filter(r => r.includes('@'));
+    const finalSubject = (subject !== null && subject !== undefined) ? subject : (b.subject || 'ORVEXI Outbound Communication');
+
+    let recipientList = [];
+    if (Array.isArray(recipients) && recipients.length > 0) {
+      recipientList = recipients.map(r => r.trim().toLowerCase()).filter(r => r.includes('@'));
+    } else {
+      recipientList = (b.recipientsText || '')
+        .split(/[,;\n]/)
+        .map(r => r.trim().toLowerCase())
+        .filter(r => r.includes('@'));
+    }
+
+    if (testOnly) {
+      if (!recipientList.includes('orvexi@gmail.com')) {
+        recipientList.push('orvexi@gmail.com');
+      }
+    }
 
     const distinctRecipients = Array.from(new Set(recipientList));
-    if (!testOnly && distinctRecipients.length === 0) {
+    if (distinctRecipients.length === 0) {
       throw new Error('Please add at least one recipient email address.');
     }
 
@@ -533,14 +551,14 @@ class EmailStore {
 
     const record = {
       id,
-      subject: b.subject,
-      organizationName: b.organizationName,
-      templateName: b.templateName,
-      publishOnline: b.publishOnline,
-      seoSlug: b.seoSlug,
-      category: b.category,
-      recipientCount: testOnly ? 1 : distinctRecipients.length,
-      recipients: testOnly ? ['orvexi@gmail.com'] : distinctRecipients,
+      subject: finalSubject,
+      organizationName: organizationName || b.organizationName || '',
+      templateName: b.templateName || 'Custom Designed Newsletter',
+      publishOnline: b.publishOnline !== false,
+      seoSlug: b.seoSlug || 'newsletter',
+      category: b.category || 'Company Announcements',
+      recipientCount: distinctRecipients.length,
+      recipients: distinctRecipients,
       isTest: testOnly,
       status: 'Sent',
       dispatchedAt: nowIso,
@@ -549,17 +567,18 @@ class EmailStore {
       })
     };
 
+    // 1. Immediately persist locally (instant, non-blocking)
     this.history = [record, ...this.history];
     try {
       localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(this.history));
     } catch (e) {}
+    this.notify();
 
+    // 2. Background Firestore sync
     if (db) {
       try {
-        await setDoc(doc(db, 'email_campaigns', id), {
-          ...record,
-          serverTimestamp: serverTimestamp()
-        });
+        setDoc(doc(db, 'email_campaigns', id), record, { merge: true })
+          .catch(err => console.warn('Firestore email campaign sync skipped:', err.message || err));
       } catch (e) {}
     }
 
