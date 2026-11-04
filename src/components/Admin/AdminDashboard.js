@@ -4,6 +4,7 @@ import { bookingStore, ATTRIBUTION_CHANNELS } from '../../store/bookingStore.js'
 import { contactStore } from '../../store/contactStore.js';
 import { emailStore, EMAIL_CATEGORIES } from '../../store/emailStore.js';
 import { analyticsStore, CHANNELS_LIST, CHANNEL_COLORS } from '../../store/analyticsStore.js';
+import { zohoEmailService } from '../../services/zohoEmailService.js';
 import { 
   auth, 
   googleProvider, 
@@ -881,6 +882,44 @@ function renderSettingsTab(settings) {
 
       <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:1.75rem 0;">
 
+      <!-- Outbound Email Settings (Zoho CPaaS & ZeptoMail) -->
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+        <div>
+          <h3 style="font-size:1.1rem; color:#fff; margin:0 0 0.2rem;">Zoho CPaaS &amp; ZeptoMail Email Dispatch</h3>
+          <p style="color:var(--text-secondary); font-size:0.84rem; margin:0;">
+            Configure official transactional and bulk broadcast email sending via <strong>ceo@orvexi.rw</strong>.
+          </p>
+        </div>
+        ${zohoEmailService.isConfigured() 
+          ? `<span style="background:rgba(132,204,22,0.15); color:#84cc16; border:1px solid #84cc16; font-size:0.74rem; padding:0.2rem 0.6rem; border-radius:12px; font-weight:700;">● Active Relay (${escapeHtml(zohoEmailService.getConfig().senderEmail)})</span>`
+          : `<span style="background:rgba(234,179,8,0.15); color:#eab308; border:1px solid #eab308; font-size:0.74rem; padding:0.2rem 0.6rem; border-radius:12px; font-weight:700;">⚠ Setup Required (Enter API Key)</span>`
+        }
+      </div>
+
+      <div style="background:rgba(7,9,15,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; max-width:620px; margin-bottom:1.5rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; font-size:0.82rem; margin-bottom:1rem; color:var(--text-secondary);">
+          <div>Sender: <strong style="color:#fff;">${escapeHtml(zohoEmailService.getConfig().senderEmail || 'ceo@orvexi.rw')}</strong></div>
+          <div>REST Host: <strong style="color:#fff;">${escapeHtml(zohoEmailService.getConfig().host || 'cpaas.zoho.com')}</strong></div>
+          <div>Agent Alias: <strong style="color:#fff;">${escapeHtml(zohoEmailService.getConfig().agentAlias || '1791ea76b71e26a9')}</strong></div>
+          <div>SMTP Server: <strong style="color:#fff;">${escapeHtml(zohoEmailService.getConfig().smtpHost || 'smtp.zeptomail.com')}</strong></div>
+          <div>Ports: <strong style="color:#fff;">465 (SSL) / 587 (TLS)</strong></div>
+          <div>Domain: <strong style="color:#84cc16;">@orvexi.rw</strong></div>
+        </div>
+
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+          <button type="button" id="settingsConfigureZohoBtn" class="btn-admin btn-admin-primary" style="background:#84cc16; color:#0b1402; font-weight:700;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Manage Zoho Credentials</span>
+          </button>
+          <button type="button" id="settingsTestZohoBtn" class="btn-admin btn-admin-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <span>Send Test Email (ceo@orvexi.rw)</span>
+          </button>
+        </div>
+      </div>
+
+      <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:1.75rem 0;">
+
       <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.75rem;">Backup &amp; Export</h3>
       <p style="color:var(--text-secondary); font-size:0.88rem; margin-bottom:1rem;">
         Download all current slides, projects, services, and content as a standalone JSON backup.
@@ -1465,6 +1504,37 @@ function renderSendEmailTab() {
 
       <div class="send-email-wrapper">
         <form id="sendEmailDispatchForm">
+          <!-- Zoho CPaaS & ZeptoMail Relay Status Banner -->
+          <div style="background: rgba(132, 204, 22, 0.05); border: 1px solid rgba(132, 204, 22, 0.2); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.85rem;">
+              <div style="width: 42px; height: 42px; border-radius: 8px; background: rgba(132,204,22,0.15); display: flex; align-items: center; justify-content: center; color: #84cc16; font-size: 1.25rem; flex-shrink: 0;">
+                ⚡
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                  <span style="font-weight: 700; color: #fff; font-size: 0.95rem;">Zoho CPaaS &amp; ZeptoMail Dispatch Relay</span>
+                  ${zohoEmailService.isConfigured() 
+                    ? `<span style="background:rgba(132,204,22,0.2); color:#84cc16; border:1px solid #84cc16; font-size:0.72rem; padding:0.15rem 0.55rem; border-radius:12px; font-weight:700;">● Connected (${escapeHtml(zohoEmailService.getConfig().senderEmail)})</span>`
+                    : `<span style="background:rgba(234,179,8,0.2); color:#eab308; border:1px solid #eab308; font-size:0.72rem; padding:0.15rem 0.55rem; border-radius:12px; font-weight:700;">⚠ Setup Required (Enter API Key)</span>`
+                  }
+                </div>
+                <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">
+                  Sender: <strong style="color:#fff;">${escapeHtml(zohoEmailService.getConfig().senderEmail || 'ceo@orvexi.rw')}</strong> &bull; Host: <code>cpaas.zoho.com</code> &bull; Alias: <code>1791ea76b71e26a9</code> &bull; SMTP: <code>smtp.zeptomail.com:465</code>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" id="openZohoConfigBtn" class="btn-admin btn-admin-secondary btn-admin-sm">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>Configure Zoho Credentials</span>
+              </button>
+              <button type="button" id="testZohoConnectionBtn" class="btn-admin btn-admin-secondary btn-admin-sm">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                <span>Send Test Email (ceo@orvexi.rw)</span>
+              </button>
+            </div>
+          </div>
+
           <!-- Template selector row (Screenshot 2) -->
           <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom:1.25rem;">
             <div style="flex:1; min-width:280px;">
@@ -2161,7 +2231,7 @@ function renderEmailPreviewModal(htmlContent) {
   `;
 }
 
-function renderDispatchSuccessModal(record) {
+function renderDispatchSuccessModal(record, zohoResult = null) {
   const mount = document.getElementById('adminModalMount');
   if (!mount) return;
 
@@ -2179,6 +2249,17 @@ function renderDispatchSuccessModal(record) {
         </div>
 
         <div style="padding:1.5rem;">
+          ${zohoResult ? `
+            <div style="background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.35); border-radius:8px; padding:0.85rem 1rem; margin-bottom:1.25rem;">
+              <div style="display:flex; align-items:center; gap:0.5rem; color:#84cc16; font-size:0.88rem; font-weight:700;">
+                <span>⚡ Live Zoho CPaaS &amp; ZeptoMail Dispatch Confirmed</span>
+              </div>
+              <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.3rem;">
+                Dispatched from <strong style="color:#fff;">ceo@orvexi.rw</strong> via <strong>cpaas.zoho.com</strong> to <strong>${record.recipientCount}</strong> recipients across Rwanda.
+              </div>
+            </div>
+          ` : ''}
+
           <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; margin-bottom:1.5rem;">
             <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">SUBJECT:</div>
             <div style="font-size:1.05rem; font-weight:700; color:#fff; margin:0.25rem 0 0.85rem;">${escapeHtml(record.subject)}</div>
@@ -2254,6 +2335,98 @@ function renderDispatchSuccessModal(record) {
       }
     };
   }
+}
+
+function renderZohoConfigModal() {
+  const config = zohoEmailService.getConfig();
+  const isKeySaved = Boolean(config.apiKey && config.apiKey.length > 5);
+
+  return `
+    <div class="admin-modal-backdrop" id="adminModalBackdrop">
+      <div class="admin-modal" style="max-width:560px; width:95vw;">
+        <div class="admin-modal-header" style="border-bottom-color:rgba(132,204,22,0.3);">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div style="width:34px; height:34px; border-radius:8px; background:rgba(132,204,22,0.15); color:#84cc16; display:flex; align-items:center; justify-content:center; font-size:1.15rem;">
+              ⚡
+            </div>
+            <div>
+              <h3 class="admin-modal-title" style="color:#fff; margin:0;">Zoho CPaaS &amp; ZeptoMail Setup</h3>
+              <p style="font-size:0.75rem; color:var(--text-secondary); margin:0;">Bulk Email &amp; Transactional Dispatch via <strong>ceo@orvexi.rw</strong></p>
+            </div>
+          </div>
+          <button class="admin-modal-close" id="modalCloseBtn">&times;</button>
+        </div>
+
+        <form id="zohoConfigForm" style="padding:1.5rem;">
+          <!-- Status Banner -->
+          <div style="background:${isKeySaved ? 'rgba(132,204,22,0.08)' : 'rgba(234,179,8,0.08)'}; border:1px solid ${isKeySaved ? 'rgba(132,204,22,0.3)' : 'rgba(234,179,8,0.3)'}; border-radius:8px; padding:0.85rem 1rem; margin-bottom:1.25rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+              <span style="font-size:0.84rem; font-weight:700; color:${isKeySaved ? '#84cc16' : '#eab308'};">
+                ${isKeySaved ? '✓ Zoho CPaaS Relay Ready' : '⚠ API Key Required to Send Live'}
+              </span>
+              <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">ceo@orvexi.rw</span>
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-secondary); margin-top:0.35rem;">
+              ${isKeySaved ? 'Your Zoho API key is active. All outbound emails will be routed through cpaas.zoho.com from ceo@orvexi.rw.' : 'Paste your Zoho-enczapikey below to enable single and bulk email broadcasts.'}
+            </div>
+          </div>
+
+          <!-- Zoho API Key Input -->
+          <div class="admin-form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+              <label class="admin-label" style="margin-bottom:0;">Zoho CPaaS API Key (Zoho-enczapikey) *</label>
+              <button type="button" id="toggleApiKeyVisibility" style="background:none; border:none; color:var(--brand-blue-light); font-size:0.75rem; cursor:pointer;">
+                Show / Hide
+              </button>
+            </div>
+            <input type="password" id="zohoApiKeyInput" class="admin-input" placeholder="Paste your Zoho-enczapikey here..." value="${escapeHtml(config.apiKey || '')}" required style="font-family:var(--font-mono); letter-spacing:0.5px;">
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.3rem;">
+              Authorization Header Format: <code>Zoho-enczapikey &lt;your_key&gt;</code>. Stored securely in your admin browser session.
+            </div>
+          </div>
+
+          <!-- Sender Details -->
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label class="admin-label">Sender Email Address</label>
+              <input type="email" id="zohoSenderEmailInput" class="admin-input" value="${escapeHtml(config.senderEmail || 'ceo@orvexi.rw')}" required>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Sender Display Name</label>
+              <input type="text" id="zohoSenderNameInput" class="admin-input" value="${escapeHtml(config.senderName || 'ORVEXI LTD')}" required>
+            </div>
+          </div>
+
+          <!-- CPaaS & SMTP Reference Box -->
+          <div style="background:rgba(7,9,15,0.7); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:0.85rem 1rem; margin-bottom:1.25rem; font-size:0.78rem;">
+            <div style="color:var(--text-muted); font-weight:700; text-transform:uppercase; margin-bottom:0.4rem; font-size:0.7rem;">Verified Credentials Reference:</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; color:var(--text-secondary);">
+              <div>REST Host: <strong style="color:#fff;">cpaas.zoho.com</strong></div>
+              <div>Agent Alias: <strong style="color:#fff;">1791ea76b71e26a9</strong></div>
+              <div>SMTP Server: <strong style="color:#fff;">smtp.zeptomail.com</strong></div>
+              <div>Ports: <strong style="color:#fff;">465 (SSL) / 587 (TLS)</strong></div>
+              <div>SMTP User: <strong style="color:#fff;">emailapikey</strong></div>
+              <div>Sender Domain: <strong style="color:#84cc16;">@orvexi.rw</strong></div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; flex-wrap:wrap; border-top:1px solid rgba(255,255,255,0.08); padding-top:1rem;">
+            <button type="button" id="modalCancelBtn" class="btn-admin btn-admin-secondary">Cancel</button>
+            <div style="display:flex; gap:0.5rem;">
+              <button type="button" id="testZohoModalBtn" class="btn-admin btn-admin-secondary">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                <span>Send Test Email</span>
+              </button>
+              <button type="submit" class="btn-admin btn-admin-primary" style="background:#84cc16; color:#0b1402; font-weight:700;">
+                <span>Save Zoho Settings</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
 }
 
 function renderBlockEditModal(block) {
@@ -3050,6 +3223,101 @@ export function initAdminEvents(onContentChange) {
     }
   }
 
+  // 11. Zoho CPaaS Modal and Test Dispatch helpers
+  function openZohoConfigModal() {
+    const mount = document.getElementById('adminModalMount');
+    if (!mount) return;
+    mount.innerHTML = renderZohoConfigModal();
+    setupZohoModalEvents();
+  }
+
+  function setupZohoModalEvents() {
+    setupModalDismiss();
+
+    const toggleBtn = document.getElementById('toggleApiKeyVisibility');
+    const keyInput = document.getElementById('zohoApiKeyInput');
+    if (toggleBtn && keyInput) {
+      toggleBtn.onclick = () => {
+        const isPwd = keyInput.type === 'password';
+        keyInput.type = isPwd ? 'text' : 'password';
+        toggleBtn.textContent = isPwd ? 'Hide Key' : 'Show Key';
+      };
+    }
+
+    const form = document.getElementById('zohoConfigForm');
+    if (form) {
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        const apiKey = document.getElementById('zohoApiKeyInput')?.value.trim();
+        const senderEmail = document.getElementById('zohoSenderEmailInput')?.value.trim() || 'ceo@orvexi.rw';
+        const senderName = document.getElementById('zohoSenderNameInput')?.value.trim() || 'ORVEXI LTD';
+
+        zohoEmailService.saveConfig({ apiKey, senderEmail, senderName });
+        showAdminToast('Zoho CPaaS configuration saved!', 'success');
+        closeModal();
+        onContentChange();
+      };
+    }
+
+    const testBtn = document.getElementById('testZohoModalBtn');
+    if (testBtn) {
+      testBtn.onclick = async () => {
+        const apiKey = document.getElementById('zohoApiKeyInput')?.value.trim();
+        const senderEmail = document.getElementById('zohoSenderEmailInput')?.value.trim() || 'ceo@orvexi.rw';
+        const senderName = document.getElementById('zohoSenderNameInput')?.value.trim() || 'ORVEXI LTD';
+
+        if (!apiKey) {
+          alert('Please enter your Zoho-enczapikey before sending a test email.');
+          document.getElementById('zohoApiKeyInput')?.focus();
+          return;
+        }
+
+        zohoEmailService.saveConfig({ apiKey, senderEmail, senderName });
+
+        testBtn.disabled = true;
+        testBtn.innerHTML = '<span>Testing Connection...</span>';
+        try {
+          await zohoEmailService.sendTestEmail(senderEmail);
+          showAdminToast(`✓ Verification email sent to ${senderEmail}! Check your inbox.`, 'success');
+        } catch (err) {
+          alert('Zoho Verification Error:\n' + (err.message || err));
+        } finally {
+          testBtn.disabled = false;
+          testBtn.innerHTML = `
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <span>Send Test Email</span>
+          `;
+        }
+      };
+    }
+  }
+
+  function handleSendTestEmail() {
+    if (!zohoEmailService.isConfigured()) {
+      alert('Zoho CPaaS API key is not configured. Please paste your Zoho-enczapikey in the setup dialog.');
+      openZohoConfigModal();
+      return;
+    }
+    showAdminToast('Dispatching verification test email to ceo@orvexi.rw...', 'info');
+    zohoEmailService.sendTestEmail('ceo@orvexi.rw')
+      .then(() => {
+        showAdminToast('✓ Test email dispatched to ceo@orvexi.rw successfully!', 'success');
+      })
+      .catch(err => {
+        alert('Could not dispatch test email:\n' + (err.message || err));
+      });
+  }
+
+  // Settings Zoho Credentials Events
+  const settingsZohoBtn = document.getElementById('settingsConfigureZohoBtn');
+  if (settingsZohoBtn) {
+    settingsZohoBtn.onclick = () => openZohoConfigModal();
+  }
+  const settingsTestZohoBtn = document.getElementById('settingsTestZohoBtn');
+  if (settingsTestZohoBtn) {
+    settingsTestZohoBtn.onclick = () => handleSendTestEmail();
+  }
+
   // -------------------------
   // SLIDER EVENTS
   // -------------------------
@@ -3577,6 +3845,44 @@ export function initAdminEvents(onContentChange) {
           const id = confirmBtn.getAttribute('data-id');
           bookingStore.updateStatus(id, 'Confirmed');
           showAdminToast('Request confirmed!', 'success');
+
+          // If Zoho is configured, dispatch booking confirmation email
+          if (zohoEmailService.isConfigured()) {
+            const b = bookingStore.bookings.find(x => x.id === id);
+            if (b && b.email) {
+              zohoEmailService.sendEmail({
+                to: [b.email],
+                subject: `[ORVEXI] Service Request Confirmed: ${b.service || 'Technology Consultation'}`,
+                html: `
+                  <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#07090f; color:#ffffff; padding:2rem;">
+                    <div style="max-width:560px; margin:0 auto; background:#0b101f; border:1px solid rgba(132,204,22,0.3); border-radius:10px; padding:2rem;">
+                      <div style="text-align:center; margin-bottom:1.5rem;">
+                        <h2 style="color:#84cc16; margin:0 0 0.5rem; font-size:1.3rem;">Service Request Confirmed</h2>
+                        <p style="color:#94a3b8; font-size:0.88rem; margin:0;">ORVEXI COMPANY LTD &bull; Enterprise Software Solutions</p>
+                      </div>
+                      <p style="color:#cbd5e1; font-size:0.92rem; line-height:1.6;">
+                        Dear <strong>${escapeHtml(b.fullName || 'Partner')}</strong>,<br><br>
+                        Your appointment request for <strong>${escapeHtml(b.service || 'Technology Consultation')}</strong> has been reviewed and confirmed.
+                      </p>
+                      <div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:1rem; margin:1.25rem 0; font-size:0.86rem; line-height:1.7; color:#cbd5e1;">
+                        <div><strong>Reference Code:</strong> <span style="color:#84cc16; font-family:monospace;">${escapeHtml(b.reference || 'ORV-CONF')}</span></div>
+                        <div><strong>Appointment:</strong> ${escapeHtml(b.preferredDate || 'Scheduled')} (${escapeHtml(b.preferredTime || 'Flexible')})</div>
+                        <div><strong>Service:</strong> ${escapeHtml(b.service || '')}</div>
+                        <div><strong>Executive Contact:</strong> ceo@orvexi.rw &bull; +250 788 810 675</div>
+                      </div>
+                      <p style="font-size:0.82rem; color:#64748b; text-align:center; margin:1.5rem 0 0;">
+                        ORVEXI COMPANY LTD &bull; KN 3 Rd, Downtown Commercial Hub, Kigali, Rwanda<br>
+                        Official Communications: <a href="mailto:ceo@orvexi.rw" style="color:#84cc16;">ceo@orvexi.rw</a>
+                      </p>
+                    </div>
+                  </div>
+                `
+              }).then(() => {
+                showAdminToast(`Confirmation email dispatched to ${b.email}!`, 'info');
+              }).catch(err => console.warn('Could not dispatch booking confirmation email:', err));
+            }
+          }
+
           refreshBookingsUI();
           onContentChange();
         } else if (completeBtn) {
@@ -4019,9 +4325,19 @@ export function initAdminEvents(onContentChange) {
       };
     }
 
+    const openZohoBtn = document.getElementById('openZohoConfigBtn');
+    if (openZohoBtn) {
+      openZohoBtn.onclick = () => openZohoConfigModal();
+    }
+
+    const testZohoBtn = document.getElementById('testZohoConnectionBtn');
+    if (testZohoBtn) {
+      testZohoBtn.onclick = () => handleSendTestEmail();
+    }
+
     const dispatchForm = document.getElementById('sendEmailDispatchForm');
     if (dispatchForm) {
-      dispatchForm.onsubmit = (e) => {
+      dispatchForm.onsubmit = async (e) => {
         e.preventDefault();
 
         // 1. Gather all current values from inputs
@@ -4067,20 +4383,65 @@ export function initAdminEvents(onContentChange) {
           recipientsText: parsedRecipients.join(', ')
         });
 
-        // 2. Dispatch synchronously (instant, never hanging)
-        try {
-          const record = emailStore.dispatchCampaign({
-            testOnly: false,
-            recipients: parsedRecipients,
-            subject,
-            organizationName: orgName
-          });
+        const dispatchBtn = document.getElementById('dispatchCampaignBtn');
+        const origBtnContent = dispatchBtn ? dispatchBtn.innerHTML : '';
 
-          showAdminToast(`Campaign dispatched to ${record.recipientCount} recipient(s)!`, 'success');
-          renderDispatchSuccessModal(record);
-          onContentChange();
-        } catch (err) {
-          alert(err.message);
+        // If Zoho CPaaS is configured, send live via ceo@orvexi.rw
+        if (zohoEmailService.isConfigured()) {
+          try {
+            if (dispatchBtn) {
+              dispatchBtn.disabled = true;
+              dispatchBtn.innerHTML = `
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <span>Dispatching via Zoho CPaaS (ceo@orvexi.rw)...</span>
+              `;
+            }
+
+            const zohoRes = await zohoEmailService.sendCampaign({
+              recipients: parsedRecipients,
+              subject,
+              html: emailStore.generateHtml(),
+              organizationName: orgName
+            });
+
+            const record = emailStore.dispatchCampaign({
+              testOnly: false,
+              recipients: parsedRecipients,
+              subject,
+              organizationName: orgName
+            });
+
+            showAdminToast(`✓ Dispatched live via Zoho CPaaS to ${record.recipientCount} recipient(s)!`, 'success');
+            renderDispatchSuccessModal(record, zohoRes);
+            onContentChange();
+          } catch (err) {
+            console.error('Zoho dispatch error:', err);
+            alert('Zoho CPaaS Dispatch Error:\n' + (err.message || err));
+          } finally {
+            if (dispatchBtn) {
+              dispatchBtn.disabled = false;
+              dispatchBtn.innerHTML = origBtnContent;
+            }
+          }
+        } else {
+          // Zoho API Key not yet entered
+          const shouldSetup = confirm(
+            'Zoho CPaaS API Key (Zoho-enczapikey) is not configured yet.\n\nWould you like to enter your API key now to send live from ceo@orvexi.rw?\n\n(Click Cancel to record campaign locally without live Zoho relay)'
+          );
+
+          if (shouldSetup) {
+            openZohoConfigModal();
+          } else {
+            const record = emailStore.dispatchCampaign({
+              testOnly: false,
+              recipients: parsedRecipients,
+              subject,
+              organizationName: orgName
+            });
+            showAdminToast(`Campaign recorded locally for ${record.recipientCount} recipient(s)!`, 'info');
+            renderDispatchSuccessModal(record);
+            onContentChange();
+          }
         }
       };
     }

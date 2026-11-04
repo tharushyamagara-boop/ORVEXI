@@ -11,6 +11,7 @@ import './firebase.js';
 // Content & Booking Stores
 import { contentStore } from './store/contentStore.js';
 import { bookingStore } from './store/bookingStore.js';
+import { zohoEmailService } from './services/zohoEmailService.js';
 
 // Components
 import { renderNavbar }         from './components/Navbar.js';
@@ -173,6 +174,33 @@ function initContactForm() {
         notes: notes || 'General service inquiry & technical consultation request.',
         locationUrl
       });
+
+      // Dispatch automated notification to CEO if Zoho is configured
+      if (zohoEmailService.isConfigured()) {
+        zohoEmailService.sendEmail({
+          to: ['ceo@orvexi.rw'],
+          subject: `[New Inquiry] ${booking.service} - ${booking.customerName}`,
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#07090f; color:#ffffff; padding:2rem;">
+              <div style="max-width:540px; margin:0 auto; background:#0b101f; border:1px solid rgba(132,204,22,0.3); border-radius:10px; padding:1.75rem;">
+                <h2 style="color:#84cc16; margin-top:0;">New Service Request Received</h2>
+                <div style="line-height:1.7; font-size:0.9rem; color:#cbd5e1;">
+                  <div><strong>Client Name:</strong> ${booking.customerName}</div>
+                  <div><strong>Email:</strong> ${booking.email}</div>
+                  <div><strong>Phone:</strong> ${booking.phone}</div>
+                  <div><strong>Requested Service:</strong> ${booking.service}</div>
+                  <div><strong>Attribution Channel:</strong> ${booking.channel}</div>
+                  <div><strong>Appointment:</strong> ${booking.preferredDateFormatted} (${booking.timeSlot})</div>
+                  <div><strong>Reference:</strong> <code style="color:#84cc16;">${booking.reference}</code></div>
+                  <div style="margin-top:0.75rem; padding:0.75rem; background:rgba(255,255,255,0.03); border-radius:6px;">
+                    <strong>Inquiry Notes:</strong><br>${booking.notes}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `
+        }).catch(err => console.warn('Could not dispatch booking admin notification:', err));
+      }
 
       // Update success card details
       const refEl = document.getElementById('successRefCode');

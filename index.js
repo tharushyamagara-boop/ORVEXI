@@ -28,15 +28,67 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  // Only accept GET and HEAD requests
+  const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+  let pathname = decodeURIComponent(parsedUrl.pathname);
+
+  // Handle Zoho Email Dispatch API
+  if (req.method === 'POST' && pathname === '/api/send-email') {
+    let rawBody = '';
+    req.on('data', chunk => { rawBody += chunk; });
+    req.on('end', async () => {
+      try {
+        const data = JSON.parse(rawBody || '{}');
+        const { apiKey, from, to, subject, htmlbody, cc, bcc } = data;
+
+        if (!apiKey || !apiKey.trim()) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Missing Zoho API Key.' }));
+          return;
+        }
+
+        const cleanKey = apiKey.trim();
+        const authHeader = cleanKey.startsWith('Zoho-enczapikey')
+          ? cleanKey
+          : `Zoho-enczapikey ${cleanKey}`;
+
+        const payload = {
+          from: from || { address: 'ceo@orvexi.rw', name: 'ORVEXI LTD' },
+          to: to,
+          subject: subject || 'ORVEXI Notification',
+          htmlbody: htmlbody || '<p>ORVEXI Notification</p>'
+        };
+
+        if (cc && cc.length > 0) payload.cc = cc;
+        if (bcc && bcc.length > 0) payload.bcc = bcc;
+
+        const zohoRes = await fetch('https://cpaas.zoho.com/v1.1/email', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': authHeader
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const zohoJson = await zohoRes.json().catch(() => ({}));
+        res.writeHead(zohoRes.status, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(zohoJson));
+      } catch (err) {
+        console.error('[Zoho Production Proxy Error]:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message || 'Internal Server Error' }));
+      }
+    });
+    return;
+  }
+
+  // Only accept GET and HEAD requests for static assets
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.writeHead(405, { 'Content-Type': 'text/plain' });
     res.end('Method Not Allowed');
     return;
   }
-
-  const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  let pathname = decodeURIComponent(parsedUrl.pathname);
 
   // Prevent directory traversal
   let safePath = path.normalize(pathname).replace(/^(\.\.[/\\])+/, '');
