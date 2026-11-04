@@ -138,20 +138,20 @@ function initContactForm() {
 
   if (!form) return;
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name        = document.getElementById('contactName')?.value.trim();
-    const phone       = document.getElementById('contactPhone')?.value.trim();
-    const email       = document.getElementById('contactEmail')?.value.trim();
-    const service     = document.getElementById('bookingService')?.value.trim();
+    const name          = document.getElementById('contactName')?.value.trim();
+    const phone         = document.getElementById('contactPhone')?.value.trim();
+    const email         = document.getElementById('contactEmail')?.value.trim();
+    const service       = document.getElementById('bookingService')?.value.trim();
     const preferredDate = document.getElementById('bookingDate')?.value;
-    const timeSlot    = document.getElementById('bookingTimeSlot')?.value;
-    const channel     = document.getElementById('bookingChannel')?.value;
-    const notes       = document.getElementById('contactMessage')?.value.trim();
-    const locationUrl = document.getElementById('bookingLocationUrl')?.value.trim();
+    const timeSlot      = document.getElementById('bookingTimeSlot')?.value;
+    const channel       = document.getElementById('bookingChannel')?.value;
+    const notes         = document.getElementById('contactMessage')?.value.trim();
+    const locationUrl   = document.getElementById('bookingLocationUrl')?.value.trim();
 
-    if (!name || !email || !phone || !service || !notes) {
-      alert('Please fill in all required fields (Name, Phone, Email, Service, and Project Scope).');
+    if (!name || !email || !phone || !service) {
+      alert('Please fill in your Name, Phone Number, Email Address, and Requested Service.');
       return;
     }
 
@@ -162,15 +162,15 @@ function initContactForm() {
     }
 
     try {
-      const booking = await bookingStore.addBooking({
+      const booking = bookingStore.addBooking({
         customerName: name,
         phone,
         email,
         service,
-        preferredDate,
-        timeSlot,
-        channel,
-        notes,
+        preferredDate: preferredDate || new Date().toISOString().slice(0, 10),
+        timeSlot: timeSlot || 'Flexible / Any Time',
+        channel: channel || 'Website Direct',
+        notes: notes || 'General service inquiry & technical consultation request.',
         locationUrl
       });
 
@@ -184,7 +184,10 @@ function initContactForm() {
       if (apptEl) apptEl.textContent = `${booking.preferredDateFormatted} (${booking.timeSlot})`;
 
       if (container) container.style.display = 'none';
-      if (success) success.style.display   = 'block';
+      if (success) {
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     } catch (err) {
       console.error('Error submitting service request:', err);
       alert('Could not submit request. Please try again or email us directly.');
@@ -275,6 +278,15 @@ contentStore.subscribe(() => {
   const isInputActive = activeEl && ['INPUT', 'TEXTAREA'].includes(activeEl.tagName);
   if (!isInputActive) {
     renderApp();
+  }
+});
+
+bookingStore.subscribe(() => {
+  const badge = document.querySelector('.admin-booking-badge');
+  if (badge) {
+    const count = bookingStore.getPendingCount();
+    badge.textContent = `${count} new`;
+    badge.style.display = count > 0 ? 'inline-block' : 'none';
   }
 });
 

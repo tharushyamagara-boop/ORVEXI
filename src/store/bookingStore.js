@@ -101,11 +101,19 @@ class BookingStore {
           remote.push({ id: docSnap.id, ...docSnap.data() });
         });
         if (remote.length > 0) {
-          this.saveLocal(remote);
+          // Merge remote into local by ID so locally added/updated bookings are preserved
+          const map = new Map(this.bookings.map(b => [b.id, b]));
+          remote.forEach(r => {
+            const existing = map.get(r.id);
+            map.set(r.id, existing ? { ...r, ...existing } : r);
+          });
+          const merged = Array.from(map.values());
+          merged.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+          this.saveLocal(merged);
         }
       }
     } catch (e) {
-      console.warn('Could not sync service requests from Firestore:', e);
+      console.warn('Could not sync service requests from Firestore:', e.message || e);
     }
   }
 
@@ -140,8 +148,8 @@ class BookingStore {
   /**
    * Add a new service request from the public website or admin
    */
-  async addBooking(data) {
-    const id = 'req-' + Date.now();
+  addBooking(data) {
+    const id = 'req-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
     const reference = 'ORV-' + new Date().getFullYear() + '-' + Math.floor(100 + Math.random() * 900);
     const dateFormatted = this.formatDate(data.preferredDate);
     const nowIso = new Date().toISOString();
@@ -149,74 +157,82 @@ class BookingStore {
     const booking = {
       id,
       reference,
-      customerName: data.customerName || 'Anonymous Client',
-      email: data.email || '',
-      phone: data.phone || '',
+      customerName: (data.customerName || 'Anonymous Client').trim(),
+      email: (data.email || '').trim(),
+      phone: (data.phone || '').trim(),
       service: data.service || 'General Technical Consultation',
-      preferredDate: data.preferredDate || new Date().toISOString().slice(0, 10),
+      preferredDate: data.preferredDate || nowIso.slice(0, 10),
       preferredDateFormatted: dateFormatted,
       timeSlot: data.timeSlot || 'Flexible / Any Time',
       channel: data.channel || 'Website Direct',
       status: 'Pending',
-      notes: data.notes || '',
-      locationUrl: data.locationUrl || '',
+      notes: (data.notes || '').trim(),
+      locationUrl: (data.locationUrl || '').trim(),
       createdAt: nowIso,
       createdAtFormatted: new Date().toLocaleDateString('en-US')
     };
 
-    // Save to Firestore if available
+    // 1. Immediately persist locally (instant UI feedback, never blocked by network)
+    const updated = [booking, ...this.bookings];
+    this.saveLocal(updated);
+
+    // 2. Sync to Firestore in background without blocking
     if (db) {
       try {
-        await setDoc(doc(db, 'service_requests', id), {
-          ...booking,
-          serverTimestamp: serverTimestamp()
-        });
+        setDoc(doc(db, 'service_requests', id), booking, { merge: true })
+          .catch(e => console.warn('Firestore service request save skipped:', e.message || e));
       } catch (e) {
-        console.warn('Firestore service request save failed:', e);
+        console.warn('Firestore service request error:', e.message || e);
       }
     }
 
-    const updated = [booking, ...this.bookings];
-    this.saveLocal(updated);
     return booking;
   }
 
   /**
    * Update request status (e.g. Pending -> Confirmed -> Completed / Cancelled)
    */
-  async updateStatus(id, newStatus) {
+  updateStatus(id, newStatus) {
     const booking = this.bookings.find(b => b.id === id);
-    if (!booking) return;
+    if (!booking) return null;
 
     booking.status = newStatus;
-    booking.updatedAt = new Date().toISOString();
+    const nowIso = new Date().toISOString();
+    booking.updatedAt = nowIso;
 
+    // 1. Immediately persist locally
+    this.saveLocal([...this.bookings]);
+
+    // 2. Sync to Firestore in background without blocking
     if (db) {
       try {
-        await updateDoc(doc(db, 'service_requests', id), {
+        setDoc(doc(db, 'service_requests', id), {
           status: newStatus,
-          updatedAt: serverTimestamp()
-        });
+          updatedAt: nowIso
+        }, { merge: true }).catch(e => console.warn('Firestore status update skipped:', e.message || e));
       } catch (e) {
-        console.warn('Firestore status update failed:', e);
+        console.warn('Firestore status update error:', e.message || e);
       }
     }
 
-    this.saveLocal([...this.bookings]);
+    return booking;
   }
 
   /**
    * Delete a booking from Firestore & LocalStorage
    */
-  async deleteBooking(id) {
-    if (db) {
-      try {
-        await deleteDoc(doc(db, 'service_requests', id));
-      } catch (e) {}
-    }
-
+  deleteBooking(id) {
     const filtered = this.bookings.filter(b => b.id !== id);
     this.saveLocal(filtered);
+
+    if (db) {
+      try {
+        deleteDoc(doc(db, 'service_requests', id))
+          .catch(e => console.warn('Firestore delete skipped:', e.message || e));
+      } catch (e) {
+        console.warn('Firestore delete error:', e.message || e);
+      }
+    }
   }
 
   /**

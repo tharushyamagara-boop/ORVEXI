@@ -170,7 +170,7 @@ class ContactStore {
         }
       }
 
-      // 2. Fetch remote contacts
+      // 2. Fetch remote contacts & safely merge
       const cSnap = await getDocs(query(collection(db, 'crm_contacts'), orderBy('name', 'asc')));
       if (!cSnap.empty) {
         const remoteContacts = [];
@@ -178,12 +178,17 @@ class ContactStore {
           remoteContacts.push({ id: d.id, ...d.data() });
         });
         if (remoteContacts.length > 0) {
-          this.contacts = remoteContacts;
+          const map = new Map(this.contacts.map(c => [c.id, c]));
+          remoteContacts.forEach(r => {
+            const existing = map.get(r.id);
+            map.set(r.id, existing ? { ...r, ...existing } : r);
+          });
+          this.contacts = Array.from(map.values());
         }
       }
       this.saveLocal();
     } catch (e) {
-      console.warn('Could not sync contacts from Firestore:', e);
+      console.warn('Could not sync contacts from Firestore:', e.message || e);
     }
   }
 
@@ -194,7 +199,7 @@ class ContactStore {
     return this.groups;
   }
 
-  async addGroup(groupName) {
+  addGroup(groupName) {
     const trimmed = (groupName || '').trim();
     if (!trimmed) throw new Error('Group name cannot be empty');
     if (this.groups.some(g => g.toLowerCase() === trimmed.toLowerCase())) {
@@ -207,16 +212,16 @@ class ContactStore {
     if (db) {
       try {
         const gid = 'grp-' + trimmed.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        await setDoc(doc(db, 'crm_groups', gid), {
+        setDoc(doc(db, 'crm_groups', gid), {
           name: trimmed,
-          createdAt: serverTimestamp()
-        });
+          createdAt: new Date().toISOString()
+        }, { merge: true }).catch(err => console.warn('Firestore group sync skipped:', err.message || err));
       } catch (e) {}
     }
     return trimmed;
   }
 
-  async renameGroup(oldName, newName) {
+  renameGroup(oldName, newName) {
     const trimmed = (newName || '').trim();
     if (!trimmed) throw new Error('Group name cannot be empty');
     if (oldName === trimmed) return;
@@ -234,19 +239,18 @@ class ContactStore {
 
     if (db) {
       try {
-        // Sync updated contacts to Firestore
         const batch = writeBatch(db);
         this.contacts.filter(c => c.group === trimmed).forEach(c => {
           batch.set(doc(db, 'crm_contacts', c.id), { ...c, group: trimmed }, { merge: true });
         });
-        await batch.commit();
+        batch.commit().catch(err => console.warn('Firestore group rename sync skipped:', err.message || err));
       } catch (e) {}
     }
   }
 
-  async deleteGroup(groupName) {
+  deleteGroup(groupName) {
     this.groups = this.groups.filter(g => g !== groupName);
-    // Reassign contacts to 'Other Partners' or keep unassigned
+    // Reassign contacts to fallback or keep unassigned
     const fallbackGroup = this.groups[0] || 'General';
     this.contacts = this.contacts.map(c => {
       if (c.group === groupName) {
@@ -260,7 +264,7 @@ class ContactStore {
     if (db) {
       try {
         const gid = 'grp-' + groupName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        await deleteDoc(doc(db, 'crm_groups', gid));
+        deleteDoc(doc(db, 'crm_groups', gid)).catch(err => console.warn('Firestore group delete skipped:', err.message || err));
       } catch (e) {}
     }
   }
@@ -292,7 +296,7 @@ class ContactStore {
     });
   }
 
-  async addContact({ name, email, phone = '', organization = '', group = '' }) {
+  addContact({ name, email, phone = '', organization = '', group = '' }) {
     const cleanEmail = (email || '').trim().toLowerCase();
     if (!cleanEmail) throw new Error('Email address is required');
 
@@ -320,17 +324,15 @@ class ContactStore {
 
     if (db) {
       try {
-        await setDoc(doc(db, 'crm_contacts', id), {
-          ...newContact,
-          serverTimestamp: serverTimestamp()
-        });
+        setDoc(doc(db, 'crm_contacts', id), newContact, { merge: true })
+          .catch(err => console.warn('Firestore contact save skipped:', err.message || err));
       } catch (e) {}
     }
 
     return newContact;
   }
 
-  async updateContact(id, updatedFields) {
+  updateContact(id, updatedFields) {
     const idx = this.contacts.findIndex(c => c.id === id);
     if (idx === -1) throw new Error('Contact not found');
 
@@ -345,25 +347,27 @@ class ContactStore {
 
     if (db) {
       try {
-        await setDoc(doc(db, 'crm_contacts', id), updated, { merge: true });
+        setDoc(doc(db, 'crm_contacts', id), updated, { merge: true })
+          .catch(err => console.warn('Firestore contact update skipped:', err.message || err));
       } catch (e) {}
     }
 
     return updated;
   }
 
-  async deleteContact(id) {
+  deleteContact(id) {
     this.contacts = this.contacts.filter(c => c.id !== id);
     this.saveLocal();
 
     if (db) {
       try {
-        await deleteDoc(doc(db, 'crm_contacts', id));
+        deleteDoc(doc(db, 'crm_contacts', id))
+          .catch(err => console.warn('Firestore contact delete skipped:', err.message || err));
       } catch (e) {}
     }
   }
 
-  async deleteContacts(ids) {
+  deleteContacts(ids) {
     if (!Array.isArray(ids) || ids.length === 0) return;
     const idSet = new Set(ids);
     this.contacts = this.contacts.filter(c => !idSet.has(c.id));
@@ -375,21 +379,22 @@ class ContactStore {
         ids.forEach(id => {
           batch.delete(doc(db, 'crm_contacts', id));
         });
-        await batch.commit();
+        batch.commit().catch(err => console.warn('Firestore batch delete skipped:', err.message || err));
       } catch (e) {}
     }
   }
 
-  async purgeAll() {
+  purgeAll() {
     this.contacts = [];
     this.saveLocal();
 
     if (db) {
       try {
-        const snap = await getDocs(collection(db, 'crm_contacts'));
-        const batch = writeBatch(db);
-        snap.forEach(d => batch.delete(d.ref));
-        await batch.commit();
+        getDocs(collection(db, 'crm_contacts')).then(snap => {
+          const batch = writeBatch(db);
+          snap.forEach(d => batch.delete(d.ref));
+          batch.commit();
+        }).catch(err => console.warn('Firestore purge skipped:', err.message || err));
       } catch (e) {}
     }
   }

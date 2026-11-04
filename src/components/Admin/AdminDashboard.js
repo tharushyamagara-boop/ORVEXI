@@ -3480,31 +3480,36 @@ export function initAdminEvents(onContentChange) {
 
         if (confirmBtn) {
           const id = confirmBtn.getAttribute('data-id');
-          await bookingStore.updateStatus(id, 'Confirmed');
+          bookingStore.updateStatus(id, 'Confirmed');
           showAdminToast('Request confirmed!', 'success');
+          refreshBookingsUI();
           onContentChange();
         } else if (completeBtn) {
           const id = completeBtn.getAttribute('data-id');
-          await bookingStore.updateStatus(id, 'Completed');
+          bookingStore.updateStatus(id, 'Completed');
           showAdminToast('Request marked as completed!', 'success');
+          refreshBookingsUI();
           onContentChange();
         } else if (cancelBtn) {
           const id = cancelBtn.getAttribute('data-id');
           if (confirm('Cancel this service request?')) {
-            await bookingStore.updateStatus(id, 'Cancelled');
+            bookingStore.updateStatus(id, 'Cancelled');
             showAdminToast('Request cancelled', 'info');
+            refreshBookingsUI();
             onContentChange();
           }
         } else if (reopenBtn) {
           const id = reopenBtn.getAttribute('data-id');
-          await bookingStore.updateStatus(id, 'Pending');
+          bookingStore.updateStatus(id, 'Pending');
           showAdminToast('Request reopened as Pending', 'info');
+          refreshBookingsUI();
           onContentChange();
         } else if (deleteBtn) {
           const id = deleteBtn.getAttribute('data-id');
           if (confirm('Permanently delete this service request record?')) {
-            await bookingStore.deleteBooking(id);
+            bookingStore.deleteBooking(id);
             showAdminToast('Request deleted', 'info');
+            refreshBookingsUI();
             onContentChange();
           }
         }
@@ -3589,10 +3594,10 @@ export function initAdminEvents(onContentChange) {
         setupModalDismiss();
         const form = document.getElementById('addRecipientForm');
         if (form) {
-          form.onsubmit = async (e) => {
+          form.onsubmit = (e) => {
             e.preventDefault();
             try {
-              await contactStore.addContact({
+              contactStore.addContact({
                 name: document.getElementById('contactNameInput').value,
                 email: document.getElementById('contactEmailInput').value,
                 phone: document.getElementById('contactPhoneInput').value,
@@ -3618,11 +3623,11 @@ export function initAdminEvents(onContentChange) {
         setupModalDismiss();
         const form = document.getElementById('createGroupForm');
         if (form) {
-          form.onsubmit = async (e) => {
+          form.onsubmit = (e) => {
             e.preventDefault();
             const name = document.getElementById('newGroupNameInput').value;
             try {
-              await contactStore.addGroup(name);
+              contactStore.addGroup(name);
               showAdminToast(`Group "${name}" created!`, 'success');
               closeModal();
               onContentChange();
@@ -3642,11 +3647,11 @@ export function initAdminEvents(onContentChange) {
         setupModalDismiss();
 
         mount.querySelectorAll('.btn-rename-group').forEach(b => {
-          b.onclick = async () => {
+          b.onclick = () => {
             const oldName = b.getAttribute('data-group');
             const newName = prompt(`Rename group "${oldName}" to:`, oldName);
             if (newName && newName.trim() && newName.trim() !== oldName) {
-              await contactStore.renameGroup(oldName, newName.trim());
+              contactStore.renameGroup(oldName, newName.trim());
               showAdminToast(`Group renamed to "${newName.trim()}"`, 'success');
               closeModal();
               onContentChange();
@@ -3655,10 +3660,10 @@ export function initAdminEvents(onContentChange) {
         });
 
         mount.querySelectorAll('.btn-delete-group').forEach(b => {
-          b.onclick = async () => {
+          b.onclick = () => {
             const name = b.getAttribute('data-group');
             if (confirm(`Delete group "${name}"? Contacts in this group will be moved to default.`)) {
-              await contactStore.deleteGroup(name);
+              contactStore.deleteGroup(name);
               showAdminToast(`Group "${name}" deleted`, 'info');
               closeModal();
               onContentChange();
@@ -3719,9 +3724,9 @@ export function initAdminEvents(onContentChange) {
             setupModalDismiss();
             const form = document.getElementById('addRecipientForm');
             if (form) {
-              form.onsubmit = async (ev) => {
+              form.onsubmit = (ev) => {
                 ev.preventDefault();
-                await contactStore.updateContact(id, {
+                contactStore.updateContact(id, {
                   name: document.getElementById('contactNameInput').value,
                   email: document.getElementById('contactEmailInput').value,
                   phone: document.getElementById('contactPhoneInput').value,
@@ -3737,7 +3742,7 @@ export function initAdminEvents(onContentChange) {
         } else if (delBtn) {
           const id = delBtn.getAttribute('data-id');
           if (confirm('Delete this contact?')) {
-            await contactStore.deleteContact(id);
+            contactStore.deleteContact(id);
             selectedContactIds.delete(id);
             showAdminToast('Contact deleted', 'info');
             onContentChange();
@@ -3748,9 +3753,9 @@ export function initAdminEvents(onContentChange) {
 
     const batchDelBtn = document.getElementById('batchDeleteContactsBtn');
     if (batchDelBtn) {
-      batchDelBtn.onclick = async () => {
+      batchDelBtn.onclick = () => {
         if (confirm(`Delete ${selectedContactIds.size} selected contact(s)?`)) {
-          await contactStore.deleteContacts(Array.from(selectedContactIds));
+          contactStore.deleteContacts(Array.from(selectedContactIds));
           selectedContactIds.clear();
           showAdminToast('Selected contacts deleted', 'info');
           onContentChange();
