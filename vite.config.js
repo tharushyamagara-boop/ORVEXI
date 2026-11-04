@@ -18,20 +18,12 @@ function zohoEmailApiPlugin() {
           try {
             const data = JSON.parse(rawBody || '{}');
             const { apiKey, from, to, subject, htmlbody, cc, bcc } = data;
+            const DEFAULT_KEY = 'Zoho-enczapikey wSsVR60i+UP1Cf95mjWqJe5pkVpUBw7wE0t8igel6SD0S6iW8MczkBadUQCiGfgXGGdtHDIRorkpyRlShjVfh9wvyF8HWyiF9mqRe1U4J3x17qnvhDzKWGRVlhaML4kJxQttm2JjFMkl+g==';
 
-            if (!apiKey || !apiKey.trim()) {
-              res.statusCode = 400;
-              res.setHeader('Content-Type', 'application/json');
-              res.end(JSON.stringify({
-                error: 'Missing Zoho API Key. Please enter your Zoho-enczapikey in the Admin Console.'
-              }));
-              return;
-            }
-
-            const cleanKey = apiKey.trim();
-            const authHeader = cleanKey.startsWith('Zoho-enczapikey')
-              ? cleanKey
-              : `Zoho-enczapikey ${cleanKey}`;
+            const activeKey = (apiKey && apiKey.trim().length > 10) ? apiKey.trim() : DEFAULT_KEY;
+            const authHeader = activeKey.startsWith('Zoho-enczapikey')
+              ? activeKey
+              : `Zoho-enczapikey ${activeKey}`;
 
             const payload = {
               from: from || { address: 'ceo@orvexi.rw', name: 'ORVEXI LTD' },

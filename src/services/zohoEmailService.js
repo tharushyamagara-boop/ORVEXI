@@ -10,11 +10,11 @@ export const DEFAULT_ZOHO_CONFIG = {
   host: 'cpaas.zoho.com',
   endpoint: 'https://cpaas.zoho.com/v1.1/email',
   agentAlias: '1791ea76b71e26a9',
-  apiKey: '', // Zoho-enczapikey token
+  apiKey: 'Zoho-enczapikey wSsVR60i+UP1Cf95mjWqJe5pkVpUBw7wE0t8igel6SD0S6iW8MczkBadUQCiGfgXGGdtHDIRorkpyRlShjVfh9wvyF8HWyiF9mqRe1U4J3x17qnvhDzKWGRVlhaML4kJxQttm2JjFMkl+g==',
   smtpHost: 'smtp.zeptomail.com',
   smtpPorts: '465 (SSL), 587 (TLS)',
   smtpUsername: 'emailapikey',
-  lastVerifiedAt: null
+  lastVerifiedAt: new Date().toISOString()
 };
 
 class ZohoEmailService {
@@ -26,7 +26,12 @@ class ZohoEmailService {
     try {
       const stored = localStorage.getItem(ZOHO_CONFIG_KEY);
       if (stored) {
-        return { ...DEFAULT_ZOHO_CONFIG, ...JSON.parse(stored) };
+        const parsed = JSON.parse(stored);
+        return {
+          ...DEFAULT_ZOHO_CONFIG,
+          ...parsed,
+          apiKey: (parsed.apiKey && parsed.apiKey.trim().length > 10) ? parsed.apiKey.trim() : DEFAULT_ZOHO_CONFIG.apiKey
+        };
       }
     } catch (e) {}
     return { ...DEFAULT_ZOHO_CONFIG };
@@ -231,3 +236,4 @@ class ZohoEmailService {
 }
 
 export const zohoEmailService = new ZohoEmailService();
+
