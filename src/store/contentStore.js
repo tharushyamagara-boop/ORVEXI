@@ -389,6 +389,19 @@ class ContentStore {
         }
       } catch (se) { }
 
+      try {
+        const srvSnap = await getDoc(doc(db, 'content', 'services'));
+        if (srvSnap.exists()) {
+          const srvData = srvSnap.data();
+          if (srvData && srvData.services) {
+            if (!remoteContent) remoteContent = {};
+            remoteContent.services = srvData.services;
+            const svTime = srvData.lastModified || 0;
+            if (svTime > remoteTime) remoteTime = svTime;
+          }
+        }
+      } catch (sve) { }
+
       this.cloudSyncStatus = { status: 'synced', lastSynced: Date.now(), error: null };
 
       if (remoteContent) {
@@ -399,7 +412,7 @@ class ContentStore {
         // Instead, sync our newer local content up to Firestore.
         if (localTime > remoteTime) {
           console.info('Local content is newer than Firestore remote data. Preserving local edits and syncing to cloud.');
-          await this.syncToFirestore(localTime);
+          await this.syncAllContent();
           return;
         }
 
@@ -416,64 +429,63 @@ class ContentStore {
         this.persistLocally();
         this.notify();
       } else {
-        // First cloud sync: push existing local edits up to cloud if any exist
-        if (this.content._lastModified) {
-          await this.syncToFirestore(this.content._lastModified);
-        }
+        // First cloud sync on newly created Firestore database: push all current local content up to cloud
+        await this.syncAllContent();
       }
     } catch (err) {
       console.warn('Firestore remote sync unavailable:', err.message);
       this.cloudSyncStatus = {
         status: 'error',
-        error: err.message.includes('API has not been used')
-          ? 'Cloud Firestore API has not been activated on project orvexi-b1253'
-          : (err.code || err.message)
+        error: err.code || err.message
       };
       this.notify();
     }
   }
 
-  async syncToFirestore(timestamp = Date.now()) {
+  /**
+   * Comprehensive synchronization of all website sections to Cloud Firestore
+   */
+  async syncAllContent() {
     if (!db) return false;
     try {
+      const now = Date.now();
       const nowIso = new Date().toISOString();
 
-      // 1. Save main metadata and content
+      // 1. Save main content document
       await setDoc(doc(db, 'settings', 'site_content'), {
         content: this.content,
         updatedAt: nowIso,
-        lastModified: timestamp
+        lastModified: now
       }, { merge: true });
 
-      // 2. Also save section-level documents to prevent quota/size limit issues
-      if (this.content.portfolio) {
-        await setDoc(doc(db, 'content', 'portfolio'), {
-          portfolio: this.content.portfolio,
-          updatedAt: nowIso,
-          lastModified: timestamp
-        }, { merge: true });
+      // 2. Also save section documents to prevent single-doc 1MB quotas
+      const sections = ['portfolio', 'heroSlider', 'services', 'about', 'team', 'testimonials', 'contact', 'faq', 'settings'];
+      for (const sec of sections) {
+        if (this.content[sec]) {
+          await setDoc(doc(db, 'content', sec), {
+            [sec]: this.content[sec],
+            updatedAt: nowIso,
+            lastModified: now
+          }, { merge: true });
+        }
       }
 
-      if (this.content.heroSlider) {
-        await setDoc(doc(db, 'content', 'heroSlider'), {
-          heroSlider: this.content.heroSlider,
-          updatedAt: nowIso,
-          lastModified: timestamp
-        }, { merge: true });
-      }
-
-      this.cloudSyncStatus = { status: 'synced', lastSynced: Date.now(), error: null };
+      this.cloudSyncStatus = { status: 'synced', lastSynced: now, error: null };
+      this.notify();
       return true;
     } catch (err) {
       console.warn('Firestore write failed:', err.message);
       this.cloudSyncStatus = {
         status: 'error',
-        error: err.message.includes('API has not been used')
-          ? 'Cloud Firestore API has not been activated on project orvexi-b1253'
-          : (err.code || err.message)
+        error: err.code || err.message
       };
+      this.notify();
       return false;
     }
+  }
+
+  async syncToFirestore(timestamp = Date.now()) {
+    return await this.syncAllContent();
   }
 
   getContent() {

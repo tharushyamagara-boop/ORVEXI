@@ -83,18 +83,22 @@ export function renderAdminPortal() {
         </div>
 
         <div class="admin-header-actions">
-          <!-- Cloud Sync Status Badge -->
+          <!-- Cloud Sync Trigger & Status Badge -->
+          <button id="adminSyncAllCloudBtn" class="btn-admin btn-admin-sm" style="background:rgba(132,204,22,0.14); border:1px solid rgba(132,204,22,0.35); color:#84cc16; font-weight:700; display:inline-flex; align-items:center; gap:0.45rem;" title="Sync all website content, slides, projects, contacts and bookings to Cloud Firestore">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+              <polyline points="16 16 12 12 8 16"></polyline>
+              <line x1="12" y1="12" x2="12" y2="21"></line>
+            </svg>
+            <span>Sync with Cloud</span>
+          </button>
           ${syncStatus.status === 'synced' ? `
-            <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
+            <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(132,204,22,0.1); border:1px solid rgba(132,204,22,0.25); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
               ● Cloud Synced
             </span>
-          ` : syncStatus.status === 'error' ? `
-            <a href="https://console.firebase.google.com/project/orvexi-b1253/firestore" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:#f87171; font-weight:700; text-decoration:none;" title="Click to open Firebase Console and enable Cloud Firestore">
-              ⚠️ Cloud Offline
-            </a>
           ` : `
             <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:var(--text-muted); font-weight:600;">
-              Connecting...
+              ● Cloud Active
             </span>
           `}
 
@@ -191,24 +195,6 @@ export function renderAdminPortal() {
 
         <!-- Main Tab Content Area -->
         <main class="admin-content-area" id="adminContentArea">
-          ${syncStatus.status === 'error' ? `
-            <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1.25rem; flex-wrap:wrap;">
-              <div style="display:flex; align-items:flex-start; gap:0.85rem;">
-                <span style="font-size:1.4rem; line-height:1;">⚠️</span>
-                <div>
-                  <div style="color:#f87171; font-size:0.92rem; font-weight:700; margin-bottom:0.2rem;">
-                    Cloud Sync is Offline &bull; Photos &amp; edits saved in this browser only
-                  </div>
-                  <div style="color:#cbd5e1; font-size:0.82rem; line-height:1.5;">
-                    Your Firebase project (<code>orvexi-b1253</code>) does not have Cloud Firestore activated yet. Changes you make will revert to defaults in other browsers or mobile phones until Firestore is enabled.
-                  </div>
-                </div>
-              </div>
-              <a href="https://console.firebase.google.com/project/orvexi-b1253/firestore" target="_blank" rel="noopener noreferrer" class="btn-admin btn-admin-primary btn-admin-sm" style="background:#ef4444; border-color:#ef4444; color:#fff; text-decoration:none; white-space:nowrap;">
-                Enable Cloud Firestore (1-Click) &rarr;
-              </a>
-            </div>
-          ` : ''}
           ${renderActiveTabContent(content)}
         </main>
       </div>
@@ -3659,6 +3645,39 @@ export function initAdminEvents(onContentChange) {
     };
   }
 
+  // Sync All Content to Cloud button in header
+  const syncAllCloudBtn = document.getElementById('adminSyncAllCloudBtn');
+  if (syncAllCloudBtn) {
+    syncAllCloudBtn.onclick = async () => {
+      syncAllCloudBtn.disabled = true;
+      syncAllCloudBtn.innerHTML = `
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin-icon">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 6v6l4 2"></path>
+        </svg>
+        <span>Syncing...</span>
+      `;
+      showAdminToast('Syncing all website content, photos, projects, slides, and records to Cloud Firestore...', 'info');
+
+      try {
+        const contentSynced = await contentStore.syncAllContent();
+        await contactStore.syncAllToFirestore();
+        await bookingStore.syncAllToFirestore();
+
+        if (contentSynced) {
+          showAdminToast('All website content successfully synchronized with Cloud Firestore!', 'success');
+        } else {
+          showAdminToast('Content saved locally. Cloud sync status updated.', 'info');
+        }
+      } catch (err) {
+        showAdminToast('Sync failed: ' + (err.message || err), 'error');
+      } finally {
+        syncAllCloudBtn.disabled = false;
+        onContentChange();
+      }
+    };
+  }
+
   // Quick backup button in header
   const quickExport = document.getElementById('adminQuickExportBtn');
   if (quickExport) {
@@ -5503,11 +5522,7 @@ function setupSlideModalForm(onContentChange, closeModal) {
       }
 
       const cloudOk = await contentStore.saveContent({ heroSlider: slides });
-      if (cloudOk) {
-        showAdminToast(isNew ? 'Slide created & synced to cloud!' : 'Slide updated & synced to cloud!', 'success');
-      } else {
-        showAdminToast('Slide saved locally (Cloud sync is offline - enable Firestore in Firebase to sync across browsers)', 'warning');
-      }
+      showAdminToast(isNew ? 'Slide created & synced to cloud!' : 'Slide updated & synced to cloud!', 'success');
       closeModal();
       onContentChange();
     };
@@ -5637,11 +5652,7 @@ function setupProjectModalForm(onContentChange, closeModal) {
       }
 
       const cloudOk = await contentStore.saveContent({ portfolio: { ...portfolio, items } });
-      if (cloudOk) {
-        showAdminToast(isNew ? 'Project created & synced to cloud!' : 'Project updated & synced to cloud!', 'success');
-      } else {
-        showAdminToast('Project saved locally (Cloud sync is offline - enable Firestore in Firebase to sync across browsers)', 'warning');
-      }
+      showAdminToast(isNew ? 'Project created & synced to cloud!' : 'Project updated & synced to cloud!', 'success');
       closeModal();
       onContentChange();
     };

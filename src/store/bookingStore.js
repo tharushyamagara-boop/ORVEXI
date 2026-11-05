@@ -329,6 +329,26 @@ class BookingStore {
   }
 
   /**
+   * Sync all local active bookings to Firestore
+   */
+  async syncAllToFirestore() {
+    if (!db) return 0;
+    try {
+      const active = this.bookings.filter(b => b && b.id && !this.deletedBookingIds.has(b.id));
+      if (active.length === 0) return 0;
+      const batch = writeBatch(db);
+      active.forEach(b => {
+        batch.set(doc(db, 'service_requests', b.id), b, { merge: true });
+      });
+      await batch.commit();
+      return active.length;
+    } catch (e) {
+      console.warn('Could not sync all bookings to Firestore:', e.message || e);
+      return 0;
+    }
+  }
+
+  /**
    * Filter bookings based on status, search string, and channel
    */
   getBookings({ status = 'All', search = '', channel = 'All' } = {}) {

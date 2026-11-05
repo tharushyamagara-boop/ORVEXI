@@ -483,6 +483,32 @@ class ContactStore {
   }
 
   /**
+   * Sync all local active contacts & groups to Firestore
+   */
+  async syncAllToFirestore() {
+    if (!db) return 0;
+    try {
+      const batch = writeBatch(db);
+      const activeGroups = this.groups.filter(g => !this.deletedGroups.has(g));
+      activeGroups.forEach(g => {
+        const gid = 'grp-' + g.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        batch.set(doc(db, 'crm_groups', gid), { name: g, updatedAt: new Date().toISOString() }, { merge: true });
+      });
+
+      const activeContacts = this.contacts.filter(c => c && c.id && !this.deletedContactIds.has(c.id));
+      activeContacts.slice(0, 450).forEach(c => {
+        batch.set(doc(db, 'crm_contacts', c.id), c, { merge: true });
+      });
+
+      await batch.commit();
+      return activeContacts.length;
+    } catch (e) {
+      console.warn('Could not sync all contacts to Firestore:', e.message || e);
+      return 0;
+    }
+  }
+
+  /**
    * Import contacts from raw CSV or comma/newline separated emails
    */
   async importContacts(rawText, defaultGroup = '') {
