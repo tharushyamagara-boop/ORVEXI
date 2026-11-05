@@ -257,8 +257,13 @@ export const DEFAULT_CONTENT = {
 class ContentStore {
   constructor() {
     this.listeners = new Set();
+    this.cloudSyncStatus = { status: 'connecting', error: null, lastSynced: 0 };
     this.content = this.loadInitialContent();
     this.initFirestoreSync();
+  }
+
+  getSyncStatus() {
+    return this.cloudSyncStatus;
   }
 
   loadInitialContent() {
@@ -338,48 +343,136 @@ class ContentStore {
   }
 
   async initFirestoreSync() {
-    if (!db) return;
+    if (!db) {
+      this.cloudSyncStatus = { status: 'error', error: 'Firestore uninitialized' };
+      return;
+    }
     try {
       const docRef = doc(db, 'settings', 'site_content');
       const docSnap = await getDoc(docRef);
+
+      let remoteContent = null;
+      let remoteTime = 0;
+
       if (docSnap.exists()) {
         const remoteData = docSnap.data();
         if (remoteData && remoteData.content) {
-          const localTime = this.content._lastModified || 0;
-          const remoteTime = remoteData.lastModified || (remoteData.updatedAt ? new Date(remoteData.updatedAt).getTime() : 0);
+          remoteContent = remoteData.content;
+          remoteTime = remoteData.lastModified || (remoteData.updatedAt ? new Date(remoteData.updatedAt).getTime() : 0);
+        }
+      }
 
-          // If local content was saved more recently than remote Firestore data,
-          // do NOT overwrite local changes with stale cloud data.
-          // Instead, sync our newer local content up to Firestore.
-          if (localTime > remoteTime) {
-            console.info('Local content is newer than Firestore remote data. Preserving local edits and syncing to cloud.');
-            try {
-              await setDoc(docRef, {
-                content: this.content,
-                updatedAt: new Date().toISOString(),
-                lastModified: localTime
-              }, { merge: true });
-            } catch (e) { }
-            return;
+      // Also check dedicated section documents to bypass single-doc 1MB quotas
+      try {
+        const portSnap = await getDoc(doc(db, 'content', 'portfolio'));
+        if (portSnap.exists()) {
+          const portData = portSnap.data();
+          if (portData && portData.portfolio) {
+            if (!remoteContent) remoteContent = {};
+            remoteContent.portfolio = portData.portfolio;
+            const pTime = portData.lastModified || 0;
+            if (pTime > remoteTime) remoteTime = pTime;
           }
+        }
+      } catch (pe) { }
 
-          this.content = {
-            ...this.content,
-            ...remoteData.content,
-            _lastModified: remoteTime,
-            settings: {
-              ...this.content.settings,
-              ...(remoteData.content.settings || {}),
-              // Preserve the correct password if not explicitly set
-              adminPassword: remoteData.content.settings?.adminPassword || this.content.settings.adminPassword
-            }
-          };
-          this.persistLocally();
-          this.notify();
+      try {
+        const slideSnap = await getDoc(doc(db, 'content', 'heroSlider'));
+        if (slideSnap.exists()) {
+          const slideData = slideSnap.data();
+          if (slideData && slideData.heroSlider) {
+            if (!remoteContent) remoteContent = {};
+            remoteContent.heroSlider = slideData.heroSlider;
+            const sTime = slideData.lastModified || 0;
+            if (sTime > remoteTime) remoteTime = sTime;
+          }
+        }
+      } catch (se) { }
+
+      this.cloudSyncStatus = { status: 'synced', lastSynced: Date.now(), error: null };
+
+      if (remoteContent) {
+        const localTime = this.content._lastModified || 0;
+
+        // If local content was saved more recently than remote Firestore data,
+        // do NOT overwrite local changes with stale cloud data.
+        // Instead, sync our newer local content up to Firestore.
+        if (localTime > remoteTime) {
+          console.info('Local content is newer than Firestore remote data. Preserving local edits and syncing to cloud.');
+          await this.syncToFirestore(localTime);
+          return;
+        }
+
+        this.content = {
+          ...this.content,
+          ...remoteContent,
+          _lastModified: remoteTime,
+          settings: {
+            ...this.content.settings,
+            ...(remoteContent.settings || {}),
+            adminPassword: remoteContent.settings?.adminPassword || this.content.settings.adminPassword
+          }
+        };
+        this.persistLocally();
+        this.notify();
+      } else {
+        // First cloud sync: push existing local edits up to cloud if any exist
+        if (this.content._lastModified) {
+          await this.syncToFirestore(this.content._lastModified);
         }
       }
     } catch (err) {
-      console.info('Firestore remote sync unavailable, using local persistence.');
+      console.warn('Firestore remote sync unavailable:', err.message);
+      this.cloudSyncStatus = {
+        status: 'error',
+        error: err.message.includes('API has not been used')
+          ? 'Cloud Firestore API has not been activated on project orvexi-b1253'
+          : (err.code || err.message)
+      };
+      this.notify();
+    }
+  }
+
+  async syncToFirestore(timestamp = Date.now()) {
+    if (!db) return false;
+    try {
+      const nowIso = new Date().toISOString();
+
+      // 1. Save main metadata and content
+      await setDoc(doc(db, 'settings', 'site_content'), {
+        content: this.content,
+        updatedAt: nowIso,
+        lastModified: timestamp
+      }, { merge: true });
+
+      // 2. Also save section-level documents to prevent quota/size limit issues
+      if (this.content.portfolio) {
+        await setDoc(doc(db, 'content', 'portfolio'), {
+          portfolio: this.content.portfolio,
+          updatedAt: nowIso,
+          lastModified: timestamp
+        }, { merge: true });
+      }
+
+      if (this.content.heroSlider) {
+        await setDoc(doc(db, 'content', 'heroSlider'), {
+          heroSlider: this.content.heroSlider,
+          updatedAt: nowIso,
+          lastModified: timestamp
+        }, { merge: true });
+      }
+
+      this.cloudSyncStatus = { status: 'synced', lastSynced: Date.now(), error: null };
+      return true;
+    } catch (err) {
+      console.warn('Firestore write failed:', err.message);
+      this.cloudSyncStatus = {
+        status: 'error',
+        error: err.message.includes('API has not been used')
+          ? 'Cloud Firestore API has not been activated on project orvexi-b1253'
+          : (err.code || err.message)
+      };
+      return false;
     }
   }
 
@@ -397,19 +490,8 @@ class ContentStore {
     this.persistLocally();
     this.notify();
 
-    if (db) {
-      try {
-        const docRef = doc(db, 'settings', 'site_content');
-        await setDoc(docRef, {
-          content: this.content,
-          updatedAt: new Date().toISOString(),
-          lastModified: now
-        }, { merge: true });
-      } catch (err) {
-        console.warn('Firestore write notice (local changes preserved):', err.message);
-      }
-    }
-    return true;
+    const cloudOk = await this.syncToFirestore(now);
+    return cloudOk;
   }
 
   persistLocally() {

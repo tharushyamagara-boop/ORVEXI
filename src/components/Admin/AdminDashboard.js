@@ -69,6 +69,7 @@ export function renderAdminPortal() {
 
   const content = contentStore.getContent();
   const adminUser = contentStore.getAdminUser();
+  const syncStatus = contentStore.getSyncStatus();
 
   return `
     <div class="admin-portal-wrapper" id="adminPortalRoot">
@@ -82,6 +83,21 @@ export function renderAdminPortal() {
         </div>
 
         <div class="admin-header-actions">
+          <!-- Cloud Sync Status Badge -->
+          ${syncStatus.status === 'synced' ? `
+            <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
+              ● Cloud Synced
+            </span>
+          ` : syncStatus.status === 'error' ? `
+            <a href="https://console.firebase.google.com/project/orvexi-b1253/firestore" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:#f87171; font-weight:700; text-decoration:none;" title="Click to open Firebase Console and enable Cloud Firestore">
+              ⚠️ Cloud Offline
+            </a>
+          ` : `
+            <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:var(--text-muted); font-weight:600;">
+              Connecting...
+            </span>
+          `}
+
           <!-- Admin User Badge -->
           <div class="admin-user-badge">
             ${adminUser.photo
@@ -175,6 +191,24 @@ export function renderAdminPortal() {
 
         <!-- Main Tab Content Area -->
         <main class="admin-content-area" id="adminContentArea">
+          ${syncStatus.status === 'error' ? `
+            <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1.25rem; flex-wrap:wrap;">
+              <div style="display:flex; align-items:flex-start; gap:0.85rem;">
+                <span style="font-size:1.4rem; line-height:1;">⚠️</span>
+                <div>
+                  <div style="color:#f87171; font-size:0.92rem; font-weight:700; margin-bottom:0.2rem;">
+                    Cloud Sync is Offline &bull; Photos &amp; edits saved in this browser only
+                  </div>
+                  <div style="color:#cbd5e1; font-size:0.82rem; line-height:1.5;">
+                    Your Firebase project (<code>orvexi-b1253</code>) does not have Cloud Firestore activated yet. Changes you make will revert to defaults in other browsers or mobile phones until Firestore is enabled.
+                  </div>
+                </div>
+              </div>
+              <a href="https://console.firebase.google.com/project/orvexi-b1253/firestore" target="_blank" rel="noopener noreferrer" class="btn-admin btn-admin-primary btn-admin-sm" style="background:#ef4444; border-color:#ef4444; color:#fff; text-decoration:none; white-space:nowrap;">
+                Enable Cloud Firestore (1-Click) &rarr;
+              </a>
+            </div>
+          ` : ''}
           ${renderActiveTabContent(content)}
         </main>
       </div>
@@ -5434,8 +5468,12 @@ function setupSlideModalForm(onContentChange, closeModal) {
         slides[idx] = slideObj;
       }
 
-      await contentStore.saveContent({ heroSlider: slides });
-      showAdminToast(isNew ? 'Slide created!' : 'Slide updated!', 'success');
+      const cloudOk = await contentStore.saveContent({ heroSlider: slides });
+      if (cloudOk) {
+        showAdminToast(isNew ? 'Slide created & synced to cloud!' : 'Slide updated & synced to cloud!', 'success');
+      } else {
+        showAdminToast('Slide saved locally (Cloud sync is offline - enable Firestore in Firebase to sync across browsers)', 'warning');
+      }
       closeModal();
       onContentChange();
     };
@@ -5564,8 +5602,12 @@ function setupProjectModalForm(onContentChange, closeModal) {
         items[idx] = projectObj;
       }
 
-      await contentStore.saveContent({ portfolio: { ...portfolio, items } });
-      showAdminToast(isNew ? 'Project created!' : 'Project updated!', 'success');
+      const cloudOk = await contentStore.saveContent({ portfolio: { ...portfolio, items } });
+      if (cloudOk) {
+        showAdminToast(isNew ? 'Project created & synced to cloud!' : 'Project updated & synced to cloud!', 'success');
+      } else {
+        showAdminToast('Project saved locally (Cloud sync is offline - enable Firestore in Firebase to sync across browsers)', 'warning');
+      }
       closeModal();
       onContentChange();
     };
