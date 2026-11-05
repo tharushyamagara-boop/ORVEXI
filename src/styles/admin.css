@@ -1677,6 +1677,27 @@
   color: #fff;
 }
 
+.designer-section-card:hover {
+  border-color: rgba(132, 204, 22, 0.4) !important;
+  background: rgba(132, 204, 22, 0.03) !important;
+}
+
+.btn-apply-theme:hover {
+  border-color: #84cc16 !important;
+  background: rgba(132, 204, 22, 0.08) !important;
+}
+
+.btn-radius-preset:hover {
+  border-color: #84cc16 !important;
+  color: #84cc16 !important;
+}
+
+.btn-radius-preset.active {
+  border-color: #84cc16 !important;
+  background: rgba(132, 204, 22, 0.15) !important;
+  color: #84cc16 !important;
+}
+
 .designer-canvas-wrap {
   flex: 1;
   min-height: 0;

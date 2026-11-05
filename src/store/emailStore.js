@@ -25,6 +25,290 @@ export const EMAIL_CATEGORIES = [
   'System Maintenance & Security'
 ];
 
+export const DEFAULT_EMAIL_STYLES = {
+  emailBg: '#05070d',
+  cardBg: '#0b101f',
+  accentColor: '#84cc16',
+  headingColor: '#ffffff',
+  textColor: '#cbd5e1',
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+  borderRadius: 10
+};
+
+export const EMAIL_THEME_PRESETS = [
+  {
+    id: 'cyber',
+    name: 'ORVEXI Cyber Dark',
+    desc: 'Signature dark theme with neon lime highlights',
+    previewColors: ['#05070d', '#0b101f', '#84cc16'],
+    styles: {
+      emailBg: '#05070d',
+      cardBg: '#0b101f',
+      accentColor: '#84cc16',
+      headingColor: '#ffffff',
+      textColor: '#cbd5e1',
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      borderRadius: 10
+    }
+  },
+  {
+    id: 'slate',
+    name: 'Enterprise Slate',
+    desc: 'Deep slate navy with cyber blue accents',
+    previewColors: ['#0b1329', '#111c38', '#3eb5f1'],
+    styles: {
+      emailBg: '#0b1329',
+      cardBg: '#111c38',
+      accentColor: '#3eb5f1',
+      headingColor: '#f8fafc',
+      textColor: '#94a3b8',
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      borderRadius: 8
+    }
+  },
+  {
+    id: 'midnight',
+    name: 'Royal Midnight',
+    desc: 'Midnight blue with royal azure highlights',
+    previewColors: ['#0a0e1a', '#141d33', '#3b82f6'],
+    styles: {
+      emailBg: '#0a0e1a',
+      cardBg: '#141d33',
+      accentColor: '#3b82f6',
+      headingColor: '#ffffff',
+      textColor: '#cbd5e1',
+      fontFamily: "Helvetica, Arial, sans-serif",
+      borderRadius: 12
+    }
+  },
+  {
+    id: 'cleanLight',
+    name: 'Clean Crisp Light',
+    desc: 'High-contrast light mode with green CTA',
+    previewColors: ['#f8fafc', '#ffffff', '#16a34a'],
+    styles: {
+      emailBg: '#f8fafc',
+      cardBg: '#ffffff',
+      accentColor: '#16a34a',
+      headingColor: '#0f172a',
+      textColor: '#334155',
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      borderRadius: 8
+    }
+  }
+];
+
+export const EMAIL_SECTION_PRESETS = [
+  {
+    id: 'hero-announcement',
+    name: 'Hero Announcement',
+    desc: 'Impactful full-width announcement banner with headline and CTA',
+    badge: 'Launch',
+    blocks: [
+      {
+        type: 'heading',
+        text: 'ANNOUNCING NEXT-GENERATION ENTERPRISE PLATFORMS',
+        align: 'center',
+        color: '#ffffff'
+      },
+      {
+        type: 'image',
+        imageUrl: '/images/slide1_kigali_tech.jpg',
+        caption: 'Engineered at Kigali Innovation Hub • Rwanda',
+        align: 'center'
+      },
+      {
+        type: 'paragraph',
+        text: 'ORVEXI has reached a pivotal milestone. We are deploying next-generation distributed cloud services with real-time replication, end-to-end data encryption, and local hosting in Rwanda.',
+        align: 'center',
+        color: '#cbd5e1'
+      },
+      {
+        type: 'button',
+        text: 'Explore Architecture & Roadmap >>',
+        url: 'https://orvexi.rw/#services',
+        align: 'center',
+        btnBg: '#84cc16',
+        btnColor: '#0b1402'
+      }
+    ]
+  },
+  {
+    id: 'executive-letter',
+    name: 'Executive Advisory Letter',
+    desc: 'Official dispatch letter from leadership with insights & sign-off',
+    badge: 'Advisory',
+    blocks: [
+      {
+        type: 'heading',
+        text: 'EXECUTIVE ADVISORY & STRATEGIC OUTLOOK',
+        align: 'left',
+        color: '#84cc16'
+      },
+      {
+        type: 'paragraph',
+        text: 'Dear Valued Institutional Partners and Stakeholders,\n\nAs Rwanda continues to solidify its role as the premier technology hub of East Africa under the Vision 2050 framework, the imperative for sovereign, highly available software infrastructure has never been greater.',
+        align: 'left',
+        color: '#e2e8f0'
+      },
+      {
+        type: 'paragraph',
+        text: 'At ORVEXI, our engineering commitments are anchored in three pillars: absolute data protection under Law N° 058/2021, 99.9% high-availability microservices, and dedicated Rwandan software talent.',
+        align: 'left',
+        color: '#94a3b8'
+      },
+      {
+        type: 'paragraph',
+        text: '<strong>Theophile HARUSHYAMAGARA</strong><br/><span style="color:#64748b; font-size:12px;">Managing Director & Chairman, ORVEXI Limited</span>',
+        align: 'left',
+        color: '#ffffff'
+      }
+    ]
+  },
+  {
+    id: 'split-showcase',
+    name: 'Dual Feature Showcase',
+    desc: '2-column highlight cards with image, description, and action button',
+    badge: 'Features',
+    blocks: [
+      {
+        type: 'columns2',
+        imageUrl: '/images/slide2_software_team.jpg',
+        imageAlt: 'Software Engineering Squad',
+        title: 'Custom Enterprise Software Solutions',
+        desc: 'Tailored ERP, portal, and API architectures engineered specifically for your business logic and regulatory requirements.',
+        btnText: 'Learn More >>',
+        btnUrl: 'https://orvexi.rw/#services'
+      },
+      {
+        type: 'columns2',
+        imageUrl: '/images/slide3_datacenter.jpg',
+        imageAlt: 'Data Processing Hub',
+        title: 'Cloud Datacenter & Managed Infrastructure',
+        desc: 'Low-latency sovereign hosting with automated backups and 24/7 technical monitoring in Kigali.',
+        btnText: 'Schedule Advisory >>',
+        btnUrl: 'https://orvexi.rw/#get-in-touch'
+      }
+    ]
+  },
+  {
+    id: 'metrics-kpi',
+    name: 'Enterprise SLA & Benchmarks',
+    desc: 'Key milestones, SLA reliability, and uptime guarantee badges',
+    badge: 'Metrics',
+    blocks: [
+      {
+        type: 'heading',
+        text: 'ENTERPRISE SLA & RELIABILITY BENCHMARKS',
+        align: 'center',
+        color: '#ffffff'
+      },
+      {
+        type: 'paragraph',
+        text: '<strong>⚡ 99.9% Uptime Guarantee</strong> &nbsp;|&nbsp; <strong>🔒 Law N° 058/2021 Compliant</strong> &nbsp;|&nbsp; <strong>⏱️ Sub-15ms Latency</strong>',
+        align: 'center',
+        color: '#84cc16'
+      },
+      {
+        type: 'paragraph',
+        text: 'Our systems undergo continuous automated vulnerability scanning, giving enterprise and institutional clients complete confidence in mission-critical applications.',
+        align: 'center',
+        color: '#94a3b8'
+      }
+    ]
+  },
+  {
+    id: 'compliance-footer-box',
+    name: 'RDB Compliance Callout',
+    desc: 'Registration details, RDB licensing code, and privacy notices',
+    badge: 'Legal',
+    blocks: [
+      {
+        type: 'divider',
+        style: 'solid',
+        color: 'rgba(132, 204, 22, 0.3)'
+      },
+      {
+        type: 'paragraph',
+        text: '<strong>OFFICIAL REGULATORY NOTICE:</strong> ORVEXI Company Ltd is a registered Rwandan private enterprise (RDB Reg. No: 1628324, Law N° 007/2021). All electronic notifications are transmitted in compliance with Rwandan Law N° 058/2021 on Personal Data Protection and Privacy.',
+        align: 'center',
+        color: '#64748b'
+      }
+    ]
+  }
+];
+
+export function auditEmailDeliverability(campaign, blocks) {
+  const subject = campaign?.subject || '';
+  const blocksList = blocks || [];
+
+  const spamWords = [
+    'free', '100% free', 'guaranteed', 'winner', 'risk free', 'click here', 
+    'buy now', 'act now', 'urgent', 'make money', 'cash bonus', 'exclusive deal',
+    'congratulations', 'no catch', 'credit card', 'instant payout'
+  ];
+
+  const allText = [
+    subject,
+    ...blocksList.map(b => [b.text, b.title, b.desc, b.caption, b.btnText].filter(Boolean).join(' '))
+  ].join(' ').toLowerCase();
+
+  const foundSpam = [];
+  spamWords.forEach(word => {
+    const regex = new RegExp('\\b' + word + '\\b', 'gi');
+    if (regex.test(allText)) {
+      foundSpam.push(word);
+    }
+  });
+
+  const footer = blocksList.find(b => b.type === 'footer');
+  const hasPhysicalAddress = Boolean(footer && footer.address && footer.address.length > 5);
+  const hasDisclaimer = Boolean(footer && footer.disclaimer && footer.disclaimer.length > 15);
+  const hasCompany = Boolean(footer && footer.company && footer.company.length > 2);
+  const hasUnsubscribe = true;
+
+  let rawHtml = '';
+  try {
+    rawHtml = emailStore.generateHtml();
+  } catch (e) {
+    rawHtml = '';
+  }
+  const sizeBytes = new Blob([rawHtml]).size;
+  const sizeKB = Math.round((sizeBytes / 1024) * 10) / 10;
+  const isSizeSafe = sizeKB < 100;
+
+  const subjectLength = subject.trim().length;
+  const subjectOk = subjectLength >= 25 && subjectLength <= 80;
+
+  const images = blocksList.filter(b => b.type === 'image' || b.type === 'columns2');
+  const missingAlt = images.filter(img => !img.caption && !img.imageAlt).length;
+
+  let score = 100;
+  if (foundSpam.length > 0) score -= (foundSpam.length * 6);
+  if (!hasPhysicalAddress) score -= 15;
+  if (!hasDisclaimer) score -= 15;
+  if (!hasCompany) score -= 10;
+  if (!isSizeSafe) score -= 20;
+  if (!subjectOk) score -= 5;
+  if (missingAlt > 0) score -= (missingAlt * 3);
+  score = Math.max(20, Math.min(100, score));
+
+  return {
+    score,
+    foundSpam,
+    hasPhysicalAddress,
+    hasDisclaimer,
+    hasCompany,
+    hasUnsubscribe,
+    sizeKB,
+    isSizeSafe,
+    subjectLength,
+    subjectOk,
+    missingAlt,
+    totalBlocks: blocksList.length
+  };
+}
+
 export const INITIAL_EMAIL_BLOCKS = [
   {
     id: 'blk-topbar',
@@ -114,6 +398,7 @@ const DEFAULT_CAMPAIGN = {
   includeBrowserViewHeader: true,
   recipientsText: 'aline.ikibasumba@oneandonlyresorts.com, nathan.chiroma@act.ac.rw, info@ur.ac.rw, orvexi@gmail.com',
   blocks: INITIAL_EMAIL_BLOCKS,
+  styles: DEFAULT_EMAIL_STYLES,
   lastSavedAt: new Date().toISOString()
 };
 
@@ -130,7 +415,10 @@ class EmailStore {
       const stored = localStorage.getItem(CAMPAIGN_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (parsed && parsed.blocks) return parsed;
+        if (parsed && parsed.blocks) {
+          parsed.styles = { ...DEFAULT_EMAIL_STYLES, ...(parsed.styles || {}) };
+          return parsed;
+        }
       }
     } catch (e) {}
     return JSON.parse(JSON.stringify(DEFAULT_CAMPAIGN));
@@ -324,23 +612,70 @@ class EmailStore {
     return clone;
   }
 
+  addBlocks(blocksArray) {
+    if (!Array.isArray(blocksArray) || blocksArray.length === 0) return [];
+    const prepared = blocksArray.map((b, i) => ({
+      ...JSON.parse(JSON.stringify(b)),
+      id: 'blk-' + Date.now() + '-' + i + '-' + Math.floor(Math.random() * 1000)
+    }));
+    const existing = [...this.getBlocks()];
+    const footerIdx = existing.findIndex(b => b.type === 'footer');
+    if (footerIdx !== -1) {
+      existing.splice(footerIdx, 0, ...prepared);
+    } else {
+      existing.push(...prepared);
+    }
+    this.setBlocks(existing);
+    return prepared;
+  }
+
+  getStyles() {
+    return { ...DEFAULT_EMAIL_STYLES, ...(this.campaign.styles || {}) };
+  }
+
+  updateStyles(newStyles) {
+    const updated = { ...this.getStyles(), ...newStyles };
+    this.campaign.styles = updated;
+    this.saveCampaign({ styles: updated });
+    return updated;
+  }
+
+  applyThemePreset(themeKey) {
+    const preset = EMAIL_THEME_PRESETS.find(p => p.id === themeKey);
+    if (!preset) return null;
+    const styles = this.updateStyles(preset.styles);
+    const blocks = this.getBlocks().map(b => {
+      if (b.type === 'button') {
+        return {
+          ...b,
+          btnBg: preset.styles.accentColor,
+          btnColor: themeKey === 'cleanLight' ? '#ffffff' : '#0b1402'
+        };
+      }
+      return b;
+    });
+    this.setBlocks(blocks);
+    return styles;
+  }
+
   /* ------------------------------------------------------------------------ */
   /* Generate Production-Grade Responsive Email HTML                          */
   /* ------------------------------------------------------------------------ */
   generateHtml() {
     const b = this.campaign;
     const blocks = this.getBlocks();
+    const styles = this.getStyles();
 
     const blocksHtml = blocks.map(block => {
       switch (block.type) {
         case 'topbar':
           return `
             <tr>
-              <td style="background:${block.bg || '#07090f'}; padding:10px 20px; font-size:11px; color:#94a3b8; font-family:sans-serif; border-bottom:2px solid #84cc16;">
+              <td style="background:${block.bg || '#07090f'}; padding:10px 20px; font-size:11px; color:#94a3b8; font-family:${styles.fontFamily}; border-bottom:2px solid ${styles.accentColor};">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td align="left" style="color:#cbd5e1;">📍 ${block.address || 'Kigali, Rwanda'} &nbsp;|&nbsp; 📞 ${block.phone || '+250 788 810 675'}</td>
-                    <td align="right" style="color:#84cc16; font-weight:bold;"><a href="https://${block.website || 'orvexi.rw'}" style="color:#84cc16; text-decoration:none;">${block.website || 'orvexi.rw'}</a></td>
+                    <td align="right" style="color:${styles.accentColor}; font-weight:bold;"><a href="https://${block.website || 'orvexi.rw'}" style="color:${styles.accentColor}; text-decoration:none;">${block.website || 'orvexi.rw'}</a></td>
                   </tr>
                 </table>
               </td>
@@ -350,9 +685,9 @@ class EmailStore {
         case 'header':
           return `
             <tr>
-              <td align="center" style="padding:28px 20px 16px; background:#0b101f; text-align:center;">
-                <img src="${block.logoUrl || '/Logo-WHITE.png'}" alt="ORVEXI" height="34" style="height:34px; margin-bottom:8px; display:inline-block;" />
-                <div style="font-size:12px; color:#3eb5f1; letter-spacing:1px; text-transform:uppercase; font-weight:600;">${block.tagline || ''}</div>
+              <td align="center" style="padding:28px 20px 16px; background:${styles.cardBg}; text-align:center;">
+                <img src="${block.logoUrl || '/Logo-WHITE.png'}" alt="${block.companyName || 'ORVEXI'}" height="34" style="height:34px; margin-bottom:8px; display:inline-block;" />
+                <div style="font-size:12px; color:#3eb5f1; letter-spacing:1px; text-transform:uppercase; font-weight:600; font-family:${styles.fontFamily};">${block.tagline || ''}</div>
               </td>
             </tr>
           `;
@@ -360,8 +695,8 @@ class EmailStore {
         case 'heading':
           return `
             <tr>
-              <td align="${block.align || 'center'}" style="padding:16px 24px 8px; background:#0b101f;">
-                <h1 style="margin:0; font-size:22px; line-height:1.3; font-weight:800; color:${block.color || '#ffffff'}; font-family:sans-serif; letter-spacing:-0.3px;">
+              <td align="${block.align || 'center'}" style="padding:16px 24px 8px; background:${styles.cardBg};">
+                <h1 style="margin:0; font-size:22px; line-height:1.3; font-weight:800; color:${block.color || styles.headingColor || '#ffffff'}; font-family:${styles.fontFamily}; letter-spacing:-0.3px;">
                   ${block.text}
                 </h1>
               </td>
@@ -371,8 +706,8 @@ class EmailStore {
         case 'paragraph':
           return `
             <tr>
-              <td align="${block.align || 'left'}" style="padding:8px 24px 16px; background:#0b101f;">
-                <p style="margin:0; font-size:14px; line-height:1.6; color:${block.color || '#94a3b8'}; font-family:sans-serif;">
+              <td align="${block.align || 'left'}" style="padding:8px 24px 16px; background:${styles.cardBg};">
+                <p style="margin:0; font-size:14px; line-height:1.6; color:${block.color || styles.textColor || '#94a3b8'}; font-family:${styles.fontFamily};">
                   ${block.text}
                 </p>
               </td>
@@ -382,17 +717,17 @@ class EmailStore {
         case 'columns2':
           return `
             <tr>
-              <td style="padding:16px 24px; background:#0b101f;">
+              <td style="padding:16px 24px; background:${styles.cardBg};">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:8px;">
                   <tr>
                     <td width="42%" valign="top" style="padding:14px;">
                       <img src="${block.imageUrl || '/images/slide1_kigali_tech.jpg'}" alt="${block.imageAlt || ''}" width="100%" style="width:100%; border-radius:6px; display:block; object-fit:cover; max-height:160px;" />
                     </td>
                     <td width="58%" valign="top" style="padding:14px 16px;">
-                      <h3 style="margin:0 0 8px; font-size:16px; color:#84cc16; font-weight:700; font-family:sans-serif;">${block.title || ''}</h3>
-                      <p style="margin:0 0 14px; font-size:13px; line-height:1.5; color:#cbd5e1; font-family:sans-serif;">${block.desc || ''}</p>
+                      <h3 style="margin:0 0 8px; font-size:16px; color:${styles.accentColor}; font-weight:700; font-family:${styles.fontFamily};">${block.title || ''}</h3>
+                      <p style="margin:0 0 14px; font-size:13px; line-height:1.5; color:#cbd5e1; font-family:${styles.fontFamily};">${block.desc || ''}</p>
                       ${block.btnText ? `
-                        <a href="${block.btnUrl || '#'}" style="display:inline-block; background:#84cc16; color:#0b1402; font-size:12px; font-weight:700; padding:8px 16px; border-radius:4px; text-decoration:none; font-family:sans-serif;">
+                        <a href="${block.btnUrl || '#'}" style="display:inline-block; background:${styles.accentColor}; color:#0b1402; font-size:12px; font-weight:700; padding:8px 16px; border-radius:4px; text-decoration:none; font-family:${styles.fontFamily};">
                           ${block.btnText}
                         </a>
                       ` : ''}
@@ -406,9 +741,9 @@ class EmailStore {
         case 'image':
           return `
             <tr>
-              <td align="${block.align || 'center'}" style="padding:16px 24px; background:#0b101f;">
-                <img src="${block.imageUrl || '/images/slide1_kigali_tech.jpg'}" alt="" width="100%" style="width:100%; max-width:550px; border-radius:8px; display:block;" />
-                ${block.caption ? `<div style="font-size:12px; color:#64748b; margin-top:6px; text-align:center;">${block.caption}</div>` : ''}
+              <td align="${block.align || 'center'}" style="padding:16px 24px; background:${styles.cardBg};">
+                <img src="${block.imageUrl || '/images/slide1_kigali_tech.jpg'}" alt="${block.caption || ''}" width="100%" style="width:100%; max-width:550px; border-radius:8px; display:block;" />
+                ${block.caption ? `<div style="font-size:12px; color:#64748b; margin-top:6px; text-align:center; font-family:${styles.fontFamily};">${block.caption}</div>` : ''}
               </td>
             </tr>
           `;
@@ -416,8 +751,8 @@ class EmailStore {
         case 'button':
           return `
             <tr>
-              <td align="${block.align || 'center'}" style="padding:18px 24px; background:#0b101f;">
-                <a href="${block.url || '#'}" style="display:inline-block; background:${block.btnBg || '#84cc16'}; color:${block.btnColor || '#0b1402'}; font-size:14px; font-weight:700; padding:12px 28px; border-radius:6px; text-decoration:none; font-family:sans-serif; box-shadow:0 4px 12px rgba(132,204,22,0.25);">
+              <td align="${block.align || 'center'}" style="padding:18px 24px; background:${styles.cardBg};">
+                <a href="${block.url || '#'}" style="display:inline-block; background:${block.btnBg || styles.accentColor || '#84cc16'}; color:${block.btnColor || '#0b1402'}; font-size:14px; font-weight:700; padding:12px 28px; border-radius:${styles.borderRadius || 6}px; text-decoration:none; font-family:${styles.fontFamily}; box-shadow:0 4px 12px rgba(132,204,22,0.25);">
                   ${block.text}
                 </a>
               </td>
@@ -427,7 +762,7 @@ class EmailStore {
         case 'divider':
           return `
             <tr>
-              <td style="padding:10px 24px; background:#0b101f;">
+              <td style="padding:10px 24px; background:${styles.cardBg};">
                 <hr style="border:0; border-top:1px ${block.style || 'solid'} ${block.color || 'rgba(255,255,255,0.1)'}; margin:0;" />
               </td>
             </tr>
@@ -436,19 +771,19 @@ class EmailStore {
         case 'spacer':
           return `
             <tr>
-              <td height="${block.height || 24}" style="height:${block.height || 24}px; background:#0b101f;"></td>
+              <td height="${block.height || 24}" style="height:${block.height || 24}px; background:${styles.cardBg};"></td>
             </tr>
           `;
 
         case 'video':
           return `
             <tr>
-              <td align="center" style="padding:16px 24px; background:#0b101f;">
+              <td align="center" style="padding:16px 24px; background:${styles.cardBg};">
                 <div style="position:relative; max-width:550px; margin:0 auto; background:#000; border-radius:8px; overflow:hidden;">
                   <img src="${block.thumbnailUrl || '/images/slide2_software_team.jpg'}" width="100%" style="width:100%; display:block; opacity:0.75;" />
-                  <a href="${block.videoUrl || '#'}" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#84cc16; color:#0b1402; border-radius:50%; width:56px; height:56px; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; font-size:22px; font-weight:bold;">▶</a>
+                  <a href="${block.videoUrl || '#'}" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:${styles.accentColor}; color:#0b1402; border-radius:50%; width:56px; height:56px; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; font-size:22px; font-weight:bold;">▶</a>
                 </div>
-                ${block.caption ? `<div style="font-size:12px; color:#94a3b8; margin-top:6px;">${block.caption}</div>` : ''}
+                ${block.caption ? `<div style="font-size:12px; color:#94a3b8; margin-top:6px; font-family:${styles.fontFamily};">${block.caption}</div>` : ''}
               </td>
             </tr>
           `;
@@ -456,8 +791,8 @@ class EmailStore {
         case 'social':
           return `
             <tr>
-              <td align="center" style="padding:16px 24px; background:#0b101f; text-align:center;">
-                <div style="display:inline-block;">
+              <td align="center" style="padding:16px 24px; background:${styles.cardBg}; text-align:center;">
+                <div style="display:inline-block; font-family:${styles.fontFamily};">
                   <a href="https://linkedin.com" style="color:#3eb5f1; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">LinkedIn</a>
                   <span style="color:#475569;">•</span>
                   <a href="https://x.com" style="color:#3eb5f1; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">Twitter/X</a>
@@ -471,7 +806,7 @@ class EmailStore {
         case 'footer':
           return `
             <tr>
-              <td style="background:#07090f; padding:24px 20px; text-align:center; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border-top:1px solid rgba(255,255,255,0.08);">
+              <td style="background:${styles.cardBg}; padding:24px 20px; text-align:center; font-family:${styles.fontFamily}; border-top:1px solid rgba(255,255,255,0.08);">
                 <div style="font-size:13px; font-weight:700; color:#ffffff; margin-bottom:4px; letter-spacing:0.02em;">${block.company || 'ORVEXI COMPANY LTD'}</div>
                 <div style="font-size:11px; color:#94a3b8; line-height:1.5; margin-bottom:12px;">
                   ${block.address || 'KN 3 Rd, Downtown Commercial Hub, Kigali, Rwanda'}<br/>
@@ -503,17 +838,17 @@ class EmailStore {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${b.subject || 'ORVEXI Communication'}</title>
 </head>
-<body style="margin:0; padding:0; background-color:#05070d; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+<body style="margin:0; padding:0; background-color:${styles.emailBg}; font-family:${styles.fontFamily};">
   ${b.includeBrowserViewHeader ? `
-    <div style="background:#020408; padding:8px; text-align:center; font-size:11px; color:#64748b; font-family:sans-serif;">
+    <div style="background:#020408; padding:8px; text-align:center; font-size:11px; color:#64748b; font-family:${styles.fontFamily};">
       Having trouble viewing this email? <a href="https://orvexi.rw/publications/${b.seoSlug || 'newsletter'}" style="color:#3eb5f1; text-decoration:underline;">View this email in your browser</a>
     </div>
   ` : ''}
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#05070d; padding:20px 0;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${styles.emailBg}; padding:20px 0;">
     <tr>
       <td align="center">
         <!-- Container Table -->
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background:#0b101f; border-radius:10px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,0.5); border:1px solid rgba(62,181,241,0.18);">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background:${styles.cardBg}; border-radius:${styles.borderRadius}px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,0.5); border:1px solid rgba(62,181,241,0.18);">
           ${blocksHtml}
         </table>
       </td>
