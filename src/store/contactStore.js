@@ -496,12 +496,13 @@ class ContactStore {
       });
 
       const activeContacts = this.contacts.filter(c => c && c.id && !this.deletedContactIds.has(c.id));
-      activeContacts.slice(0, 450).forEach(c => {
+      const cleanContacts = JSON.parse(JSON.stringify(activeContacts));
+      cleanContacts.slice(0, 450).forEach(c => {
         batch.set(doc(db, 'crm_contacts', c.id), c, { merge: true });
       });
 
       await batch.commit();
-      return activeContacts.length;
+      return cleanContacts.length;
     } catch (e) {
       console.warn('Could not sync all contacts to Firestore:', e.message || e);
       return 0;

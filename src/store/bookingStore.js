@@ -336,12 +336,13 @@ class BookingStore {
     try {
       const active = this.bookings.filter(b => b && b.id && !this.deletedBookingIds.has(b.id));
       if (active.length === 0) return 0;
+      const cleanBookings = JSON.parse(JSON.stringify(active));
       const batch = writeBatch(db);
-      active.forEach(b => {
+      cleanBookings.forEach(b => {
         batch.set(doc(db, 'service_requests', b.id), b, { merge: true });
       });
       await batch.commit();
-      return active.length;
+      return cleanBookings.length;
     } catch (e) {
       console.warn('Could not sync all bookings to Firestore:', e.message || e);
       return 0;

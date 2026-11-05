@@ -1345,6 +1345,7 @@
   transition: border-color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
   position: relative;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 .portfolio-card::before {
@@ -1401,6 +1402,49 @@
   flex-direction: column;
   gap: 0.5rem;
   flex-grow: 1;
+}
+
+.portfolio-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+
+.portfolio-title-row .portfolio-title {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.portfolio-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+  text-align: right;
+  line-height: 1.1;
+}
+
+.portfolio-price-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.portfolio-price-val {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #84cc16;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .portfolio-title {
@@ -1506,9 +1550,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.65rem 0.75rem;
   margin-top: 0.35rem;
   transition: all var(--transition-fast);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .portfolio-card:hover .portfolio-quote-box {
@@ -1520,7 +1568,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  flex: 1;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .portfolio-quote-label {
@@ -1539,14 +1588,18 @@
   color: #84cc16;
   letter-spacing: -0.01em;
   line-height: 1.15;
+  white-space: nowrap;
 }
 
 .portfolio-quote-box .portfolio-order-btn {
-  flex: 0 0 auto;
-  padding: 0.5rem 0.85rem;
+  flex: 0 1 auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.48rem 0.75rem;
   font-size: 0.78rem;
   border-radius: var(--radius-sm);
   white-space: nowrap;
+  margin-left: auto;
 }
 
 .portfolio-card-actions {
@@ -1559,6 +1612,13 @@
 .portfolio-card-actions .portfolio-visit-btn {
   flex: 1;
   width: 100%;
+  min-width: 0;
+}
+
+.portfolio-card-actions .portfolio-order-btn {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
 }
 
 .portfolio-order-btn {
@@ -1566,7 +1626,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 0.85rem;
   border-radius: var(--radius-md);
   background: #84cc16;
   border: 1px solid #84cc16;
@@ -1576,7 +1636,7 @@
   text-decoration: none;
   cursor: pointer;
   transition: all var(--transition-fast);
-  flex: 1;
+  box-sizing: border-box;
   text-align: center;
   white-space: nowrap;
 }
@@ -1589,12 +1649,24 @@
   color: #040801;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 360px) {
   .portfolio-card-actions {
     flex-direction: column;
   }
+
   .portfolio-card-actions .portfolio-visit-btn,
-  .portfolio-order-btn {
+  .portfolio-card-actions .portfolio-order-btn {
+    width: 100%;
+  }
+}
+
+@container (max-width: 260px) {
+  .portfolio-card-actions {
+    flex-direction: column;
+  }
+
+  .portfolio-card-actions .portfolio-visit-btn,
+  .portfolio-card-actions .portfolio-order-btn {
     width: 100%;
   }
 }

@@ -5,7 +5,9 @@ import { getFirestore } from 'firebase/firestore';
 import { 
   getStorage, 
   ref as storageRef, 
+  uploadBytes,
   uploadBytesResumable, 
+  uploadString,
   getDownloadURL, 
   deleteObject, 
   listAll 
@@ -71,7 +73,9 @@ export {
   googleProvider, 
   storage,
   storageRef,
+  uploadBytes,
   uploadBytesResumable,
+  uploadString,
   getDownloadURL,
   deleteObject,
   listAll,

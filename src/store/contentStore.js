@@ -1,5 +1,6 @@
 import { db, auth, firebaseSignOut } from '../firebase.js';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { uploadDataUrlToStorage } from '../services/imageUploadService.js';
 
 const STORAGE_KEY = 'orvexi_site_content_v1';
 const AUTH_KEY = 'orvexi_admin_session';
@@ -126,7 +127,7 @@ export const DEFAULT_CONTENT = {
         badge: "",
         quote: "$2,800",
         showQuote: true,
-        orderBtnText: "Order Similar Website",
+        orderBtnText: "Get Similar",
         btnText: "Visit"
       },
       {
@@ -141,7 +142,7 @@ export const DEFAULT_CONTENT = {
         badge: "",
         quote: "$3,500",
         showQuote: true,
-        orderBtnText: "Order Similar Website",
+        orderBtnText: "Get Similar",
         btnText: "Visit"
       },
       {
@@ -156,7 +157,7 @@ export const DEFAULT_CONTENT = {
         badge: "",
         quote: "$2,200",
         showQuote: true,
-        orderBtnText: "Order Similar Website",
+        orderBtnText: "Get Similar",
         btnText: "Visit"
       },
       {
@@ -171,7 +172,7 @@ export const DEFAULT_CONTENT = {
         badge: "",
         quote: "$2,500",
         showQuote: true,
-        orderBtnText: "Order Similar Website",
+        orderBtnText: "Get Similar",
         btnText: "Visit"
       },
       {
@@ -186,7 +187,7 @@ export const DEFAULT_CONTENT = {
         badge: "",
         quote: "$1,800",
         showQuote: true,
-        orderBtnText: "Order Similar Website",
+        orderBtnText: "Get Similar",
         btnText: "Live Demo"
       },
       {
@@ -201,7 +202,7 @@ export const DEFAULT_CONTENT = {
         badge: "",
         quote: "$3,200",
         showQuote: true,
-        orderBtnText: "Order Similar Website",
+        orderBtnText: "Get Similar",
         btnText: "Live Demo"
       }
     ]
@@ -315,7 +316,7 @@ class ContentStore {
               badge,
               quote: (p.quote !== undefined && p.quote !== null && p.quote !== '') ? p.quote : (defItem.quote || ''),
               showQuote: p.showQuote !== undefined ? Boolean(p.showQuote) : (defItem.showQuote !== false),
-              orderBtnText: p.orderBtnText || defItem.orderBtnText || 'Order Similar Website'
+              orderBtnText: (p.orderBtnText && p.orderBtnText !== 'Order Similar Website') ? p.orderBtnText : (defItem.orderBtnText || 'Get Similar')
             };
           });
         }
@@ -406,12 +407,13 @@ class ContentStore {
 
       if (remoteContent) {
         const localTime = this.content._lastModified || 0;
+        const hasUnsyncedPhotos = this.hasBase64Images();
 
         // If local content was saved more recently than remote Firestore data,
+        // or contains local base64 images that must be migrated to Firebase Storage,
         // do NOT overwrite local changes with stale cloud data.
-        // Instead, sync our newer local content up to Firestore.
-        if (localTime > remoteTime) {
-          console.info('Local content is newer than Firestore remote data. Preserving local edits and syncing to cloud.');
+        if (localTime > remoteTime || hasUnsyncedPhotos) {
+          console.info('Preserving newer local content / unsynced images and uploading to Cloud Storage & Firestore.');
           await this.syncAllContent();
           return;
         }
@@ -442,18 +444,96 @@ class ContentStore {
     }
   }
 
+  hasBase64Images() {
+    if (!this.content) return false;
+    if (this.content.portfolio?.items?.some(it => it.image && typeof it.image === 'string' && it.image.startsWith('data:image/'))) return true;
+    if (this.content.heroSlider?.some(s => s.image && typeof s.image === 'string' && s.image.startsWith('data:image/'))) return true;
+    if (this.content.about?.officePhoto && typeof this.content.about.officePhoto === 'string' && this.content.about.officePhoto.startsWith('data:image/')) return true;
+    if (this.content.team?.members?.some(m => m.image && typeof m.image === 'string' && m.image.startsWith('data:image/'))) return true;
+    return false;
+  }
+
+  async migrateDataUrlsToStorage() {
+    if (!this.content) return;
+    let modified = false;
+
+    // 1. Portfolio items
+    if (this.content.portfolio?.items?.length) {
+      for (let i = 0; i < this.content.portfolio.items.length; i++) {
+        const item = this.content.portfolio.items[i];
+        if (item.image && typeof item.image === 'string' && item.image.startsWith('data:image/')) {
+          const safeTitle = (item.title || 'project').toLowerCase().replace(/[^a-z0-9]/g, '_');
+          const url = await uploadDataUrlToStorage(item.image, 'projects', `${safeTitle}.jpg`);
+          if (url && url !== item.image) {
+            item.image = url;
+            modified = true;
+          }
+        }
+      }
+    }
+
+    // 2. Hero slides
+    if (this.content.heroSlider?.length) {
+      for (let i = 0; i < this.content.heroSlider.length; i++) {
+        const slide = this.content.heroSlider[i];
+        if (slide.image && typeof slide.image === 'string' && slide.image.startsWith('data:image/')) {
+          const url = await uploadDataUrlToStorage(slide.image, 'slides', `slide_${i + 1}.jpg`);
+          if (url && url !== slide.image) {
+            slide.image = url;
+            modified = true;
+          }
+        }
+      }
+    }
+
+    // 3. About office photo
+    if (this.content.about?.officePhoto && typeof this.content.about.officePhoto === 'string' && this.content.about.officePhoto.startsWith('data:image/')) {
+      const url = await uploadDataUrlToStorage(this.content.about.officePhoto, 'about', 'office.jpg');
+      if (url && url !== this.content.about.officePhoto) {
+        this.content.about.officePhoto = url;
+        modified = true;
+      }
+    }
+
+    // 4. Team members
+    if (this.content.team?.members?.length) {
+      for (let i = 0; i < this.content.team.members.length; i++) {
+        const mem = this.content.team.members[i];
+        if (mem.image && typeof mem.image === 'string' && mem.image.startsWith('data:image/')) {
+          const safeName = (mem.name || 'member').toLowerCase().replace(/[^a-z0-9]/g, '_');
+          const url = await uploadDataUrlToStorage(mem.image, 'team', `${safeName}.jpg`);
+          if (url && url !== mem.image) {
+            mem.image = url;
+            modified = true;
+          }
+        }
+      }
+    }
+
+    if (modified) {
+      this.persistLocally();
+      this.notify();
+    }
+  }
+
   /**
    * Comprehensive synchronization of all website sections to Cloud Firestore
    */
   async syncAllContent() {
     if (!db) return false;
     try {
+      // 0. Auto-migrate any local base64 images to permanent Firebase Storage URLs
+      await this.migrateDataUrlsToStorage();
+
       const now = Date.now();
       const nowIso = new Date().toISOString();
 
+      // Deep clone and clean to eliminate any undefined values or non-serializable entities
+      const cleanContent = JSON.parse(JSON.stringify(this.content));
+
       // 1. Save main content document
       await setDoc(doc(db, 'settings', 'site_content'), {
-        content: this.content,
+        content: cleanContent,
         updatedAt: nowIso,
         lastModified: now
       }, { merge: true });
@@ -461,9 +541,9 @@ class ContentStore {
       // 2. Also save section documents to prevent single-doc 1MB quotas
       const sections = ['portfolio', 'heroSlider', 'services', 'about', 'team', 'testimonials', 'contact', 'faq', 'settings'];
       for (const sec of sections) {
-        if (this.content[sec]) {
+        if (cleanContent[sec]) {
           await setDoc(doc(db, 'content', sec), {
-            [sec]: this.content[sec],
+            [sec]: cleanContent[sec],
             updatedAt: nowIso,
             lastModified: now
           }, { merge: true });

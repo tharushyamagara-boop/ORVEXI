@@ -569,34 +569,55 @@ function renderPortfolioTab(portfolioData) {
     const tags = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
     const imgUrl = p.image || '/images/slide1_kigali_tech.jpg';
     return `
-      <div style="background:rgba(11,14,23,0.7); border:1px solid rgba(62,181,241,0.12); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:flex-start; gap:1.25rem;">
+      <div class="admin-project-item" data-index="${index}" draggable="true" style="background:rgba(11,14,23,0.7); border:1px solid rgba(62,181,241,0.12); border-radius:var(--radius-md); padding:1.15rem 1.25rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; gap:1.15rem; transition: all 0.2s ease;">
+        <!-- Drag Handle & Order Badge -->
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.35rem; flex-shrink:0; cursor:grab; padding:0.25rem;" class="admin-project-drag-handle" title="Drag to reorder projects">
+          <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; background:rgba(62,181,241,0.15); border:1px solid rgba(62,181,241,0.3); color:var(--brand-blue-light); padding:0.18rem 0.5rem; border-radius:6px;">#${index + 1}</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--text-dim); opacity:0.6;"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>
+        </div>
+
+        <!-- Thumbnail Image -->
         <div style="width:130px; aspect-ratio:1920/1090; border-radius:6px; overflow:hidden; background:#07090f; border:1px solid rgba(62,181,241,0.2); flex-shrink:0;">
           <img src="${imgUrl}" alt="${p.title}" style="width:100%; height:100%; object-fit:cover;">
         </div>
-        <div style="flex:1;">
+
+        <!-- Project Meta -->
+        <div style="flex:1; min-width:0;">
           <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.35rem; flex-wrap:wrap;">
-            <h4 style="font-size:1.05rem; color:#fff; font-weight:600;">${p.title}</h4>
+            <h4 style="font-size:1.05rem; color:#fff; font-weight:700; margin:0;">${p.title}</h4>
             <span style="font-size:0.78rem; color:var(--accent-light);">${p.category || ''}</span>
             ${(p.showQuote !== false && p.quote) ? `
               <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
-                💰 Quote: ${p.quote} (Visible)
+                💰 Price: ${p.quote} (Visible)
               </span>
             ` : `
               <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:var(--text-muted); font-weight:600;">
-                👁️ Quote: ${p.quote ? `${p.quote} (Hidden)` : 'Not set'}
+                👁️ Price: ${p.quote ? `${p.quote} (Hidden)` : 'Not set'}
               </span>
             `}
             ${p.badge && !['Enterprise', 'Flagship Platform', 'National Forum', 'Consulting Dashboard', 'Fintech Application', 'Demo Dashboard'].includes(p.badge) ? `<span class="admin-badge admin-badge-muted">${p.badge}</span>` : ''}
           </div>
           ${p.subtitle ? `<div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.35rem;">${p.subtitle}</div>` : ''}
-          <p style="color:var(--text-muted); font-size:0.84rem; line-height:1.45; margin-bottom:0.5rem;">${p.desc}</p>
+          <p style="color:var(--text-muted); font-size:0.84rem; line-height:1.45; margin:0 0 0.5rem 0; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${p.desc}</p>
           <div style="font-size:0.78rem; color:var(--text-secondary); font-family:var(--font-mono);">
-            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | CTA: <span style="color:#84cc16;">${p.orderBtnText || 'Order Similar Website'}</span> | Tags: ${tags}
+            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | CTA: <span style="color:#84cc16;">${p.orderBtnText && p.orderBtnText !== 'Order Similar Website' ? p.orderBtnText : 'Get Similar'}</span> | Tags: ${tags}
           </div>
         </div>
-        <div style="display:flex; gap:0.5rem; flex-shrink:0;">
-          <button class="btn-admin btn-admin-secondary btn-admin-sm btn-edit-project" data-index="${index}">Edit</button>
-          <button class="btn-admin btn-admin-danger btn-admin-sm btn-del-project" data-index="${index}">Delete</button>
+
+        <!-- Action & Reorder Buttons -->
+        <div style="display:flex; flex-direction:column; gap:0.4rem; flex-shrink:0;">
+          <div style="display:flex; gap:0.35rem;">
+            <button class="btn-admin btn-admin-secondary btn-admin-sm btn-move-project" data-index="${index}" data-dir="-1" ${index === 0 ? 'disabled style="opacity:0.35; cursor:not-allowed;"' : ''} title="Move Up (Show earlier on public site)">
+              &uarr; Up
+            </button>
+            <button class="btn-admin btn-admin-secondary btn-admin-sm btn-move-project" data-index="${index}" data-dir="1" ${index === items.length - 1 ? 'disabled style="opacity:0.35; cursor:not-allowed;"' : ''} title="Move Down (Show later on public site)">
+              &darr; Down
+            </button>
+          </div>
+          <div style="display:flex; gap:0.35rem;">
+            <button class="btn-admin btn-admin-secondary btn-admin-sm btn-edit-project" data-index="${index}" style="flex:1;">Edit</button>
+            <button class="btn-admin btn-admin-danger btn-admin-sm btn-del-project" data-index="${index}" style="flex:1;">Delete</button>
+          </div>
         </div>
       </div>
     `;
@@ -3388,13 +3409,13 @@ function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
 
           <div class="admin-form-row">
             <div class="admin-form-group">
-              <label class="admin-label">Project Quote / Estimated Cost ($ or RWF) *</label>
+              <label class="admin-label">Project Price ($ or RWF) *</label>
               <input type="text" id="projectQuoteInput" class="admin-input" placeholder="e.g. $2,500 or RWF 3,200,000 or Starting at $1,800" value="${project.quote || ''}">
-              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Enter estimated money/quote shown on this project card.</span>
+              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Enter estimated price shown on this project card.</span>
             </div>
             <div class="admin-form-group">
               <label class="admin-label">Order CTA Button Label</label>
-              <input type="text" id="projectOrderBtnTextInput" class="admin-input" placeholder="Order Similar Website" value="${project.orderBtnText || 'Order Similar Website'}">
+              <input type="text" id="projectOrderBtnTextInput" class="admin-input" placeholder="Get Similar" value="${project.orderBtnText && project.orderBtnText !== 'Order Similar Website' ? project.orderBtnText : 'Get Similar'}">
               <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">CTA button for prospective clients to order a similar solution.</span>
             </div>
           </div>
@@ -3402,10 +3423,10 @@ function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
           <div class="admin-form-group" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:0.85rem 1rem; margin-bottom:1.25rem;">
             <label style="display:flex; align-items:center; gap:0.65rem; cursor:pointer; margin:0; user-select:none;">
               <input type="checkbox" id="projectShowQuoteInput" style="width:18px; height:18px; accent-color:#84cc16; cursor:pointer;" ${project.showQuote !== false ? 'checked' : ''}>
-              <span style="font-size:0.88rem; font-weight:700; color:#fff;">Display Quote / Estimated Cost on Project Card</span>
+              <span style="font-size:0.88rem; font-weight:700; color:#fff;">Display Price on Project Card</span>
             </label>
             <span style="font-size:0.76rem; color:var(--text-muted); margin-top:0.35rem; display:block; padding-left:1.8rem;">
-              When checked, the quote box is displayed on the website. If unchecked, the quote is hidden while keeping the "Order Similar Website" button active.
+              When checked, the price is displayed on the top right of the project title. If unchecked, the price is hidden while keeping the "Get Similar" button active.
             </span>
           </div>
 
@@ -4032,6 +4053,84 @@ export function initAdminEvents(onContentChange) {
         onContentChange();
       }
     };
+  });
+
+  // Up/Down Step Reordering for Portfolio Items
+  document.querySelectorAll('.btn-move-project').forEach(btn => {
+    btn.onclick = async () => {
+      const idx = parseInt(btn.getAttribute('data-index'), 10);
+      const dir = parseInt(btn.getAttribute('data-dir'), 10);
+      const portfolio = contentStore.getContent().portfolio;
+      const items = [...portfolio.items];
+      const targetIdx = idx + dir;
+      if (targetIdx >= 0 && targetIdx < items.length) {
+        const temp = items[idx];
+        items[idx] = items[targetIdx];
+        items[targetIdx] = temp;
+        await contentStore.saveContent({ portfolio: { ...portfolio, items } });
+        showAdminToast(`Project "${temp.title}" moved ${dir === -1 ? 'up' : 'down'} to position #${targetIdx + 1}`, 'success');
+        onContentChange();
+      }
+    };
+  });
+
+  // HTML5 Drag-and-Drop Reordering for Portfolio Items
+  const projectItems = document.querySelectorAll('.admin-project-item');
+  let draggedProjectIdx = null;
+
+  projectItems.forEach(item => {
+    item.addEventListener('dragstart', (e) => {
+      draggedProjectIdx = parseInt(item.getAttribute('data-index'), 10);
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', draggedProjectIdx);
+      item.style.opacity = '0.35';
+      item.style.border = '1px dashed #84cc16';
+    });
+
+    item.addEventListener('dragend', () => {
+      item.style.opacity = '1';
+      item.style.border = '1px solid rgba(62,181,241,0.12)';
+      projectItems.forEach(el => {
+        el.style.borderTop = '';
+        el.style.borderBottom = '';
+      });
+    });
+
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const targetIdx = parseInt(item.getAttribute('data-index'), 10);
+      if (targetIdx !== draggedProjectIdx) {
+        if (targetIdx < draggedProjectIdx) {
+          item.style.borderTop = '2px solid #84cc16';
+          item.style.borderBottom = '';
+        } else {
+          item.style.borderBottom = '2px solid #84cc16';
+          item.style.borderTop = '';
+        }
+      }
+    });
+
+    item.addEventListener('dragleave', () => {
+      item.style.borderTop = '';
+      item.style.borderBottom = '';
+    });
+
+    item.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      item.style.borderTop = '';
+      item.style.borderBottom = '';
+      const targetIdx = parseInt(item.getAttribute('data-index'), 10);
+      if (draggedProjectIdx !== null && targetIdx !== draggedProjectIdx) {
+        const portfolio = contentStore.getContent().portfolio;
+        const items = [...portfolio.items];
+        const [movedItem] = items.splice(draggedProjectIdx, 1);
+        items.splice(targetIdx, 0, movedItem);
+        await contentStore.saveContent({ portfolio: { ...portfolio, items } });
+        showAdminToast(`Project "${movedItem.title}" reordered to position #${targetIdx + 1}`, 'success');
+        onContentChange();
+      }
+    });
   });
 
 
@@ -5472,10 +5571,15 @@ function setupSlideModalForm(onContentChange, closeModal) {
         imgInput.value = optimizedUrl;
         if (previewImg) previewImg.src = optimizedUrl;
         if (uploadStatus) {
-          uploadStatus.textContent = '✓ Ready to save';
-          uploadStatus.style.color = '#10b981';
+          if (optimizedUrl.startsWith('https://firebasestorage')) {
+            uploadStatus.textContent = '✓ Uploaded to Cloud Storage';
+            uploadStatus.style.color = '#84cc16';
+          } else {
+            uploadStatus.textContent = '✓ Ready to save';
+            uploadStatus.style.color = '#10b981';
+          }
         }
-        showAdminToast('Photo ready and optimized', 'success');
+        showAdminToast(optimizedUrl.startsWith('https://firebasestorage') ? 'Photo uploaded to Cloud Storage!' : 'Photo ready and optimized', 'success');
       } catch (err) {
         console.error('Photo upload error:', err);
         if (uploadStatus) {
@@ -5606,7 +5710,12 @@ function setupProjectModalForm(onContentChange, closeModal) {
           previewImg.src = optimizedUrl;
           if (previewWrap) previewWrap.style.display = 'block';
         }
-        showAdminToast('Screenshot optimized & ready', 'success');
+        if (optimizedUrl.startsWith('https://firebasestorage')) {
+          showAdminToast('Screenshot uploaded to Cloud Storage!', 'success');
+          if (fileNameSpan) fileNameSpan.textContent = '✓ Cloud Storage: ' + file.name;
+        } else {
+          showAdminToast('Screenshot optimized & ready', 'success');
+        }
       } catch (err) {
         console.error('Project image upload error:', err);
         showAdminToast('Upload failed: ' + err.message, 'error');
@@ -5639,7 +5748,7 @@ function setupProjectModalForm(onContentChange, closeModal) {
         btnText: document.getElementById('projectBtnTextInput').value.trim() || 'Visit',
         quote: document.getElementById('projectQuoteInput')?.value.trim() || '',
         showQuote: document.getElementById('projectShowQuoteInput')?.checked ?? true,
-        orderBtnText: document.getElementById('projectOrderBtnTextInput')?.value.trim() || 'Order Similar Website',
+        orderBtnText: document.getElementById('projectOrderBtnTextInput')?.value.trim() || 'Get Similar',
         tags
       };
 

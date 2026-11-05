@@ -1,0 +1,47 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Settings (Brand identity, Admin Password, Recovery)
+    match /settings/{docId} {
+      allow read, write: if true;
+    }
+
+    // 2. Website Content Sections (portfolio, heroSlider, services, about, team, testimonials, contact, faq)
+    match /content/{sectionId} {
+      allow read, write: if true;
+    }
+
+    // 3. Client Service Requests & Booking Consultations
+    match /service_requests/{requestId} {
+      allow read, write: if true;
+    }
+
+    // 4. CRM Audience Contacts
+    match /crm_contacts/{contactId} {
+      allow read, write: if true;
+    }
+
+    // 5. CRM Audience Groups / Sectors
+    match /crm_groups/{groupId} {
+      allow read, write: if true;
+    }
+
+    // 6. Email Campaigns & Newsletters
+    match /email_campaigns/{campaignId} {
+      allow read, write: if true;
+    }
+
+    // 7. Source Code Vault & Project Backups
+    match /project_backups/{backupId} {
+      allow read, write: if true;
+    }
+
+    // Catch-all fallback for current and future collections
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+

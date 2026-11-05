@@ -39,39 +39,29 @@ export function renderPortfolio(portfolioData = {}) {
         ` : ''}
 
         <div class="portfolio-body">
-          <h3 class="portfolio-title">
-            <a href="${p.url || '#'}" target="_blank" rel="noopener noreferrer" class="portfolio-title-link">
-              ${p.title}
-              <svg class="portfolio-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 17l9.2-9.2M17 17V8H8"/>
-              </svg>
-            </a>
-          </h3>
+          <div class="portfolio-title-row">
+            <h3 class="portfolio-title">
+              <a href="${p.url || '#'}" target="_blank" rel="noopener noreferrer" class="portfolio-title-link">
+                ${p.title}
+                <svg class="portfolio-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17l9.2-9.2M17 17V8H8"/>
+                </svg>
+              </a>
+            </h3>
+            ${isQuoteVisible ? `
+              <div class="portfolio-card-price">
+                <span class="portfolio-price-label">Price</span>
+                <span class="portfolio-price-val">${p.quote}</span>
+              </div>
+            ` : ''}
+          </div>
           <p class="portfolio-desc">${p.desc || ''}</p>
         </div>
-
-        <!-- Project Quote & Pricing Box with Order CTA Button -->
-        ${isQuoteVisible ? `
-          <div class="portfolio-quote-box">
-            <div class="portfolio-quote-meta">
-              <span class="portfolio-quote-label">Estimated Quote / Budget</span>
-              <span class="portfolio-quote-amount">${p.quote}</span>
-            </div>
-            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${p.quote}" data-project-category="${p.category || ''}" title="Order a website or platform similar to ${p.title}">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-              </svg>
-              <span>${p.orderBtnText || 'Order Similar Website'}</span>
-            </a>
-          </div>
-        ` : ''}
 
         <div class="portfolio-footer">
           <div class="portfolio-card-actions">
             ${p.url ? `
-              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn" title="View live ${p.title} platform">
+              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn" title="Visit ${p.title}">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <line x1="2" y1="12" x2="22" y2="12"></line>
@@ -80,16 +70,14 @@ export function renderPortfolio(portfolioData = {}) {
                 <span>${p.btnText || 'Visit'}</span>
               </a>
             ` : ''}
-            ${!isQuoteVisible ? `
-              <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="" data-project-category="${p.category || ''}" title="Order a website or platform similar to ${p.title}">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <path d="M16 10a4 4 0 0 1-8 0"></path>
-                </svg>
-                <span>${p.orderBtnText || 'Order Similar Website'}</span>
-              </a>
-            ` : ''}
+            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${p.quote || ''}" data-project-category="${p.category || ''}" title="Get a website similar to ${p.title}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <span>${p.orderBtnText && p.orderBtnText !== 'Order Similar Website' ? p.orderBtnText : 'Get Similar'}</span>
+            </a>
           </div>
         </div>
       </div>

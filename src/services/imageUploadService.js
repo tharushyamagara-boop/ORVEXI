@@ -2,7 +2,7 @@
 // Automatically compresses high-resolution photos on the client (down to ~80-140KB)
 // and uploads to Firebase Storage with instant fallback to optimized base64.
 
-import { storage, storageRef, uploadBytesResumable, getDownloadURL } from '../firebase.js';
+import { storage, storageRef, uploadBytesResumable, uploadString, getDownloadURL } from '../firebase.js';
 
 /**
  * Resizes and compresses an image file using an HTML5 Canvas.
@@ -92,15 +92,15 @@ export async function uploadImageToStorage(file, folder = 'slides', onProgress =
   // 2. Try Firebase Storage if initialized
   if (storage) {
     try {
-      const res = await fetch(compressedDataUrl);
-      const blob = await res.blob();
+      if (onProgress) onProgress(25);
       const cleanName = (file.name || 'image.jpg')
         .toLowerCase()
         .replace(/[^a-z0-9.-]/g, '_');
       const storagePath = `${folder}/${Date.now()}_${cleanName}`;
       const fileRef = storageRef(storage, storagePath);
 
-      const uploadTask = uploadBytesResumable(fileRef, blob, {
+      if (onProgress) onProgress(50);
+      await uploadString(fileRef, compressedDataUrl, 'data_url', {
         contentType: 'image/jpeg',
         customMetadata: {
           originalName: file.name,
@@ -108,30 +108,55 @@ export async function uploadImageToStorage(file, folder = 'slides', onProgress =
         }
       });
 
-      const downloadUrl = await new Promise((resolve, reject) => {
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            if (onProgress && snapshot.totalBytes > 0) {
-              const pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              onProgress(Math.round(pct));
-            }
-          },
-          (error) => reject(error),
-          async () => {
-            const url = await getDownloadURL(uploadTask.snapshot.ref);
-            resolve(url);
-          }
-        );
-      });
-
+      if (onProgress) onProgress(90);
+      const downloadUrl = await getDownloadURL(fileRef);
+      if (onProgress) onProgress(100);
+      console.info(`[Firebase Storage] Uploaded ${cleanName} to ${storagePath} -> ${downloadUrl}`);
       return downloadUrl;
     } catch (err) {
-      console.warn('Firebase Storage upload unavailable, saving optimized photo locally:', err.message || err);
+      console.warn('Firebase Storage upload failed, saving optimized photo locally:', err.message || err);
     }
   }
 
   // Fallback: return the compressed Data URL (~80-140KB)
   if (onProgress) onProgress(100);
   return compressedDataUrl;
+}
+
+/**
+ * Uploads a base64 Data URL directly to Firebase Storage and returns
+ * the public Cloud Storage download URL.
+ *
+ * @param {string} dataUrl Base64 data URL (e.g. data:image/jpeg;base64,...)
+ * @param {string} folder Target Storage bucket path (e.g. 'projects', 'slides', 'about', 'team')
+ * @param {string} defaultName File name identifier
+ * @returns {Promise<string>} Download URL (or original dataUrl if upload fails)
+ */
+export async function uploadDataUrlToStorage(dataUrl, folder = 'projects', defaultName = 'image.jpg') {
+  if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
+    return dataUrl;
+  }
+  if (!storage) {
+    return dataUrl;
+  }
+
+  try {
+    const cleanName = defaultName.toLowerCase().replace(/[^a-z0-9.-]/g, '_');
+    const storagePath = `${folder}/${Date.now()}_${cleanName}`;
+    const fileRef = storageRef(storage, storagePath);
+
+    await uploadString(fileRef, dataUrl, 'data_url', {
+      contentType: 'image/jpeg',
+      customMetadata: {
+        migratedAt: new Date().toISOString()
+      }
+    });
+
+    const downloadUrl = await getDownloadURL(fileRef);
+    console.info(`[Firebase Storage] Auto-migrated base64 image to ${storagePath} -> ${downloadUrl}`);
+    return downloadUrl;
+  } catch (err) {
+    console.warn(`[Firebase Storage] Failed to upload data URL to ${folder}:`, err.message || err);
+    return dataUrl;
+  }
 }
