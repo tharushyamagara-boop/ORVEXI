@@ -74,6 +74,7 @@ function renderApp() {
   initScrollReveal();
   initActiveNavLinks();
   initAdminEvents(renderApp);
+  scrollToHashOrPath('auto');
 }
 
 /* -------------------------------------------------------------------------- */
@@ -263,10 +264,13 @@ function initActiveNavLinks() {
   function highlightActive() {
     let current = '';
     sections.forEach(sec => {
-      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+      if (window.scrollY >= sec.offsetTop - 140) current = sec.id;
     });
     links.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+      const href = link.getAttribute('href');
+      const isMatch = href === `#${current}` || 
+        ((current === 'get-in-touch' || current === 'contact') && (href === '#get-in-touch' || href === '#contact'));
+      link.classList.toggle('active', isMatch);
     });
   }
 
@@ -275,16 +279,43 @@ function initActiveNavLinks() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 6. Routing & Store Subscriptions                                            */
+/* 6. Routing & Indexable In-Page Navigation                                    */
 /* -------------------------------------------------------------------------- */
-window.addEventListener('hashchange', () => {
-  renderApp();
-  if (!isCurrentRouteAdmin() && window.location.hash) {
-    const target = document.querySelector(window.location.hash);
+function scrollToHashOrPath(behavior = 'smooth') {
+  if (isCurrentRouteAdmin()) return;
+
+  const hash = window.location.hash.toLowerCase();
+  const rawPath = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
+
+  let targetId = '';
+  if (hash) {
+    targetId = hash.replace(/^#/, '');
+  } else if (rawPath && ['home', 'about', 'services', 'portfolio', 'contact', 'get-in-touch'].includes(rawPath)) {
+    targetId = rawPath;
+  }
+
+  if (targetId) {
+    let target = document.getElementById(targetId);
+    if (!target && (targetId === 'contact' || targetId === 'get-in-touch')) {
+      target = document.getElementById('get-in-touch') || document.getElementById('contact');
+    }
+
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        target.scrollIntoView({ behavior });
+      }, 80);
     }
   }
+}
+
+window.addEventListener('hashchange', () => {
+  renderApp();
+  scrollToHashOrPath('smooth');
+});
+
+window.addEventListener('popstate', () => {
+  renderApp();
+  scrollToHashOrPath('smooth');
 });
 
 // Keyboard shortcut: Ctrl + Shift + A to open Admin Console

@@ -8,7 +8,9 @@ export function renderContact(contactData = {}) {
   const todayStr = new Date().toISOString().slice(0, 10);
 
   return `
-    <section class="section" id="contact">
+    <section class="section" id="get-in-touch" data-alias="contact">
+      <!-- Hidden anchor to ensure backwards compatibility with #contact -->
+      <div id="contact" style="position:relative; top:-90px; visibility:hidden; pointer-events:none;"></div>
       <div class="container">
         <div class="section-header reveal">
           <div class="section-tag">Service Requests &amp; Contact</div>

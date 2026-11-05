@@ -29,30 +29,80 @@
   <link rel="icon" type="image/png" href="/Fav.png">
   <link rel="apple-touch-icon" href="/Fav.png">
 
+  <!-- Canonical & Alternate URLs -->
+  <link rel="canonical" href="https://orvexi.com/">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Structured Data (JSON-LD) -->
+  <!-- Structured Data (JSON-LD: Corporation & Site Navigation Elements) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Corporation",
-    "name": "ORVEXI Technologies Ltd.",
-    "alternateName": "ORVEXI",
-    "url": "https://orvexi.com",
-    "logo": "https://orvexi.com/logo.svg",
-    "description": "We are a privately registered Rwandan technology company delivering software publishing, IT consultancy, data processing and web portal services from Kigali.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Niboye, Kicukiro",
-      "addressLocality": "Umujyi wa Kigali",
-      "addressCountry": "RW"
-    },
-    "telephone": "+250788810675",
-    "email": "orvexi@loprok.com",
-    "foundingDate": "2025-10-20"
+    "@graph": [
+      {
+        "@type": "Corporation",
+        "@id": "https://orvexi.com/#corporation",
+        "name": "ORVEXI Technologies Ltd.",
+        "alternateName": "ORVEXI",
+        "url": "https://orvexi.com",
+        "logo": "https://orvexi.com/Logo-WHITE.png",
+        "description": "We are a privately registered Rwandan technology company delivering software publishing, IT consultancy, data processing and web portal services from Kigali.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Niboye, Kicukiro",
+          "addressLocality": "Umujyi wa Kigali",
+          "addressCountry": "RW"
+        },
+        "telephone": "+250788810675",
+        "email": "ceo@orvexi.rw",
+        "foundingDate": "2025-10-20"
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://orvexi.com/#navigation",
+        "name": "ORVEXI Primary Navigation",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "Home",
+            "description": "ORVEXI Enterprise Software & Cloud Platforms in Rwanda",
+            "url": "https://orvexi.com/#home"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "About",
+            "description": "About ORVEXI Corporate Architecture and Certified Engineering Team",
+            "url": "https://orvexi.com/#about"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "Services",
+            "description": "Software Publishing, IT Consultancy, Data Processing & Web Platforms",
+            "url": "https://orvexi.com/#services"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "Portfolio",
+            "description": "Production Cloud Vault and Enterprise Case Studies",
+            "url": "https://orvexi.com/#portfolio"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 5,
+            "name": "Get in Touch",
+            "description": "Online Service Booking, Technical Consultation & Direct Contact in Kigali",
+            "url": "https://orvexi.com/#get-in-touch"
+          }
+        ]
+      }
+    ]
   }
   </script>
 </head>

@@ -8,17 +8,17 @@ export function renderNavbar(isAdmin = false) {
 
         <nav aria-label="Primary Navigation">
           <ul class="nav-links">
-            <li><a href="#home"      class="nav-link">Home</a></li>
-            <li><a href="#about"     class="nav-link">About</a></li>
-            <li><a href="#services"  class="nav-link">Services</a></li>
-            <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-            <li><a href="#contact"   class="nav-link">Contact</a></li>
+            <li><a href="#home"         class="nav-link">Home</a></li>
+            <li><a href="#about"        class="nav-link">About</a></li>
+            <li><a href="#services"     class="nav-link">Services</a></li>
+            <li><a href="#portfolio"    class="nav-link">Portfolio</a></li>
+            <li><a href="#get-in-touch" class="nav-link">Get in Touch</a></li>
             ${isAdmin ? `<li><a href="#admin" class="nav-link admin-nav-link" style="color: var(--brand-blue-light); font-weight: 600;"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; margin-right:6px;"></span>Admin Panel</a></li>` : ''}
           </ul>
         </nav>
 
         <div class="nav-actions">
-          <a href="#contact" class="btn btn-primary btn-sm" id="navCtaBtn">
+          <a href="#get-in-touch" class="btn btn-primary btn-sm" id="navCtaBtn">
             <span>Get in Touch</span>
           </a>
           <button class="mobile-toggle-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
@@ -30,13 +30,13 @@ export function renderNavbar(isAdmin = false) {
       </div>
 
       <div class="mobile-nav-drawer" id="mobileDrawer">
-        <a href="#home"      class="nav-link mobile-link">Home</a>
-        <a href="#about"     class="nav-link mobile-link">About</a>
-        <a href="#services"  class="nav-link mobile-link">Services</a>
-        <a href="#portfolio" class="nav-link mobile-link">Portfolio</a>
-        <a href="#contact"   class="nav-link mobile-link">Contact</a>
+        <a href="#home"         class="nav-link mobile-link">Home</a>
+        <a href="#about"        class="nav-link mobile-link">About</a>
+        <a href="#services"     class="nav-link mobile-link">Services</a>
+        <a href="#portfolio"    class="nav-link mobile-link">Portfolio</a>
+        <a href="#get-in-touch" class="nav-link mobile-link">Get in Touch</a>
         ${isAdmin ? `<a href="#admin" class="nav-link mobile-link" style="color: var(--brand-blue-light); font-weight: 600;">Admin Panel</a>` : ''}
-        <a href="#contact"  class="btn btn-primary" style="width:100%; margin-top:0.5rem; text-align:center;">Get in Touch</a>
+        <a href="#get-in-touch" class="btn btn-primary" style="width:100%; margin-top:0.5rem; text-align:center;">Get in Touch</a>
       </div>
     </header>
   `;
