@@ -8,13 +8,6 @@ export function renderPortfolio(portfolioData = {}) {
     const imgUrl = p.image || p.screenshot || '';
     const isQuoteVisible = p.showQuote !== false && Boolean(p.quote && p.quote.trim());
 
-    let hostname = 'orvexi.rw';
-    try {
-      if (p.url && p.url.startsWith('http')) {
-        hostname = new URL(p.url).hostname;
-      }
-    } catch (e) { }
-
     return `
       <div class="portfolio-card reveal">
         <!-- Landscape Website Screenshot (1920x1090) -->
@@ -24,7 +17,6 @@ export function renderPortfolio(portfolioData = {}) {
               <span class="browser-dot dot-red"></span>
               <span class="browser-dot dot-yellow"></span>
               <span class="browser-dot dot-green"></span>
-              <span class="browser-address-pill">${hostname}</span>
             </div>
             <a href="${p.url || '#'}" target="_blank" rel="noopener noreferrer" class="portfolio-screenshot-link" tabindex="-1" aria-label="Visit ${p.title}">
               <img src="${imgUrl}" alt="${p.title} Website Screenshot" class="portfolio-screenshot" loading="lazy">
