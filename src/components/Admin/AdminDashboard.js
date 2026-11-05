@@ -2,21 +2,21 @@ import { contentStore, MASTER_DEFAULT_PASSWORD } from '../../store/contentStore.
 import { vaultStore, SUPPORTED_PROJECTS } from '../../store/vaultStore.js';
 import { bookingStore, ATTRIBUTION_CHANNELS } from '../../store/bookingStore.js';
 import { contactStore } from '../../store/contactStore.js';
-import { 
-  emailStore, 
-  EMAIL_CATEGORIES, 
-  EMAIL_SECTION_PRESETS, 
-  EMAIL_THEME_PRESETS, 
-  auditEmailDeliverability 
+import {
+  emailStore,
+  EMAIL_CATEGORIES,
+  EMAIL_SECTION_PRESETS,
+  EMAIL_THEME_PRESETS,
+  auditEmailDeliverability
 } from '../../store/emailStore.js';
 import { analyticsStore, CHANNELS_LIST, CHANNEL_COLORS } from '../../store/analyticsStore.js';
 import { zohoEmailService } from '../../services/zohoEmailService.js';
 import { uploadImageToStorage } from '../../services/imageUploadService.js';
-import { 
-  auth, 
-  googleProvider, 
-  signInWithPopup, 
-  sendPasswordResetEmail 
+import {
+  auth,
+  googleProvider,
+  signInWithPopup,
+  sendPasswordResetEmail
 } from '../../firebase.js';
 
 let currentVaultFilter = 'all';
@@ -84,15 +84,15 @@ export function renderAdminPortal() {
         <div class="admin-header-actions">
           <!-- Admin User Badge -->
           <div class="admin-user-badge">
-            ${adminUser.photo 
-              ? `<img src="${adminUser.photo}" alt="" class="admin-user-avatar">`
-              : `<span class="admin-user-initial">${(adminUser.name || 'A')[0].toUpperCase()}</span>`
-            }
+            ${adminUser.photo
+      ? `<img src="${adminUser.photo}" alt="" class="admin-user-avatar">`
+      : `<span class="admin-user-initial">${(adminUser.name || 'A')[0].toUpperCase()}</span>`
+    }
             <span style="font-weight:600; color:var(--text-primary);">${adminUser.name || 'Admin'}</span>
-            ${adminUser.provider === 'google' 
-              ? `<span style="font-size:0.7rem; color:var(--brand-blue-light);">(Google)</span>`
-              : ''
-            }
+            ${adminUser.provider === 'google'
+      ? `<span style="font-size:0.7rem; color:var(--brand-blue-light);">(Google)</span>`
+      : ''
+    }
           </div>
 
           <a href="/" class="btn-admin btn-admin-secondary btn-admin-sm">
@@ -622,33 +622,33 @@ function renderContactTab(contact) {
   const servicesList = (Array.isArray(contact.services) && contact.services.length > 0)
     ? contact.services
     : [
-        'Software Publishing & Custom Development',
-        'Computer Programming Activities',
-        'IT Consultancy & Systems Advisory',
-        'Data Processing & Cloud Infrastructure',
-        'Web Portals & Enterprise Platforms',
-        'General Technical Consultation'
-      ];
+      'Software Publishing & Custom Development',
+      'Computer Programming Activities',
+      'IT Consultancy & Systems Advisory',
+      'Data Processing & Cloud Infrastructure',
+      'Web Portals & Enterprise Platforms',
+      'General Technical Consultation'
+    ];
 
   const timeSlotsList = (Array.isArray(contact.timeSlots) && contact.timeSlots.length > 0)
     ? contact.timeSlots
     : [
-        'Morning (09:00 - 12:00)',
-        'Afternoon (12:00 - 16:00)',
-        'Late Afternoon (16:00 - 18:00)',
-        'Flexible / Any Time'
-      ];
+      'Morning (09:00 - 12:00)',
+      'Afternoon (12:00 - 16:00)',
+      'Late Afternoon (16:00 - 18:00)',
+      'Flexible / Any Time'
+    ];
 
   const channelsList = (Array.isArray(contact.channels) && contact.channels.length > 0)
     ? contact.channels
     : [
-        'Website Direct',
-        'Google Search',
-        'LinkedIn',
-        'Referral / Partner',
-        'Client Recommendation',
-        'Other'
-      ];
+      'Website Direct',
+      'Google Search',
+      'LinkedIn',
+      'Referral / Partner',
+      'Client Recommendation',
+      'Other'
+    ];
 
   return `
     <!-- Card 1: Service Request Form Settings -->
@@ -1025,10 +1025,10 @@ function renderSettingsTab(settings) {
             Configure official transactional and bulk broadcast email sending via <strong>ceo@orvexi.rw</strong>.
           </p>
         </div>
-        ${zohoEmailService.isConfigured() 
-          ? `<span style="background:rgba(132,204,22,0.15); color:#84cc16; border:1px solid #84cc16; font-size:0.74rem; padding:0.2rem 0.6rem; border-radius:12px; font-weight:700;">● Active Relay (${escapeHtml(zohoEmailService.getConfig().senderEmail)})</span>`
-          : `<span style="background:rgba(234,179,8,0.15); color:#eab308; border:1px solid #eab308; font-size:0.74rem; padding:0.2rem 0.6rem; border-radius:12px; font-weight:700;">⚠ Setup Required (Enter API Key)</span>`
-        }
+        ${zohoEmailService.isConfigured()
+      ? `<span style="background:rgba(132,204,22,0.15); color:#84cc16; border:1px solid #84cc16; font-size:0.74rem; padding:0.2rem 0.6rem; border-radius:12px; font-weight:700;">● Active Relay (${escapeHtml(zohoEmailService.getConfig().senderEmail)})</span>`
+      : `<span style="background:rgba(234,179,8,0.15); color:#eab308; border:1px solid #eab308; font-size:0.74rem; padding:0.2rem 0.6rem; border-radius:12px; font-weight:700;">⚠ Setup Required (Enter API Key)</span>`
+    }
       </div>
 
       <div style="background:rgba(7,9,15,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1.25rem; max-width:620px; margin-bottom:1.5rem;">
@@ -1392,8 +1392,8 @@ function renderChannelAnalyticsModal() {
           <h4 style="font-size:0.88rem; color:#fff; margin-bottom:1rem; text-transform:uppercase; letter-spacing:0.5px; font-weight:700;">Traffic Attribution Breakdown</h4>
           <div style="display:flex; flex-direction:column; gap:0.85rem;">
             ${channelEntries.length === 0 ? '<p style="color:var(--text-muted); margin:0;">No requests recorded yet.</p>' : channelEntries.map(([channel, count]) => {
-              const pct = Math.round((count / total) * 100);
-              return `
+    const pct = Math.round((count / total) * 100);
+    return `
                 <div>
                   <div style="display:flex; justify-content:space-between; font-size:0.84rem; margin-bottom:0.35rem;">
                     <span style="font-weight:600; color:var(--text-primary);">${escapeHtml(channel)}</span>
@@ -1404,7 +1404,7 @@ function renderChannelAnalyticsModal() {
                   </div>
                 </div>
               `;
-            }).join('')}
+  }).join('')}
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.75rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08);">
@@ -1648,10 +1648,10 @@ function renderSendEmailTab() {
               <div>
                 <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
                   <span style="font-weight: 700; color: #fff; font-size: 0.95rem;">Zoho CPaaS &amp; ZeptoMail Dispatch Relay</span>
-                  ${zohoEmailService.isConfigured() 
-                    ? `<span style="background:rgba(132,204,22,0.2); color:#84cc16; border:1px solid #84cc16; font-size:0.72rem; padding:0.15rem 0.55rem; border-radius:12px; font-weight:700;">● Connected (${escapeHtml(zohoEmailService.getConfig().senderEmail)})</span>`
-                    : `<span style="background:rgba(234,179,8,0.2); color:#eab308; border:1px solid #eab308; font-size:0.72rem; padding:0.15rem 0.55rem; border-radius:12px; font-weight:700;">⚠ Setup Required (Enter API Key)</span>`
-                  }
+                  ${zohoEmailService.isConfigured()
+      ? `<span style="background:rgba(132,204,22,0.2); color:#84cc16; border:1px solid #84cc16; font-size:0.72rem; padding:0.15rem 0.55rem; border-radius:12px; font-weight:700;">● Connected (${escapeHtml(zohoEmailService.getConfig().senderEmail)})</span>`
+      : `<span style="background:rgba(234,179,8,0.2); color:#eab308; border:1px solid #eab308; font-size:0.72rem; padding:0.15rem 0.55rem; border-radius:12px; font-weight:700;">⚠ Setup Required (Enter API Key)</span>`
+    }
                 </div>
                 <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">
                   Sender: <strong style="color:#fff;">${escapeHtml(zohoEmailService.getConfig().senderEmail || 'ceo@orvexi.rw')}</strong> &bull; Host: <code>cpaas.zoho.com</code> &bull; Alias: <code>1791ea76b71e26a9</code> &bull; SMTP: <code>smtp.zeptomail.com:465</code>
@@ -2926,14 +2926,14 @@ function renderPlatformPerformanceTab() {
           <span class="pill-count">${allPlatformsCount}</span>
         </button>
         ${availablePlatforms.map(p => {
-          const count = rawBookings.filter(b => (b.channel || 'Website Direct').toLowerCase() === p.toLowerCase()).length;
-          return `
+    const count = rawBookings.filter(b => (b.channel || 'Website Direct').toLowerCase() === p.toLowerCase()).length;
+    return `
             <button type="button" class="perf-platform-pill ${performanceSelectedPlatform.toLowerCase() === p.toLowerCase() ? 'active' : ''}" data-platform="${escapeHtml(p)}">
               <span>${escapeHtml(p)}</span>
               <span class="pill-count">${count}</span>
             </button>
           `;
-        }).join('')}
+  }).join('')}
       </div>
 
       <!-- Communication Channels Performance Main Card (Screenshot Mirror) -->
@@ -3037,10 +3037,10 @@ function renderPlatformPerformanceTab() {
               ${perf.channelStats.length === 0 ? `
                 <div style="width:100%; text-align:center; color:var(--text-muted); align-self:center;">No inquiries recorded yet.</div>
               ` : perf.channelStats.map(c => {
-                const confirmedH = Math.max(8, Math.round(((c.confirmed + c.completed) / maxInquiryCount) * 160));
-                const pendingH = Math.max(8, Math.round((c.pending / maxInquiryCount) * 160));
+    const confirmedH = Math.max(8, Math.round(((c.confirmed + c.completed) / maxInquiryCount) * 160));
+    const pendingH = Math.max(8, Math.round((c.pending / maxInquiryCount) * 160));
 
-                return `
+    return `
                   <div class="perf-barchart-col">
                     <div class="perf-barchart-bars">
                       <div class="perf-bar-confirmed" style="height:${c.confirmed + c.completed > 0 ? confirmedH : 4}px;" title="Confirmed: ${c.confirmed + c.completed}"></div>
@@ -3049,7 +3049,7 @@ function renderPlatformPerformanceTab() {
                     <div class="perf-bar-label">${escapeHtml(c.channel)}</div>
                   </div>
                 `;
-              }).join('')}
+  }).join('')}
             </div>
 
             <!-- Legend -->
@@ -4129,15 +4129,15 @@ export function initAdminEvents(onContentChange) {
     const rraLinkEl = document.getElementById('contactConfigRraLink');
     const addressEl = document.getElementById('contactConfigAddress');
 
-    const services = servicesEl 
+    const services = servicesEl
       ? servicesEl.value.split('\n').map(s => s.trim()).filter(Boolean)
       : currentContact.services;
 
-    const timeSlots = timeSlotsEl 
+    const timeSlots = timeSlotsEl
       ? timeSlotsEl.value.split('\n').map(s => s.trim()).filter(Boolean)
       : currentContact.timeSlots;
 
-    const channels = channelsEl 
+    const channels = channelsEl
       ? channelsEl.value.split('\n').map(s => s.trim()).filter(Boolean)
       : currentContact.channels;
 
@@ -5241,7 +5241,7 @@ function setupDesignerEvents(onContentChange, closeModal) {
           const modalBackdrop = document.createElement('div');
           modalBackdrop.innerHTML = renderBlockEditModal(block);
           document.body.appendChild(modalBackdrop);
-          
+
           const closeSubModal = () => modalBackdrop.remove();
           const subClose = modalBackdrop.querySelector('#modalCloseBtn');
           const subCancel = modalBackdrop.querySelector('#modalCancelBtn');

@@ -269,11 +269,11 @@ class ContentStore {
         const settings = { ...DEFAULT_CONTENT.settings, ...(parsed.settings || {}) };
 
         // Guarantee password is set to user's desired password
-        if (!settings.adminPassword || 
-            settings.adminPassphrase === 'admin' || 
-            settings.adminPassphrase === 'orvexi' || 
-            settings.adminPassphrase === 'orvexi2026' ||
-            settings.adminPassword === 'admin') {
+        if (!settings.adminPassword ||
+          settings.adminPassphrase === 'admin' ||
+          settings.adminPassphrase === 'orvexi' ||
+          settings.adminPassphrase === 'orvexi2026' ||
+          settings.adminPassword === 'admin') {
           settings.adminPassword = MASTER_DEFAULT_PASSWORD;
         }
 
@@ -284,10 +284,10 @@ class ContentStore {
         // Strip out "RDB Registered", TINs, and classification codes from cached slider
         heroSlider = heroSlider.map(s => {
           if (s.badge && (
-            s.badge.includes('1628324') || 
-            s.badge.includes('RDB Registered') || 
-            s.badge.includes('Code') || 
-            s.badge.includes('J6311') || 
+            s.badge.includes('1628324') ||
+            s.badge.includes('RDB Registered') ||
+            s.badge.includes('Code') ||
+            s.badge.includes('J6311') ||
             s.badge.includes('J5820')
           )) {
             return { ...s, badge: '' };
@@ -328,7 +328,7 @@ class ContentStore {
         };
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-        } catch (e) {}
+        } catch (e) { }
         return merged;
       }
     } catch (e) {
@@ -359,7 +359,7 @@ class ContentStore {
                 updatedAt: new Date().toISOString(),
                 lastModified: localTime
               }, { merge: true });
-            } catch (e) {}
+            } catch (e) { }
             return;
           }
 
@@ -389,10 +389,10 @@ class ContentStore {
 
   async saveContent(newContent) {
     const now = Date.now();
-    this.content = { 
-      ...this.content, 
+    this.content = {
+      ...this.content,
       ...newContent,
-      _lastModified: now 
+      _lastModified: now
     };
     this.persistLocally();
     this.notify();
@@ -400,10 +400,10 @@ class ContentStore {
     if (db) {
       try {
         const docRef = doc(db, 'settings', 'site_content');
-        await setDoc(docRef, { 
-          content: this.content, 
+        await setDoc(docRef, {
+          content: this.content,
           updatedAt: new Date().toISOString(),
-          lastModified: now 
+          lastModified: now
         }, { merge: true });
       } catch (err) {
         console.warn('Firestore write notice (local changes preserved):', err.message);
@@ -440,7 +440,7 @@ class ContentStore {
       try {
         const docRef = doc(db, 'settings', 'site_content');
         setDoc(docRef, { content: this.content, updatedAt: new Date().toISOString() });
-      } catch (e) {}
+      } catch (e) { }
     }
     return this.content;
   }
@@ -494,7 +494,7 @@ class ContentStore {
     try {
       const stored = sessionStorage.getItem(AUTH_USER_KEY) || localStorage.getItem(AUTH_USER_KEY);
       if (stored) return JSON.parse(stored);
-    } catch (e) {}
+    } catch (e) { }
     return { name: 'Admin', email: this.content.settings?.recoveryEmail || 'orvexi@loprok.com', provider: 'password' };
   }
 
@@ -546,7 +546,7 @@ class ContentStore {
     localStorage.removeItem(AUTH_USER_KEY);
 
     if (auth) {
-      firebaseSignOut(auth).catch(() => {});
+      firebaseSignOut(auth).catch(() => { });
     }
 
     this.notify();

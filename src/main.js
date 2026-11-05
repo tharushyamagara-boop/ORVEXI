@@ -146,6 +146,7 @@ function renderApp() {
   `;
 
   // Initialize interactive behaviors
+  syncSocialMetaTags(content);
   initNavbarScroll();
   initMobileDrawer();
   initHeroSlider();
@@ -154,6 +155,28 @@ function renderApp() {
   initActiveNavLinks();
   initAdminEvents(renderApp);
   scrollToHashOrPath('auto');
+}
+
+function syncSocialMetaTags(content) {
+  try {
+    const firstSlide = content?.heroSlider?.find(s => s.enabled !== false) || content?.heroSlider?.[0];
+    let photoUrl = firstSlide?.image || '/images/slide1_kigali_tech.jpg';
+    if (!photoUrl.startsWith('http')) {
+      photoUrl = `https://orvexi.rw${photoUrl.startsWith('/') ? '' : '/'}${photoUrl}`;
+    }
+
+    const setMeta = (selector, attr, val) => {
+      const el = document.querySelector(selector);
+      if (el) {
+        el.setAttribute(attr, val);
+      }
+    };
+
+    setMeta('meta[property="og:image"]', 'content', photoUrl);
+    setMeta('meta[property="og:image:secure_url"]', 'content', photoUrl);
+    setMeta('meta[name="twitter:image"]', 'content', photoUrl);
+    setMeta('meta[property="twitter:image"]', 'content', photoUrl);
+  } catch (e) {}
 }
 
 /* -------------------------------------------------------------------------- */

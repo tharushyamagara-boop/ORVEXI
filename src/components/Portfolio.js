@@ -8,13 +8,13 @@ export function renderPortfolio(portfolioData = {}) {
     const tags = Array.isArray(p.tags) ? p.tags : (typeof p.tags === 'string' ? p.tags.split(',').map(t => t.trim()) : []);
     const imgUrl = p.image || p.screenshot || '';
     const isQuoteVisible = p.showQuote !== false && Boolean(p.quote && p.quote.trim());
-    
+
     let hostname = 'orvexi.rw';
     try {
       if (p.url && p.url.startsWith('http')) {
         hostname = new URL(p.url).hostname;
       }
-    } catch (e) {}
+    } catch (e) { }
 
     return `
       <div class="portfolio-card reveal">
