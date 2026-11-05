@@ -11,6 +11,7 @@ import {
 } from '../../store/emailStore.js';
 import { analyticsStore, CHANNELS_LIST, CHANNEL_COLORS } from '../../store/analyticsStore.js';
 import { zohoEmailService } from '../../services/zohoEmailService.js';
+import { uploadImageToStorage } from '../../services/imageUploadService.js';
 import { 
   auth, 
   googleProvider, 
@@ -3175,12 +3176,16 @@ function renderSlideEditorModal(slide = {}, isNew = false, index = -1) {
               </select>
               <input type="text" id="slideImageInput" class="admin-input" placeholder="Or enter image URL / path" value="${slide.image || '/images/slide1_kigali_tech.jpg'}" required>
             </div>
-            <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
               <label class="btn-admin btn-admin-secondary btn-admin-sm" style="cursor:pointer;">
                 <span>📁 Upload Image from PC</span>
                 <input type="file" id="slidePhotoUpload" accept="image/*" style="display:none;">
               </label>
               <span id="slideUploadFileName" style="font-size:0.8rem; color:var(--text-muted);"></span>
+              <span id="slideUploadStatus" style="font-size:0.8rem; font-weight:600; color:var(--brand-blue-light);"></span>
+            </div>
+            <div id="slideImagePreviewWrap" style="margin-top:0.75rem; width:100%; max-width:280px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; border:1px solid rgba(62,181,241,0.3); background:#07090f;">
+              <img id="slideImagePreview" src="${slide.image || '/images/slide1_kigali_tech.jpg'}" alt="Slide Preview" style="width:100%; height:100%; object-fit:cover;">
             </div>
           </div>
 
@@ -5301,24 +5306,60 @@ function setupSlideModalForm(onContentChange, closeModal) {
   const imgInput = document.getElementById('slideImageInput');
   const fileInput = document.getElementById('slidePhotoUpload');
   const fileNameSpan = document.getElementById('slideUploadFileName');
+  const uploadStatus = document.getElementById('slideUploadStatus');
+  const previewImg = document.getElementById('slideImagePreview');
+  const submitBtn = form?.querySelector('button[type="submit"]');
 
   if (preset) {
     preset.onchange = () => {
-      if (preset.value) imgInput.value = preset.value;
+      if (preset.value) {
+        imgInput.value = preset.value;
+        if (previewImg) previewImg.src = preset.value;
+      }
+    };
+  }
+
+  if (imgInput) {
+    imgInput.oninput = () => {
+      if (previewImg && imgInput.value.trim()) {
+        previewImg.src = imgInput.value.trim();
+      }
     };
   }
 
   if (fileInput) {
-    fileInput.onchange = (e) => {
+    fileInput.onchange = async (e) => {
       const file = e.target.files[0];
-      if (file) {
-        fileNameSpan.textContent = file.name;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          imgInput.value = evt.target.result;
-          showAdminToast('Photo loaded into slide editor', 'info');
-        };
-        reader.readAsDataURL(file);
+      if (!file) return;
+
+      if (fileNameSpan) fileNameSpan.textContent = file.name;
+      if (uploadStatus) {
+        uploadStatus.textContent = '⚡ Optimizing photo...';
+        uploadStatus.style.color = 'var(--brand-blue-light)';
+      }
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const optimizedUrl = await uploadImageToStorage(file, 'slides', (progress) => {
+          if (uploadStatus) uploadStatus.textContent = `⚡ Uploading ${progress}%...`;
+        });
+
+        imgInput.value = optimizedUrl;
+        if (previewImg) previewImg.src = optimizedUrl;
+        if (uploadStatus) {
+          uploadStatus.textContent = '✓ Ready to save';
+          uploadStatus.style.color = '#10b981';
+        }
+        showAdminToast('Photo ready and optimized', 'success');
+      } catch (err) {
+        console.error('Photo upload error:', err);
+        if (uploadStatus) {
+          uploadStatus.textContent = '⚠️ Upload failed';
+          uploadStatus.style.color = '#ef4444';
+        }
+        showAdminToast('Failed to optimize photo: ' + err.message, 'error');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
     };
   }
@@ -5415,21 +5456,37 @@ function setupProjectModalForm(onContentChange, closeModal) {
     };
   }
 
+  if (imgInput) {
+    imgInput.oninput = () => {
+      if (previewImg && imgInput.value.trim()) {
+        previewImg.src = imgInput.value.trim();
+        if (previewWrap) previewWrap.style.display = 'block';
+      }
+    };
+  }
+
   if (fileInput) {
-    fileInput.onchange = (e) => {
+    fileInput.onchange = async (e) => {
       const file = e.target.files[0];
-      if (file) {
-        fileNameSpan.textContent = file.name;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          imgInput.value = evt.target.result;
-          if (previewImg) {
-            previewImg.src = evt.target.result;
-            if (previewWrap) previewWrap.style.display = 'block';
-          }
-          showAdminToast('Screenshot loaded into card editor', 'info');
-        };
-        reader.readAsDataURL(file);
+      if (!file) return;
+
+      if (fileNameSpan) fileNameSpan.textContent = file.name;
+      const submitBtn = form?.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const optimizedUrl = await uploadImageToStorage(file, 'projects');
+        imgInput.value = optimizedUrl;
+        if (previewImg) {
+          previewImg.src = optimizedUrl;
+          if (previewWrap) previewWrap.style.display = 'block';
+        }
+        showAdminToast('Screenshot optimized & ready', 'success');
+      } catch (err) {
+        console.error('Project image upload error:', err);
+        showAdminToast('Upload failed: ' + err.message, 'error');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
     };
   }

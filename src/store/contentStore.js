@@ -297,6 +297,7 @@ class ContentStore {
         const merged = {
           ...DEFAULT_CONTENT,
           ...parsed,
+          _lastModified: parsed._lastModified || 0,
           about: { ...DEFAULT_CONTENT.about, ...(parsed.about || {}) },
           services: { ...DEFAULT_CONTENT.services, ...(parsed.services || {}) },
           portfolio,
@@ -323,9 +324,28 @@ class ContentStore {
       if (docSnap.exists()) {
         const remoteData = docSnap.data();
         if (remoteData && remoteData.content) {
+          const localTime = this.content._lastModified || 0;
+          const remoteTime = remoteData.lastModified || (remoteData.updatedAt ? new Date(remoteData.updatedAt).getTime() : 0);
+
+          // If local content was saved more recently than remote Firestore data,
+          // do NOT overwrite local changes with stale cloud data.
+          // Instead, sync our newer local content up to Firestore.
+          if (localTime > remoteTime) {
+            console.info('Local content is newer than Firestore remote data. Preserving local edits and syncing to cloud.');
+            try {
+              await setDoc(docRef, {
+                content: this.content,
+                updatedAt: new Date().toISOString(),
+                lastModified: localTime
+              }, { merge: true });
+            } catch (e) {}
+            return;
+          }
+
           this.content = {
             ...this.content,
             ...remoteData.content,
+            _lastModified: remoteTime,
             settings: {
               ...this.content.settings,
               ...(remoteData.content.settings || {}),
@@ -347,14 +367,23 @@ class ContentStore {
   }
 
   async saveContent(newContent) {
-    this.content = { ...this.content, ...newContent };
+    const now = Date.now();
+    this.content = { 
+      ...this.content, 
+      ...newContent,
+      _lastModified: now 
+    };
     this.persistLocally();
     this.notify();
 
     if (db) {
       try {
         const docRef = doc(db, 'settings', 'site_content');
-        await setDoc(docRef, { content: this.content, updatedAt: new Date().toISOString() }, { merge: true });
+        await setDoc(docRef, { 
+          content: this.content, 
+          updatedAt: new Date().toISOString(),
+          lastModified: now 
+        }, { merge: true });
       } catch (err) {
         console.warn('Firestore write notice (local changes preserved):', err.message);
       }
@@ -366,7 +395,19 @@ class ContentStore {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.content));
     } catch (e) {
-      console.error('Failed to save to localStorage:', e);
+      console.warn('Failed to save to localStorage (quota or restriction), attempting cleanup:', e);
+      try {
+        // Prune temporary keys from localStorage
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const key = localStorage.key(i);
+          if (key && (key.startsWith('temp_') || key.startsWith('cache_'))) {
+            localStorage.removeItem(key);
+          }
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.content));
+      } catch (err2) {
+        console.error('Critical localStorage save failure:', err2);
+      }
     }
   }
 
