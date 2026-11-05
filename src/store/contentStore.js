@@ -124,6 +124,8 @@ export const DEFAULT_CONTENT = {
         image: "/images/slide1_kigali_tech.jpg",
         tags: ["Next.js", "PWA", "Live Audio Streaming", "Mobile Studio"],
         badge: "",
+        quote: "$2,800",
+        orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
       {
@@ -136,6 +138,8 @@ export const DEFAULT_CONTENT = {
         image: "/images/about_office.jpg",
         tags: ["Enterprise Web", "Environmental Systems", "Operations Tracker"],
         badge: "",
+        quote: "$3,500",
+        orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
       {
@@ -148,6 +152,8 @@ export const DEFAULT_CONTENT = {
         image: "/images/slide2_software_team.jpg",
         tags: ["Member Directory", "Institutional Portal", "Governance"],
         badge: "",
+        quote: "$2,200",
+        orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
       {
@@ -160,6 +166,8 @@ export const DEFAULT_CONTENT = {
         image: "/images/slide3_datacenter.jpg",
         tags: ["Analytics Dashboard", "Strategic Intelligence", "SDGs & Climate"],
         badge: "",
+        quote: "$2,500",
+        orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
       {
@@ -172,6 +180,8 @@ export const DEFAULT_CONTENT = {
         image: "/images/slide1_kigali_tech.jpg",
         tags: ["Cloud Hosted", "Microfinance App", "Cooperative Tontine"],
         badge: "",
+        quote: "$1,800",
+        orderBtnText: "Order Similar Website",
         btnText: "Live Demo"
       },
       {
@@ -184,6 +194,8 @@ export const DEFAULT_CONTENT = {
         image: "/images/slide2_software_team.jpg",
         tags: ["Impact Dashboard", "GIS Mapping", "PWA", "Climate Analytics"],
         badge: "",
+        quote: "$3,200",
+        orderBtnText: "Order Similar Website",
         btnText: "Live Demo"
       }
     ]
@@ -289,7 +301,9 @@ class ContentStore {
               ...defItem,
               ...p,
               image: p.image || defItem.image || '/images/slide1_kigali_tech.jpg',
-              badge
+              badge,
+              quote: (p.quote !== undefined && p.quote !== null && p.quote !== '') ? p.quote : (defItem.quote || ''),
+              orderBtnText: p.orderBtnText || defItem.orderBtnText || 'Order Similar Website'
             };
           });
         }

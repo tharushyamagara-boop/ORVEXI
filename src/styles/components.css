@@ -1476,7 +1476,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  padding: 0.55rem 1rem;
+  padding: 0.6rem 1rem;
   border-radius: var(--radius-md);
   background: rgba(62, 181, 241, 0.08);
   border: 1px solid rgba(62, 181, 241, 0.25);
@@ -1493,6 +1493,119 @@
   color: #ffffff;
   border-color: transparent;
   box-shadow: 0 4px 14px rgba(62, 181, 241, 0.25);
+}
+
+/* ==========================================================================
+   Portfolio Quote & Order Actions
+   ========================================================================== */
+.portfolio-quote-box {
+  background: rgba(132, 204, 22, 0.04);
+  border: 1px solid rgba(132, 204, 22, 0.2);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  transition: all var(--transition-fast);
+}
+
+.portfolio-card:hover .portfolio-quote-box {
+  background: rgba(132, 204, 22, 0.07);
+  border-color: rgba(132, 204, 22, 0.38);
+}
+
+.portfolio-quote-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.portfolio-quote-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.portfolio-quote-amount {
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #84cc16;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.portfolio-quote-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.22rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.portfolio-quote-badge svg {
+  color: #84cc16;
+}
+
+.portfolio-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+.portfolio-card-actions .portfolio-visit-btn {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0.6rem 0.85rem;
+}
+
+.portfolio-order-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  background: #84cc16;
+  border: 1px solid #84cc16;
+  color: #0b1402;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.portfolio-order-btn:hover {
+  background: #95dc22;
+  border-color: #95dc22;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(132, 204, 22, 0.35);
+  color: #040801;
+}
+
+@media (max-width: 540px) {
+  .portfolio-card-actions {
+    flex-direction: column;
+  }
+  .portfolio-card-actions .portfolio-visit-btn,
+  .portfolio-order-btn {
+    width: 100%;
+  }
 }
 
 

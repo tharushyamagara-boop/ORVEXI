@@ -255,6 +255,62 @@ function initContactForm() {
     });
   });
 
+  // Pre-fill and scroll to contact form when clicking "Order Similar Website" on any portfolio project
+  document.querySelectorAll('.portfolio-order-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const projectTitle = link.getAttribute('data-project-title') || 'Platform';
+      const projectQuote = link.getAttribute('data-project-quote') || '';
+      const projectCategory = link.getAttribute('data-project-category') || '';
+
+      // Auto-select corresponding service
+      const select = document.getElementById('bookingService');
+      if (select) {
+        let matched = false;
+        const candidateKeywords = [projectCategory, 'Web Portals & Enterprise Platforms', 'Software Publishing', 'Custom Development'];
+        for (const kw of candidateKeywords) {
+          if (!kw) continue;
+          for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].value.toLowerCase().includes(kw.toLowerCase()) || 
+                kw.toLowerCase().includes(select.options[i].value.toLowerCase())) {
+              select.selectedIndex = i;
+              matched = true;
+              break;
+            }
+          }
+          if (matched) break;
+        }
+        if (!matched && select.options.length > 1) {
+          select.selectedIndex = 1;
+        }
+      }
+
+      // Pre-fill message textarea with project inquiry
+      const msgTextarea = document.getElementById('contactMessage');
+      if (msgTextarea) {
+        const quoteNote = projectQuote ? ` (Estimated Quote: ${projectQuote})` : '';
+        msgTextarea.value = `Hello ORVEXI Team,\n\nI would like to order a platform/website similar to "${projectTitle}"${quoteNote}.\nPlease reach out to confirm specifications and delivery schedule.`;
+      }
+
+      // Smoothly scroll to contact section
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        const headerOffset = 70;
+        const elementPosition = contactSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+
+      // Focus the customer name input
+      setTimeout(() => {
+        const nameInput = document.getElementById('contactName');
+        if (nameInput) nameInput.focus();
+      }, 450);
+    });
+  });
+
   if (bookAnotherBtn) {
     bookAnotherBtn.onclick = () => {
       if (form) form.reset();

@@ -557,12 +557,15 @@ function renderPortfolioTab(portfolioData) {
           <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.35rem; flex-wrap:wrap;">
             <h4 style="font-size:1.05rem; color:#fff; font-weight:600;">${p.title}</h4>
             <span style="font-size:0.78rem; color:var(--accent-light);">${p.category || ''}</span>
+            <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
+              💰 Quote: ${p.quote || 'Not set'}
+            </span>
             ${p.badge && !['Enterprise', 'Flagship Platform', 'National Forum', 'Consulting Dashboard', 'Fintech Application', 'Demo Dashboard'].includes(p.badge) ? `<span class="admin-badge admin-badge-muted">${p.badge}</span>` : ''}
           </div>
           ${p.subtitle ? `<div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.35rem;">${p.subtitle}</div>` : ''}
           <p style="color:var(--text-muted); font-size:0.84rem; line-height:1.45; margin-bottom:0.5rem;">${p.desc}</p>
           <div style="font-size:0.78rem; color:var(--text-secondary); font-family:var(--font-mono);">
-            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | Tags: ${tags}
+            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | CTA: <span style="color:#84cc16;">${p.orderBtnText || 'Order Similar Website'}</span> | Tags: ${tags}
           </div>
         </div>
         <div style="display:flex; gap:0.5rem; flex-shrink:0;">
@@ -3340,8 +3343,21 @@ function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
               <input type="url" id="projectUrlInput" class="admin-input" placeholder="https://..." value="${project.url || ''}">
             </div>
             <div class="admin-form-group">
-              <label class="admin-label">Button Action Label</label>
+              <label class="admin-label">Platform Visit Button Label</label>
               <input type="text" id="projectBtnTextInput" class="admin-input" placeholder="Visit / Live Demo" value="${project.btnText || 'Visit'}">
+            </div>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label class="admin-label">Project Quote / Estimated Cost ($ or RWF) *</label>
+              <input type="text" id="projectQuoteInput" class="admin-input" placeholder="e.g. $2,500 or RWF 3,200,000 or Starting at $1,800" value="${project.quote || ''}">
+              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Enter estimated money/quote shown on this project card.</span>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Order CTA Button Label</label>
+              <input type="text" id="projectOrderBtnTextInput" class="admin-input" placeholder="Order Similar Website" value="${project.orderBtnText || 'Order Similar Website'}">
+              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">CTA button for prospective clients to order a similar solution.</span>
             </div>
           </div>
 
@@ -5518,6 +5534,8 @@ function setupProjectModalForm(onContentChange, closeModal) {
         url: document.getElementById('projectUrlInput').value.trim(),
         image: document.getElementById('projectImageInput').value.trim() || '/images/slide1_kigali_tech.jpg',
         btnText: document.getElementById('projectBtnTextInput').value.trim() || 'Visit',
+        quote: document.getElementById('projectQuoteInput')?.value.trim() || '',
+        orderBtnText: document.getElementById('projectOrderBtnTextInput')?.value.trim() || 'Order Similar Website',
         tags
       };
 

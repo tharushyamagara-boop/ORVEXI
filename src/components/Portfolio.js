@@ -56,19 +56,43 @@ export function renderPortfolio(portfolioData = {}) {
           <p class="portfolio-desc">${p.desc || ''}</p>
         </div>
 
+        <!-- Project Quote & Pricing Box -->
+        <div class="portfolio-quote-box">
+          <div class="portfolio-quote-meta">
+            <span class="portfolio-quote-label">Estimated Quote / Budget</span>
+            <span class="portfolio-quote-amount">${p.quote ? p.quote : 'Custom Quote'}</span>
+          </div>
+          <div class="portfolio-quote-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>Project Baseline</span>
+          </div>
+        </div>
+
         <div class="portfolio-footer">
           <div class="portfolio-tags">
             ${tags.map(t => `<span class="portfolio-tag">${t}</span>`).join('')}
           </div>
-          ${p.url ? `
-            <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn">
-              <span>${p.btnText || 'Visit'}</span>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
+          
+          <div class="portfolio-card-actions">
+            ${p.url ? `
+              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn" title="View live ${p.title} platform">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+                <span>${p.btnText || 'Visit'}</span>
+              </a>
+            ` : ''}
+            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${p.quote || ''}" data-project-category="${p.category || ''}" title="Order a website or platform similar to ${p.title}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
               </svg>
+              <span>${p.orderBtnText || 'Order Similar Website'}</span>
             </a>
-          ` : ''}
+          </div>
         </div>
       </div>
     `;
