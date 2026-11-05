@@ -463,16 +463,10 @@ function renderAboutTab(about) {
         <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:1.75rem 0;">
 
         <h3 style="font-size:1.1rem; color:#fff; margin-bottom:1rem;">Office Workspace &amp; Photo</h3>
-        <div class="admin-form-row">
-          <div class="admin-form-group">
-            <label class="admin-label">Office Photo Path or URL</label>
-            <input type="text" id="aboutPhoto" class="admin-input" value="${about.officePhoto || '/images/about_office.jpg'}">
-            <div class="admin-helper-text">Default: <code>/images/about_office.jpg</code></div>
-          </div>
-          <div class="admin-form-group">
-            <label class="admin-label">Photo Badge Label</label>
-            <input type="text" id="aboutOfficeBadge" class="admin-input" value="${about.officeBadge || 'Kigali Innovation Hub • Rwanda'}">
-          </div>
+        <div class="admin-form-group" style="max-width:540px;">
+          <label class="admin-label">Office Photo Path or URL</label>
+          <input type="text" id="aboutPhoto" class="admin-input" value="${about.officePhoto || '/images/about_office.jpg'}">
+          <div class="admin-helper-text">Default: <code>/images/about_office.jpg</code></div>
         </div>
 
         <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:1.75rem 0;">
@@ -4211,7 +4205,7 @@ export function initAdminEvents(onContentChange) {
         title: document.getElementById('aboutTitle').value.trim(),
         desc: document.getElementById('aboutDesc').value.trim(),
         officePhoto: document.getElementById('aboutPhoto').value.trim(),
-        officeBadge: document.getElementById('aboutOfficeBadge').value.trim(),
+        officeBadge: document.getElementById('aboutOfficeBadge')?.value?.trim() || '',
         paragraphs,
         registration: {
           tin: document.getElementById('regTin').value.trim(),

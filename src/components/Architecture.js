@@ -7,7 +7,6 @@ export function renderAbout(aboutData = {}) {
     'Our primary business activity is <strong>Software Publishing</strong> (RDB code J5820), complemented by a range of computer programming, IT consultancy, data processing, and web portal services.'
   ];
   const photo = aboutData.officePhoto || '/images/about_office.jpg';
-  const badge = aboutData.officeBadge || 'Kigali Innovation Hub • Rwanda';
   const reg = aboutData.registration || {
     tin: '1628324',
     date: '20 October 2025',
@@ -37,12 +36,6 @@ export function renderAbout(aboutData = {}) {
           <div class="about-side-col reveal">
             <div class="about-photo-card">
               <img src="${photo}" alt="ORVEXI Technology Workspace in Kigali" class="about-photo" loading="lazy">
-              <div class="about-photo-overlay">
-                <div class="about-photo-badge">
-                  <span class="photo-pulse-dot"></span>
-                  <span>${badge}</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
