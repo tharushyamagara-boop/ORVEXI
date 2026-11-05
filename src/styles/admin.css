@@ -1575,7 +1575,7 @@
 }
 
 .designer-sidebar {
-  width: 320px;
+  width: 340px;
   height: 100%;
   background: #080c16;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -1704,17 +1704,18 @@
   height: 100%;
   background: #030509;
   overflow-y: auto;
-  overflow-x: hidden;
-  padding: 2.5rem 1.5rem 8rem;
+  overflow-x: auto;
+  padding: 2rem 2rem 8rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   scroll-behavior: smooth;
 }
 
 .designer-canvas {
   width: 100%;
-  max-width: 620px;
+  max-width: 640px;
+  margin-left: 1.5rem;
   background: #0b101f;
   border-radius: 10px;
   border: 1px solid rgba(62, 181, 241, 0.2);
@@ -1723,10 +1724,33 @@
   height: auto;
   margin-bottom: 4rem;
   transition: max-width 0.25s ease;
+  flex-shrink: 0;
 }
 
 .designer-canvas.mobile {
   max-width: 380px;
+}
+
+@media (max-width: 900px) {
+  .designer-workspace {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+  .designer-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .designer-canvas-wrap {
+    padding: 1.5rem 1rem 6rem;
+    justify-content: center;
+  }
+  .designer-canvas {
+    margin-left: 0;
+  }
 }
 
 .designer-canvas-block {
