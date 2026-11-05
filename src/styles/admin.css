@@ -1571,13 +1571,26 @@
   min-height: 0;
   height: calc(100vh - 60px);
   display: flex;
+  align-items: stretch;
   overflow: hidden;
+  background: #030509;
+}
+
+/* Left balanced column: flex: 1, aligns sidebar close to the center canvas */
+.designer-sidebar-column {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1.25rem;
 }
 
 .designer-sidebar {
-  width: 340px;
+  width: 330px;
   height: 100%;
   background: #080c16;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
@@ -1699,23 +1712,23 @@
 }
 
 .designer-canvas-wrap {
-  flex: 1;
+  flex: 0 0 auto;
+  width: auto;
   min-height: 0;
   height: 100%;
-  background: #030509;
+  background: transparent;
   overflow-y: auto;
-  overflow-x: auto;
-  padding: 2rem 2rem 8rem;
+  overflow-x: hidden;
+  padding: 1.5rem 0.5rem 8rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   scroll-behavior: smooth;
 }
 
 .designer-canvas {
-  width: 100%;
+  width: 640px;
   max-width: 640px;
-  margin-left: 1.5rem;
   background: #0b101f;
   border-radius: 10px;
   border: 1px solid rgba(62, 181, 241, 0.2);
@@ -1723,33 +1736,68 @@
   min-height: 500px;
   height: auto;
   margin-bottom: 4rem;
-  transition: max-width 0.25s ease;
+  transition: width 0.25s ease, max-width 0.25s ease;
   flex-shrink: 0;
 }
 
 .designer-canvas.mobile {
+  width: 380px;
   max-width: 380px;
 }
 
-@media (max-width: 900px) {
+/* Right spacer: identical flex: 1 to left column, keeping canvas centered in viewport */
+.designer-right-spacer {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+  .designer-workspace {
+    justify-content: flex-start;
+  }
+  .designer-sidebar-column {
+    flex: 0 0 320px;
+    padding-right: 0.75rem;
+  }
+  .designer-sidebar {
+    width: 320px;
+  }
+  .designer-canvas-wrap {
+    flex: 1;
+    padding: 1.5rem 0.75rem 6rem;
+  }
+  .designer-right-spacer {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
   .designer-workspace {
     flex-direction: column;
     height: auto;
     overflow-y: auto;
   }
+  .designer-sidebar-column {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 0;
+  }
   .designer-sidebar {
     width: 100%;
-    height: auto;
-    max-height: 380px;
+    max-height: 340px;
+    border-left: none;
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
   .designer-canvas-wrap {
-    padding: 1.5rem 1rem 6rem;
-    justify-content: center;
+    width: 100%;
+    padding: 1.25rem 0.5rem 4rem;
   }
   .designer-canvas {
-    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
   }
 }
 

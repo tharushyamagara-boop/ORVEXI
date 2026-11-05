@@ -1907,19 +1907,21 @@ function renderEmailDesignerModal() {
 
       <!-- Workspace (Sidebar + Canvas) -->
       <div class="designer-workspace">
-        <!-- Sidebar Palette -->
-        <aside class="designer-sidebar">
-          <div class="designer-sidebar-tabs" id="designerSidebarTabs">
-            <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'blocks' ? 'active' : ''}" data-tab="blocks">Blocks</button>
-            <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'sections' ? 'active' : ''}" data-tab="sections">Sections</button>
-            <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'styles' ? 'active' : ''}" data-tab="styles">Styles</button>
-            <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'optimize' ? 'active' : ''}" data-tab="optimize">Optimize</button>
-          </div>
+        <!-- Sidebar Palette (Left Column - positioned close to centered canvas) -->
+        <div class="designer-sidebar-column">
+          <aside class="designer-sidebar">
+            <div class="designer-sidebar-tabs" id="designerSidebarTabs">
+              <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'blocks' ? 'active' : ''}" data-tab="blocks">Blocks</button>
+              <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'sections' ? 'active' : ''}" data-tab="sections">Sections</button>
+              <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'styles' ? 'active' : ''}" data-tab="styles">Styles</button>
+              <button type="button" class="designer-sidebar-tab ${designerActiveTab === 'optimize' ? 'active' : ''}" data-tab="optimize">Optimize</button>
+            </div>
 
-          <div id="designerSidebarBody" style="display:flex; flex-direction:column; flex:1; min-height:0; overflow-y:auto;">
-            ${renderDesignerSidebarBody(designerActiveTab)}
-          </div>
-        </aside>
+            <div id="designerSidebarBody" style="display:flex; flex-direction:column; flex:1; min-height:0; overflow-y:auto;">
+              ${renderDesignerSidebarBody(designerActiveTab)}
+            </div>
+          </aside>
+        </div>
 
         <!-- Center Canvas -->
         <main class="designer-canvas-wrap">
@@ -1927,6 +1929,9 @@ function renderEmailDesignerModal() {
             ${renderDesignerCanvasBlocks(blocks)}
           </div>
         </main>
+
+        <!-- Right Spacer to balance the layout and keep the canvas perfectly centered -->
+        <div class="designer-right-spacer" aria-hidden="true"></div>
       </div>
     </div>
   `;
