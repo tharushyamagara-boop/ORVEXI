@@ -125,6 +125,7 @@ export const DEFAULT_CONTENT = {
         tags: ["Next.js", "PWA", "Live Audio Streaming", "Mobile Studio"],
         badge: "",
         quote: "$2,800",
+        showQuote: true,
         orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
@@ -139,6 +140,7 @@ export const DEFAULT_CONTENT = {
         tags: ["Enterprise Web", "Environmental Systems", "Operations Tracker"],
         badge: "",
         quote: "$3,500",
+        showQuote: true,
         orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
@@ -153,6 +155,7 @@ export const DEFAULT_CONTENT = {
         tags: ["Member Directory", "Institutional Portal", "Governance"],
         badge: "",
         quote: "$2,200",
+        showQuote: true,
         orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
@@ -167,6 +170,7 @@ export const DEFAULT_CONTENT = {
         tags: ["Analytics Dashboard", "Strategic Intelligence", "SDGs & Climate"],
         badge: "",
         quote: "$2,500",
+        showQuote: true,
         orderBtnText: "Order Similar Website",
         btnText: "Visit"
       },
@@ -181,6 +185,7 @@ export const DEFAULT_CONTENT = {
         tags: ["Cloud Hosted", "Microfinance App", "Cooperative Tontine"],
         badge: "",
         quote: "$1,800",
+        showQuote: true,
         orderBtnText: "Order Similar Website",
         btnText: "Live Demo"
       },
@@ -195,6 +200,7 @@ export const DEFAULT_CONTENT = {
         tags: ["Impact Dashboard", "GIS Mapping", "PWA", "Climate Analytics"],
         badge: "",
         quote: "$3,200",
+        showQuote: true,
         orderBtnText: "Order Similar Website",
         btnText: "Live Demo"
       }
@@ -303,6 +309,7 @@ class ContentStore {
               image: p.image || defItem.image || '/images/slide1_kigali_tech.jpg',
               badge,
               quote: (p.quote !== undefined && p.quote !== null && p.quote !== '') ? p.quote : (defItem.quote || ''),
+              showQuote: p.showQuote !== undefined ? Boolean(p.showQuote) : (defItem.showQuote !== false),
               orderBtnText: p.orderBtnText || defItem.orderBtnText || 'Order Similar Website'
             };
           });

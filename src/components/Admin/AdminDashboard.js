@@ -557,9 +557,15 @@ function renderPortfolioTab(portfolioData) {
           <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.35rem; flex-wrap:wrap;">
             <h4 style="font-size:1.05rem; color:#fff; font-weight:600;">${p.title}</h4>
             <span style="font-size:0.78rem; color:var(--accent-light);">${p.category || ''}</span>
-            <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
-              💰 Quote: ${p.quote || 'Not set'}
-            </span>
+            ${(p.showQuote !== false && p.quote) ? `
+              <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
+                💰 Quote: ${p.quote} (Visible)
+              </span>
+            ` : `
+              <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:var(--text-muted); font-weight:600;">
+                👁️ Quote: ${p.quote ? `${p.quote} (Hidden)` : 'Not set'}
+              </span>
+            `}
             ${p.badge && !['Enterprise', 'Flagship Platform', 'National Forum', 'Consulting Dashboard', 'Fintech Application', 'Demo Dashboard'].includes(p.badge) ? `<span class="admin-badge admin-badge-muted">${p.badge}</span>` : ''}
           </div>
           ${p.subtitle ? `<div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.35rem;">${p.subtitle}</div>` : ''}
@@ -3361,6 +3367,16 @@ function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
             </div>
           </div>
 
+          <div class="admin-form-group" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:0.85rem 1rem; margin-bottom:1.25rem;">
+            <label style="display:flex; align-items:center; gap:0.65rem; cursor:pointer; margin:0; user-select:none;">
+              <input type="checkbox" id="projectShowQuoteInput" style="width:18px; height:18px; accent-color:#84cc16; cursor:pointer;" ${project.showQuote !== false ? 'checked' : ''}>
+              <span style="font-size:0.88rem; font-weight:700; color:#fff;">Display Quote / Estimated Cost on Project Card</span>
+            </label>
+            <span style="font-size:0.76rem; color:var(--text-muted); margin-top:0.35rem; display:block; padding-left:1.8rem;">
+              When checked, the quote box is displayed on the website. If unchecked, the quote is hidden while keeping the "Order Similar Website" button active.
+            </span>
+          </div>
+
           <div class="admin-form-group">
             <label class="admin-label">Tags (comma separated)</label>
             <input type="text" id="projectTagsInput" class="admin-input" placeholder="e.g. Next.js, PWA, Live Audio" value="${tagsStr}">
@@ -5535,6 +5551,7 @@ function setupProjectModalForm(onContentChange, closeModal) {
         image: document.getElementById('projectImageInput').value.trim() || '/images/slide1_kigali_tech.jpg',
         btnText: document.getElementById('projectBtnTextInput').value.trim() || 'Visit',
         quote: document.getElementById('projectQuoteInput')?.value.trim() || '',
+        showQuote: document.getElementById('projectShowQuoteInput')?.checked ?? true,
         orderBtnText: document.getElementById('projectOrderBtnTextInput')?.value.trim() || 'Order Similar Website',
         tags
       };
