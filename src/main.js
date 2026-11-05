@@ -90,18 +90,64 @@ function initNavbarScroll() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 2. Mobile Drawer                                                            */
+/* 2. Mobile Collapse Navigation Drawer                                        */
 /* -------------------------------------------------------------------------- */
 function initMobileDrawer() {
-  const menuBtn = document.getElementById('mobileMenuBtn');
-  const drawer  = document.getElementById('mobileDrawer');
+  const menuBtn  = document.getElementById('mobileMenuBtn');
+  const drawer   = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('mobileNavBackdrop');
   if (!menuBtn || !drawer) return;
 
-  menuBtn.addEventListener('click', () => drawer.classList.toggle('open'));
+  function openDrawer() {
+    drawer.classList.add('open');
+    menuBtn.classList.add('open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    if (backdrop) backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
 
-  drawer.querySelectorAll('.mobile-link, .btn').forEach(el => {
-    el.addEventListener('click', () => drawer.classList.remove('open'));
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    menuBtn.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    if (backdrop) backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function toggleDrawer() {
+    if (drawer.classList.contains('open')) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  }
+
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleDrawer();
   });
+
+  if (backdrop) {
+    backdrop.addEventListener('click', closeDrawer);
+  }
+
+  drawer.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('click', () => {
+      closeDrawer();
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      closeDrawer();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900 && drawer.classList.contains('open')) {
+      closeDrawer();
+    }
+  }, { passive: true });
 }
 
 /* -------------------------------------------------------------------------- */

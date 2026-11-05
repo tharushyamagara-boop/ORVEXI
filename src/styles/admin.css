@@ -448,6 +448,15 @@
   animation: adminBarEntrance 0.4s ease-out;
 }
 
+@media (max-width: 640px) {
+  .floating-admin-bar {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.35rem 0.6rem 0.35rem 0.85rem;
+    max-width: calc(100vw - 2rem);
+  }
+}
+
 @keyframes adminBarEntrance {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }

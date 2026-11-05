@@ -4,12 +4,19 @@
   padding: 0;
 }
 
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
@@ -18,6 +25,7 @@ body {
   font-family: var(--font-body);
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%;
   position: relative;
   min-height: 100vh;
 }
@@ -77,19 +85,32 @@ input, textarea, select {
   padding-right: 1.5rem;
 }
 
+@media (max-width: 480px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 .section {
   padding: 6rem 0;
   position: relative;
 }
 
 @media (max-width: 768px) {
-  .section { padding: 4rem 0; }
+  .section { padding: 3.5rem 0; }
 }
 
 .section-header {
   text-align: center;
   max-width: 680px;
   margin: 0 auto 3.5rem auto;
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    margin-bottom: 2.25rem;
+  }
 }
 
 /* Section label pill */
@@ -113,20 +134,21 @@ input, textarea, select {
   font-size: clamp(1.85rem, 3.5vw, 2.9rem);
   margin-bottom: 1rem;
   color: var(--text-primary);
+  overflow-wrap: break-word;
 }
 
 .section-desc {
   font-size: 1.1rem;
   color: var(--text-secondary);
+  overflow-wrap: break-word;
 }
 
 /* Subtle static background grid */
 .ambient-background {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
