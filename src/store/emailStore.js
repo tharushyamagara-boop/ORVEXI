@@ -99,7 +99,7 @@ export const INITIAL_EMAIL_BLOCKS = [
     address: 'KN 3 Rd, Downtown Commercial Hub, Kigali, Rwanda',
     phone: '+250 788 810 675',
     email: 'ceo@orvexi.rw',
-    disclaimer: 'You are receiving this communication as a registered institutional partner or client of ORVEXI Company LTD.'
+    disclaimer: 'You are receiving this official communication from ORVEXI Limited regarding requested technology services, enterprise advisory, or active service subscriptions.'
   }
 ];
 
@@ -471,15 +471,21 @@ class EmailStore {
         case 'footer':
           return `
             <tr>
-              <td style="background:#07090f; padding:24px; text-align:center; font-family:sans-serif; border-top:1px solid rgba(255,255,255,0.08);">
-                <div style="font-size:13px; font-weight:700; color:#ffffff; margin-bottom:4px;">${block.company || 'ORVEXI COMPANY LTD'}</div>
-                <div style="font-size:11px; color:#64748b; line-height:1.5; margin-bottom:12px;">
-                  ${block.address || 'Kigali, Rwanda'}<br/>
-                  Phone: ${block.phone || '+250 788 810 675'} &nbsp;|&nbsp; Email: ${block.email || 'ceo@orvexi.rw'}
+              <td style="background:#07090f; padding:24px 20px; text-align:center; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border-top:1px solid rgba(255,255,255,0.08);">
+                <div style="font-size:13px; font-weight:700; color:#ffffff; margin-bottom:4px; letter-spacing:0.02em;">${block.company || 'ORVEXI COMPANY LTD'}</div>
+                <div style="font-size:11px; color:#94a3b8; line-height:1.5; margin-bottom:12px;">
+                  ${block.address || 'KN 3 Rd, Downtown Commercial Hub, Kigali, Rwanda'}<br/>
+                  Phone: ${block.phone || '+250 788 810 675'} &nbsp;|&nbsp; Email: <a href="mailto:${block.email || 'ceo@orvexi.rw'}" style="color:#3eb5f1; text-decoration:none;">${block.email || 'ceo@orvexi.rw'}</a>
                 </div>
-                <div style="font-size:10px; color:#475569; line-height:1.4;">
-                  ${block.disclaimer || 'Official company outbound broadcast.'}<br/>
-                  <a href="https://orvexi.rw/#unsubscribe" style="color:#64748b; text-decoration:underline;">Unsubscribe / Manage Preferences</a>
+                <div style="font-size:11px; color:#64748b; line-height:1.55; max-width:480px; margin:0 auto 10px auto;">
+                  ${block.disclaimer || 'You are receiving this official communication from ORVEXI Limited regarding requested technology services, enterprise advisory, or active service subscriptions.'}
+                </div>
+                <div style="font-size:11px; color:#64748b; padding-top:8px; border-top:1px solid rgba(255,255,255,0.05);">
+                  <a href="https://orvexi.rw/unsubscribe" target="_blank" rel="noopener noreferrer" style="color:#3eb5f1; text-decoration:underline;">Unsubscribe</a>
+                  &nbsp;&middot;&nbsp;
+                  <a href="https://orvexi.rw/contact" target="_blank" rel="noopener noreferrer" style="color:#3eb5f1; text-decoration:underline;">Help &amp; Support</a>
+                  &nbsp;&middot;&nbsp;
+                  <a href="https://orvexi.rw/privacy" target="_blank" rel="noopener noreferrer" style="color:#3eb5f1; text-decoration:underline;">Privacy Policy</a>
                 </div>
               </td>
             </tr>

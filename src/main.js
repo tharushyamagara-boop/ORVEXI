@@ -22,11 +22,35 @@ import { renderPortfolio }      from './components/Portfolio.js';
 import { renderContact }        from './components/ConsultationModal.js';
 import { renderFooter }         from './components/Footer.js';
 import { renderAdminPortal, initAdminEvents, renderFloatingAdminBar } from './components/Admin/AdminDashboard.js';
+import { renderPrivacyPolicy }  from './components/PrivacyPolicy.js';
+import { renderUnsubscribePage, initUnsubscribeEvents } from './components/Unsubscribe.js';
 
 function isCurrentRouteAdmin() {
   const hash = window.location.hash.toLowerCase();
-  const path = window.location.pathname.toLowerCase();
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
   return hash === '#admin' || path === '/admin';
+}
+
+function isCurrentRoutePrivacy() {
+  const hash = window.location.hash.toLowerCase();
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
+  if (hash === '#privacy') return true;
+  if (path === '/privacy') {
+    if (hash && hash !== '#privacy' && hash !== '#' && hash !== '#top') return false;
+    return true;
+  }
+  return false;
+}
+
+function isCurrentRouteUnsubscribe() {
+  const hash = window.location.hash.toLowerCase();
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
+  if (hash === '#unsubscribe') return true;
+  if (path === '/unsubscribe') {
+    if (hash && hash !== '#unsubscribe' && hash !== '#' && hash !== '#top') return false;
+    return true;
+  }
+  return false;
 }
 
 function renderApp() {
@@ -40,6 +64,59 @@ function renderApp() {
     // Render Admin Portal / CMS View
     app.innerHTML = renderAdminPortal();
     initAdminEvents(renderApp);
+    return;
+  }
+
+  if (isCurrentRoutePrivacy()) {
+    app.innerHTML = `
+      <div class="ambient-background">
+        <div class="ambient-grid"></div>
+        <div class="ambient-orb ambient-orb-1"></div>
+        <div class="ambient-orb ambient-orb-2"></div>
+        <div class="ambient-orb ambient-orb-3"></div>
+      </div>
+
+      ${renderNavbar(isAdmin)}
+
+      <main id="mainContent" style="padding-top: 5.5rem; min-height: 80vh;">
+        ${renderPrivacyPolicy()}
+      </main>
+
+      ${renderFooter(content.settings, content.contact)}
+      ${renderFloatingAdminBar()}
+    `;
+
+    initNavbarScroll();
+    initMobileDrawer();
+    initScrollReveal();
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    return;
+  }
+
+  if (isCurrentRouteUnsubscribe()) {
+    app.innerHTML = `
+      <div class="ambient-background">
+        <div class="ambient-grid"></div>
+        <div class="ambient-orb ambient-orb-1"></div>
+        <div class="ambient-orb ambient-orb-2"></div>
+        <div class="ambient-orb ambient-orb-3"></div>
+      </div>
+
+      ${renderNavbar(isAdmin)}
+
+      <main id="mainContent" style="padding-top: 5.5rem; min-height: 80vh;">
+        ${renderUnsubscribePage()}
+      </main>
+
+      ${renderFooter(content.settings, content.contact)}
+      ${renderFloatingAdminBar()}
+    `;
+
+    initNavbarScroll();
+    initMobileDrawer();
+    initUnsubscribeEvents();
+    initScrollReveal();
+    window.scrollTo({ top: 0, behavior: 'auto' });
     return;
   }
 
@@ -328,7 +405,7 @@ function initActiveNavLinks() {
 /* 6. Routing & Indexable In-Page Navigation                                    */
 /* -------------------------------------------------------------------------- */
 function scrollToHashOrPath(behavior = 'smooth') {
-  if (isCurrentRouteAdmin()) return;
+  if (isCurrentRouteAdmin() || isCurrentRoutePrivacy() || isCurrentRouteUnsubscribe()) return;
 
   const hash = window.location.hash.toLowerCase();
   const rawPath = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
@@ -362,6 +439,45 @@ window.addEventListener('hashchange', () => {
 window.addEventListener('popstate', () => {
   renderApp();
   scrollToHashOrPath('smooth');
+});
+
+// SPA client-side routing delegation for relative links and section anchors
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  if (!href) return;
+
+  // Internal path links (/privacy, /unsubscribe, /contact, etc.)
+  if (href.startsWith('/') && !href.startsWith('//') && !link.hasAttribute('target') && !link.hasAttribute('download')) {
+    const raw = href.toLowerCase().replace(/\/$/, '');
+    if (['/privacy', '/unsubscribe', '/contact', '/get-in-touch', '/about', '/services', '/portfolio', '/home', ''].includes(raw)) {
+      e.preventDefault();
+      if (raw === '/privacy' || raw === '/unsubscribe') {
+        window.history.pushState(null, '', raw);
+        renderApp();
+      } else {
+        const targetId = raw.replace(/^\//, '');
+        window.history.pushState(null, '', raw ? raw : '/');
+        renderApp();
+        if (targetId) {
+          scrollToHashOrPath('smooth');
+        }
+      }
+    }
+  } else if (href.startsWith('#')) {
+    // If currently on /privacy or /unsubscribe and user clicks a section anchor
+    const currentPath = window.location.pathname.toLowerCase().replace(/\/$/, '');
+    if (currentPath === '/privacy' || currentPath === '/unsubscribe') {
+      const targetHash = href;
+      if (targetHash !== '#' + currentPath.replace('/', '')) {
+        e.preventDefault();
+        window.history.pushState(null, '', '/' + targetHash);
+        renderApp();
+        scrollToHashOrPath('smooth');
+      }
+    }
+  }
 });
 
 // Keyboard shortcut: Ctrl + Shift + A to open Admin Console

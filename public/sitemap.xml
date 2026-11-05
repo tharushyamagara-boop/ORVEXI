@@ -78,4 +78,20 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- 8. Privacy Policy & Data Protection -->
+  <url>
+    <loc>https://orvexi.rw/privacy</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 9. Communication Preferences & Unsubscribe -->
+  <url>
+    <loc>https://orvexi.rw/unsubscribe</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>

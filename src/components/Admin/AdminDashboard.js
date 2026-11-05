@@ -2021,10 +2021,15 @@ function renderDesignerCanvasBlocks(blocks) {
 
       case 'footer':
         innerContent = `
-          <div style="background:#07090f; padding:20px; text-align:center; border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="background:#07090f; padding:20px 16px; text-align:center; border-top:1px solid rgba(255,255,255,0.08);">
             <div style="font-size:12px; font-weight:700; color:#ffffff;">${escapeHtml(b.company || 'ORVEXI COMPANY LTD')}</div>
-            <div style="font-size:11px; color:#64748b; margin-top:4px;">${escapeHtml(b.address || 'KN 3 Rd, Kigali, Rwanda')}</div>
-            <div style="font-size:10px; color:#475569; margin-top:8px;">${escapeHtml(b.disclaimer || 'Official outbound notification')}</div>
+            <div style="font-size:11px; color:#94a3b8; margin-top:4px;">${escapeHtml(b.address || 'KN 3 Rd, Downtown Commercial Hub, Kigali, Rwanda')}</div>
+            <div style="font-size:10px; color:#64748b; margin-top:8px; line-height:1.45;">${escapeHtml(b.disclaimer || 'You are receiving this official communication from ORVEXI Limited regarding requested technology services, enterprise advisory, or active service subscriptions.')}</div>
+            <div style="font-size:10px; color:#3eb5f1; margin-top:8px;">
+              <span style="text-decoration:underline;">Unsubscribe</span> &nbsp;&middot;&nbsp;
+              <span style="text-decoration:underline;">Help &amp; Support</span> &nbsp;&middot;&nbsp;
+              <span style="text-decoration:underline;">Privacy Policy</span>
+            </div>
           </div>
         `;
         break;
