@@ -301,8 +301,9 @@ function initContactForm() {
 
       // Dispatch automated notification to CEO if Zoho is configured
       if (zohoEmailService.isConfigured()) {
+        const notifRecipient = contentStore.getContent()?.contact?.notificationEmail || 'ceo@orvexi.rw';
         zohoEmailService.sendEmail({
-          to: ['ceo@orvexi.rw'],
+          to: [notifRecipient],
           subject: `[New Inquiry] ${booking.service} - ${booking.customerName}`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#07090f; color:#ffffff; padding:2rem;">
@@ -346,7 +347,8 @@ function initContactForm() {
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span>Submit Service Request</span>
+        const btnLabel = contentStore.getContent()?.contact?.submitBtnText || 'Submit Service Request';
+        submitBtn.innerHTML = `<span>${btnLabel}</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>`;

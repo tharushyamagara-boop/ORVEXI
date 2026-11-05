@@ -190,6 +190,35 @@ export const DEFAULT_CONTENT = {
   },
 
   contact: {
+    tag: "Service Requests & Contact",
+    title: "Request a Service or Consultation",
+    desc: "Submit a service request, schedule a technical consultation, or reach out to our team in Kigali.",
+    submitBtnText: "Submit Service Request",
+    notificationEmail: "ceo@orvexi.rw",
+    services: [
+      "Software Publishing & Custom Development",
+      "Computer Programming Activities",
+      "IT Consultancy & Systems Advisory",
+      "Data Processing & Cloud Infrastructure",
+      "Web Portals & Enterprise Platforms",
+      "General Technical Consultation"
+    ],
+    timeSlots: [
+      "Morning (09:00 - 12:00)",
+      "Afternoon (12:00 - 16:00)",
+      "Late Afternoon (16:00 - 18:00)",
+      "Flexible / Any Time"
+    ],
+    channels: [
+      "Website Direct",
+      "Google Search",
+      "LinkedIn",
+      "Referral / Partner",
+      "Client Recommendation",
+      "Other"
+    ],
+    successTitle: "Service Request Submitted",
+    successDesc: "Thank you! Your request has been queued in our operations management pipeline. Our team will review your requirements and get in touch to confirm your appointment.",
     address: "Niboye, Kicukiro\nUmujyi wa Kigali, Rwanda",
     phone: "+250 788 810 675",
     email: "orvexi@loprok.com",

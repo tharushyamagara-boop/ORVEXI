@@ -5,6 +5,64 @@ export function renderContact(contactData = {}) {
   const tin = contactData.tin || '1628324';
   const rraLink = contactData.rraLink || 'https://etax.rra.gov.rw/nidAssignedTIN/';
 
+  const tag = contactData.tag || 'Service Requests & Contact';
+  const title = contactData.title || 'Request a Service or Consultation';
+  const desc = contactData.desc || 'Submit a service request, schedule a technical consultation, or reach out to our team in Kigali.';
+  const submitBtnText = contactData.submitBtnText || 'Submit Service Request';
+  const successTitle = contactData.successTitle || 'Service Request Submitted';
+  const successDesc = contactData.successDesc || 'Thank you! Your request has been queued in our operations management pipeline. Our team will review your requirements and get in touch to confirm your appointment.';
+
+  const defaultServices = [
+    'Software Publishing & Custom Development',
+    'Computer Programming Activities',
+    'IT Consultancy & Systems Advisory',
+    'Data Processing & Cloud Infrastructure',
+    'Web Portals & Enterprise Platforms',
+    'General Technical Consultation'
+  ];
+  const servicesList = (Array.isArray(contactData.services) && contactData.services.length > 0)
+    ? contactData.services
+    : defaultServices;
+
+  const servicesOptionsHtml = servicesList.map(s => {
+    const val = typeof s === 'string' ? s.trim() : (s.name || s.title || '');
+    return `<option value="${val}">${val}</option>`;
+  }).join('');
+
+  const defaultChannels = [
+    'Website Direct',
+    'Google Search',
+    'LinkedIn',
+    'Referral / Partner',
+    'Client Recommendation',
+    'Other'
+  ];
+  const channelsList = (Array.isArray(contactData.channels) && contactData.channels.length > 0)
+    ? contactData.channels
+    : defaultChannels;
+
+  const channelsOptionsHtml = channelsList.map(ch => {
+    const val = typeof ch === 'string' ? ch.trim() : '';
+    const isSelected = val.toLowerCase().includes('google') ? 'selected' : '';
+    return `<option value="${val}" ${isSelected}>${val}</option>`;
+  }).join('');
+
+  const defaultTimeSlots = [
+    'Morning (09:00 - 12:00)',
+    'Afternoon (12:00 - 16:00)',
+    'Late Afternoon (16:00 - 18:00)',
+    'Flexible / Any Time'
+  ];
+  const timeSlotsList = (Array.isArray(contactData.timeSlots) && contactData.timeSlots.length > 0)
+    ? contactData.timeSlots
+    : defaultTimeSlots;
+
+  const timeSlotsOptionsHtml = timeSlotsList.map((slot, idx) => {
+    const val = typeof slot === 'string' ? slot.trim() : '';
+    const isSelected = idx === 1 ? 'selected' : '';
+    return `<option value="${val}" ${isSelected}>${val}</option>`;
+  }).join('');
+
   const todayStr = new Date().toISOString().slice(0, 10);
 
   return `
@@ -13,25 +71,15 @@ export function renderContact(contactData = {}) {
       <div id="contact" style="position:relative; top:-90px; visibility:hidden; pointer-events:none;"></div>
       <div class="container">
         <div class="section-header reveal">
-          <div class="section-tag">Service Requests &amp; Contact</div>
-          <h2 class="section-title">Request a Service or Consultation</h2>
-          <p class="section-desc">
-            Submit a service request, schedule a technical consultation, or reach out to our team in Kigali.
-          </p>
+          <div class="section-tag">${tag}</div>
+          <h2 class="section-title">${title}</h2>
+          <p class="section-desc">${desc}</p>
         </div>
 
         <div class="contact-grid">
           <!-- Left (Mobile 1st): Interactive Service Request & Appointment Booking Form -->
           <div class="reveal contact-form-col">
             <div class="contact-form-card">
-              <div style="margin-bottom: 1.25rem;">
-                <span class="booking-badge">Online Service Request</span>
-                <h3 style="margin-top:0.25rem; font-size:1.25rem;">Book a Service or Technical Consultation</h3>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45;">
-                  Select a registered business service, pick your preferred appointment time, and our engineering team will get back to you promptly.
-                </p>
-              </div>
-
               <div id="contactFormContainer">
                 <form id="contactForm" novalidate>
                   <div class="form-row-2">
@@ -53,12 +101,7 @@ export function renderContact(contactData = {}) {
                     <div class="form-field">
                       <label class="form-label" for="bookingChannel">How Did You Hear About Us?</label>
                       <select id="bookingChannel" class="form-select">
-                        <option value="Website Direct">Website Direct</option>
-                        <option value="Google Search" selected>Google Search</option>
-                        <option value="LinkedIn">LinkedIn</option>
-                        <option value="Referral / Partner">Referral / Partner</option>
-                        <option value="Client Recommendation">Client Recommendation</option>
-                        <option value="Other">Other</option>
+                        ${channelsOptionsHtml}
                       </select>
                     </div>
                   </div>
@@ -67,12 +110,7 @@ export function renderContact(contactData = {}) {
                     <label class="form-label" for="bookingService">Requested Service *</label>
                     <select id="bookingService" class="form-select" required>
                       <option value="">-- Choose Registered Business Service --</option>
-                      <option value="Software Publishing & Custom Development">Software Publishing &amp; Custom Development</option>
-                      <option value="Computer Programming Activities">Computer Programming Activities</option>
-                      <option value="IT Consultancy & Systems Advisory">IT Consultancy &amp; Systems Advisory</option>
-                      <option value="Data Processing & Cloud Infrastructure">Data Processing &amp; Cloud Infrastructure</option>
-                      <option value="Web Portals & Enterprise Platforms">Web Portals &amp; Enterprise Platforms</option>
-                      <option value="General Technical Consultation">General Technical Consultation</option>
+                      ${servicesOptionsHtml}
                     </select>
                   </div>
 
@@ -84,10 +122,7 @@ export function renderContact(contactData = {}) {
                     <div class="form-field">
                       <label class="form-label" for="bookingTimeSlot">Preferred Time Slot</label>
                       <select id="bookingTimeSlot" class="form-select">
-                        <option value="Morning (09:00 - 12:00)">Morning (09:00 - 12:00)</option>
-                        <option value="Afternoon (12:00 - 16:00)" selected>Afternoon (12:00 - 16:00)</option>
-                        <option value="Late Afternoon (16:00 - 18:00)">Late Afternoon (16:00 - 18:00)</option>
-                        <option value="Flexible / Any Time">Flexible / Any Time</option>
+                        ${timeSlotsOptionsHtml}
                       </select>
                     </div>
                   </div>
@@ -103,7 +138,7 @@ export function renderContact(contactData = {}) {
                   </div>
 
                   <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.85rem;" id="contactSubmitBtn">
-                    <span>Submit Service Request</span>
+                    <span>${submitBtnText}</span>
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                       <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
                     </svg>
@@ -116,7 +151,7 @@ export function renderContact(contactData = {}) {
                 <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
                   <div style="width:40px; height:40px; border-radius:50%; background:rgba(16,185,129,0.15); color:#10b981; display:flex; align-items:center; justify-content:center; font-size:1.3rem;">✓</div>
                   <div>
-                    <h4 style="font-size:1.1rem; color:#fff; margin:0;">Service Request Submitted</h4>
+                    <h4 style="font-size:1.1rem; color:#fff; margin:0;">${successTitle}</h4>
                     <span style="font-size:0.8rem; color:#10b981; font-weight:600;">STATUS: PENDING REVIEW</span>
                   </div>
                 </div>
@@ -128,7 +163,7 @@ export function renderContact(contactData = {}) {
                 </div>
 
                 <p style="font-size:0.84rem; color:var(--text-secondary); margin-bottom:1rem; line-height:1.45;">
-                  Thank you! Your request has been queued in our operations management pipeline. Our team will review your requirements and get in touch to confirm your appointment.
+                  ${successDesc}
                 </p>
 
                 <button type="button" class="btn btn-secondary btn-sm" id="bookAnotherBtn" style="width:100%; justify-content:center;">

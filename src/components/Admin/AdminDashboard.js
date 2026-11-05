@@ -151,7 +151,7 @@ export function renderAdminPortal() {
 
           <button class="admin-nav-item ${activeTab === 'contact' ? 'active' : ''}" data-tab="contact">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.61 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-            <span>Contact &amp; Details</span>
+            <span>Service Form &amp; Contact</span>
           </button>
 
           <button class="admin-nav-item ${activeTab === 'vault' ? 'active' : ''}" data-tab="vault">
@@ -599,45 +599,163 @@ function renderPortfolioTab(portfolioData) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* TAB 5: Contact & Details                                                   */
+/* TAB 5: Service Request Form & Corporate Contact                            */
 /* -------------------------------------------------------------------------- */
 function renderContactTab(contact) {
+  const servicesList = (Array.isArray(contact.services) && contact.services.length > 0)
+    ? contact.services
+    : [
+        'Software Publishing & Custom Development',
+        'Computer Programming Activities',
+        'IT Consultancy & Systems Advisory',
+        'Data Processing & Cloud Infrastructure',
+        'Web Portals & Enterprise Platforms',
+        'General Technical Consultation'
+      ];
+
+  const timeSlotsList = (Array.isArray(contact.timeSlots) && contact.timeSlots.length > 0)
+    ? contact.timeSlots
+    : [
+        'Morning (09:00 - 12:00)',
+        'Afternoon (12:00 - 16:00)',
+        'Late Afternoon (16:00 - 18:00)',
+        'Flexible / Any Time'
+      ];
+
+  const channelsList = (Array.isArray(contact.channels) && contact.channels.length > 0)
+    ? contact.channels
+    : [
+        'Website Direct',
+        'Google Search',
+        'LinkedIn',
+        'Referral / Partner',
+        'Client Recommendation',
+        'Other'
+      ];
+
   return `
+    <!-- Card 1: Service Request Form Settings -->
+    <div class="admin-card" style="margin-bottom: 2rem;">
+      <div class="admin-card-header">
+        <div>
+          <h2 class="admin-card-title">Service Request Form Settings</h2>
+          <p class="admin-card-subtitle">
+            Configure section tag, title, description, dropdown services, time slots, lead attribution channels, button text, and alerts.
+          </p>
+        </div>
+        <button id="saveServiceFormBtn" class="btn-admin btn-admin-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          <span>Save Form Settings</span>
+        </button>
+      </div>
+
+      <form id="serviceFormConfigForm">
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label class="admin-label">Section Tag / Badge</label>
+            <input type="text" id="formConfigTag" class="admin-input" value="${escapeHtml(contact.tag || 'Service Requests & Contact')}">
+            <div class="admin-helper-text">Uppercase badge shown above the section headline.</div>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Section Title</label>
+            <input type="text" id="formConfigTitle" class="admin-input" value="${escapeHtml(contact.title || 'Request a Service or Consultation')}">
+            <div class="admin-helper-text">Main section headline displayed on the website.</div>
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Section Description / Subtitle</label>
+          <textarea id="formConfigDesc" class="admin-textarea" rows="2">${escapeHtml(contact.desc || 'Submit a service request, schedule a technical consultation, or reach out to our team in Kigali.')}</textarea>
+          <div class="admin-helper-text">Brief overview text displayed directly beneath the section title.</div>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label class="admin-label">Submit Button Label</label>
+            <input type="text" id="formConfigSubmitBtn" class="admin-input" value="${escapeHtml(contact.submitBtnText || 'Submit Service Request')}">
+            <div class="admin-helper-text">Action text displayed on the submission button.</div>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Admin Notification Recipient Email</label>
+            <input type="email" id="formConfigNotificationEmail" class="admin-input" value="${escapeHtml(contact.notificationEmail || 'ceo@orvexi.rw')}">
+            <div class="admin-helper-text">Email address that receives automated inquiry dispatches via Zoho CPaaS.</div>
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Available Services in Dropdown (One per line)</label>
+          <textarea id="formConfigServices" class="admin-textarea" rows="6" style="font-family:var(--font-mono); font-size:0.86rem; line-height:1.6;" placeholder="Enter one service per line...">${escapeHtml(servicesList.join('\n'))}</textarea>
+          <div class="admin-helper-text">Clients can choose from these business services in the "Requested Service" select menu.</div>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label class="admin-label">Appointment Time Slots (One per line)</label>
+            <textarea id="formConfigTimeSlots" class="admin-textarea" rows="4" style="font-family:var(--font-mono); font-size:0.86rem; line-height:1.6;" placeholder="Enter one time slot per line...">${escapeHtml(timeSlotsList.join('\n'))}</textarea>
+            <div class="admin-helper-text">Available consultation time windows.</div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Attribution Channels ("How Did You Hear About Us?", One per line)</label>
+            <textarea id="formConfigChannels" class="admin-textarea" rows="4" style="font-family:var(--font-mono); font-size:0.86rem; line-height:1.6;" placeholder="Enter one channel per line...">${escapeHtml(channelsList.join('\n'))}</textarea>
+            <div class="admin-helper-text">Discovery channels for client attribution.</div>
+          </div>
+        </div>
+
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label class="admin-label">Success Card Headline</label>
+            <input type="text" id="formConfigSuccessTitle" class="admin-input" value="${escapeHtml(contact.successTitle || 'Service Request Submitted')}">
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Success Card Confirmation Text</label>
+          <textarea id="formConfigSuccessDesc" class="admin-textarea" rows="2">${escapeHtml(contact.successDesc || 'Thank you! Your request has been queued in our operations management pipeline. Our team will review your requirements and get in touch to confirm your appointment.')}</textarea>
+          <div class="admin-helper-text">Message displayed immediately upon successful submission.</div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Card 2: Corporate & Contact Details -->
     <div class="admin-card">
       <div class="admin-card-header">
         <div>
-          <h2 class="admin-card-title">Contact &amp; Corporate Details</h2>
-          <p class="admin-card-subtitle">Configure email, phone, physical location, and official tax lookup links.</p>
+          <h2 class="admin-card-title">Corporate &amp; Contact Details</h2>
+          <p class="admin-card-subtitle">Configure official email, phone, physical location, registered TIN, and tax lookup verification link.</p>
         </div>
-        <button id="saveContactBtn" class="btn-admin btn-admin-primary">Save Changes</button>
+        <button id="saveContactBtn" class="btn-admin btn-admin-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          <span>Save Corporate Details</span>
+        </button>
       </div>
 
       <form id="contactConfigForm">
         <div class="admin-form-row">
           <div class="admin-form-group">
             <label class="admin-label">Official Contact Email</label>
-            <input type="email" id="contactConfigEmail" class="admin-input" value="${contact.email || 'orvexi@loprok.com'}">
+            <input type="email" id="contactConfigEmail" class="admin-input" value="${escapeHtml(contact.email || 'orvexi@loprok.com')}">
           </div>
           <div class="admin-form-group">
             <label class="admin-label">Official Phone Number</label>
-            <input type="text" id="contactConfigPhone" class="admin-input" value="${contact.phone || '+250 788 810 675'}">
+            <input type="text" id="contactConfigPhone" class="admin-input" value="${escapeHtml(contact.phone || '+250 788 810 675')}">
           </div>
         </div>
 
         <div class="admin-form-row">
           <div class="admin-form-group">
             <label class="admin-label">Registered TIN Number</label>
-            <input type="text" id="contactConfigTin" class="admin-input" value="${contact.tin || '1628324'}">
+            <input type="text" id="contactConfigTin" class="admin-input" value="${escapeHtml(contact.tin || '1628324')}">
           </div>
           <div class="admin-form-group">
             <label class="admin-label">RRA Portal Verification URL</label>
-            <input type="url" id="contactConfigRraLink" class="admin-input" value="${contact.rraLink || 'https://etax.rra.gov.rw/nidAssignedTIN/'}">
+            <input type="url" id="contactConfigRraLink" class="admin-input" value="${escapeHtml(contact.rraLink || 'https://etax.rra.gov.rw/nidAssignedTIN/')}">
           </div>
         </div>
 
         <div class="admin-form-group">
           <label class="admin-label">Physical Address</label>
-          <textarea id="contactConfigAddress" class="admin-textarea" rows="2">${contact.address || 'Niboye, Kicukiro\nUmujyi wa Kigali, Rwanda'}</textarea>
+          <textarea id="contactConfigAddress" class="admin-textarea" rows="2">${escapeHtml(contact.address || 'Niboye, Kicukiro\nUmujyi wa Kigali, Rwanda')}</textarea>
         </div>
       </form>
     </div>
@@ -3689,22 +3807,72 @@ export function initAdminEvents(onContentChange) {
   }
 
   // -------------------------
-  // CONTACT EVENTS
+  // CONTACT & SERVICE FORM EVENTS
   // -------------------------
+  async function persistFullContactData() {
+    const currentContact = contentStore.getContent()?.contact || {};
+
+    const tagEl = document.getElementById('formConfigTag');
+    const titleEl = document.getElementById('formConfigTitle');
+    const descEl = document.getElementById('formConfigDesc');
+    const submitBtnEl = document.getElementById('formConfigSubmitBtn');
+    const notifEmailEl = document.getElementById('formConfigNotificationEmail');
+    const servicesEl = document.getElementById('formConfigServices');
+    const timeSlotsEl = document.getElementById('formConfigTimeSlots');
+    const channelsEl = document.getElementById('formConfigChannels');
+    const successTitleEl = document.getElementById('formConfigSuccessTitle');
+    const successDescEl = document.getElementById('formConfigSuccessDesc');
+
+    const emailEl = document.getElementById('contactConfigEmail');
+    const phoneEl = document.getElementById('contactConfigPhone');
+    const tinEl = document.getElementById('contactConfigTin');
+    const rraLinkEl = document.getElementById('contactConfigRraLink');
+    const addressEl = document.getElementById('contactConfigAddress');
+
+    const services = servicesEl 
+      ? servicesEl.value.split('\n').map(s => s.trim()).filter(Boolean)
+      : currentContact.services;
+
+    const timeSlots = timeSlotsEl 
+      ? timeSlotsEl.value.split('\n').map(s => s.trim()).filter(Boolean)
+      : currentContact.timeSlots;
+
+    const channels = channelsEl 
+      ? channelsEl.value.split('\n').map(s => s.trim()).filter(Boolean)
+      : currentContact.channels;
+
+    const updatedContact = {
+      ...currentContact,
+      ...(tagEl ? { tag: tagEl.value.trim() } : {}),
+      ...(titleEl ? { title: titleEl.value.trim() } : {}),
+      ...(descEl ? { desc: descEl.value.trim() } : {}),
+      ...(submitBtnEl ? { submitBtnText: submitBtnEl.value.trim() } : {}),
+      ...(notifEmailEl ? { notificationEmail: notifEmailEl.value.trim() } : {}),
+      ...(services ? { services } : {}),
+      ...(timeSlots ? { timeSlots } : {}),
+      ...(channels ? { channels } : {}),
+      ...(successTitleEl ? { successTitle: successTitleEl.value.trim() } : {}),
+      ...(successDescEl ? { successDesc: successDescEl.value.trim() } : {}),
+      ...(emailEl ? { email: emailEl.value.trim() } : {}),
+      ...(phoneEl ? { phone: phoneEl.value.trim() } : {}),
+      ...(tinEl ? { tin: tinEl.value.trim() } : {}),
+      ...(rraLinkEl ? { rraLink: rraLinkEl.value.trim() } : {}),
+      ...(addressEl ? { address: addressEl.value.trim() } : {})
+    };
+
+    await contentStore.saveContent({ contact: updatedContact });
+    showAdminToast('Service form & corporate settings saved successfully!', 'success');
+    onContentChange();
+  }
+
+  const saveServiceFormBtn = document.getElementById('saveServiceFormBtn');
+  if (saveServiceFormBtn) {
+    saveServiceFormBtn.onclick = persistFullContactData;
+  }
+
   const saveContactBtn = document.getElementById('saveContactBtn');
   if (saveContactBtn) {
-    saveContactBtn.onclick = async () => {
-      const contactData = {
-        email: document.getElementById('contactConfigEmail').value.trim(),
-        phone: document.getElementById('contactConfigPhone').value.trim(),
-        tin: document.getElementById('contactConfigTin').value.trim(),
-        rraLink: document.getElementById('contactConfigRraLink').value.trim(),
-        address: document.getElementById('contactConfigAddress').value.trim()
-      };
-      await contentStore.saveContent({ contact: contactData });
-      showAdminToast('Contact information saved!', 'success');
-      onContentChange();
-    };
+    saveContactBtn.onclick = persistFullContactData;
   }
 
   // -------------------------
