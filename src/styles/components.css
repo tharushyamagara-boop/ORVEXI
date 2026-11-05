@@ -1520,6 +1520,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  flex: 1;
 }
 
 .portfolio-quote-label {
@@ -1533,28 +1534,19 @@
 
 .portfolio-quote-amount {
   font-family: var(--font-display);
-  font-size: 1.18rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: #84cc16;
   letter-spacing: -0.01em;
   line-height: 1.15;
 }
 
-.portfolio-quote-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.22rem 0.55rem;
-  border-radius: var(--radius-full);
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.portfolio-quote-badge svg {
-  color: #84cc16;
+.portfolio-quote-box .portfolio-order-btn {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.78rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
 }
 
 .portfolio-card-actions {
@@ -1565,9 +1557,8 @@
 }
 
 .portfolio-card-actions .portfolio-visit-btn {
-  flex: 0 0 auto;
-  width: auto;
-  padding: 0.6rem 0.85rem;
+  flex: 1;
+  width: 100%;
 }
 
 .portfolio-order-btn {

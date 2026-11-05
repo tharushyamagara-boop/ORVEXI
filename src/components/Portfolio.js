@@ -50,17 +50,21 @@ export function renderPortfolio(portfolioData = {}) {
           <p class="portfolio-desc">${p.desc || ''}</p>
         </div>
 
-        <!-- Project Quote & Pricing Box (Rendered only when quote is enabled and not hidden) -->
+        <!-- Project Quote & Pricing Box with Order CTA Button -->
         ${isQuoteVisible ? `
           <div class="portfolio-quote-box">
             <div class="portfolio-quote-meta">
               <span class="portfolio-quote-label">Estimated Quote / Budget</span>
               <span class="portfolio-quote-amount">${p.quote}</span>
             </div>
-            <div class="portfolio-quote-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              <span>Project Baseline</span>
-            </div>
+            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${p.quote}" data-project-category="${p.category || ''}" title="Order a website or platform similar to ${p.title}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <span>${p.orderBtnText || 'Order Similar Website'}</span>
+            </a>
           </div>
         ` : ''}
 
@@ -76,14 +80,16 @@ export function renderPortfolio(portfolioData = {}) {
                 <span>${p.btnText || 'Visit'}</span>
               </a>
             ` : ''}
-            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${isQuoteVisible ? (p.quote || '') : ''}" data-project-category="${p.category || ''}" title="Order a website or platform similar to ${p.title}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-              </svg>
-              <span>${p.orderBtnText || 'Order Similar Website'}</span>
-            </a>
+            ${!isQuoteVisible ? `
+              <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="" data-project-category="${p.category || ''}" title="Order a website or platform similar to ${p.title}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>${p.orderBtnText || 'Order Similar Website'}</span>
+              </a>
+            ` : ''}
           </div>
         </div>
       </div>
