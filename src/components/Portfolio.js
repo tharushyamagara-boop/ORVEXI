@@ -8,7 +8,7 @@ export function renderPortfolio(portfolioData = {}) {
     const tags = Array.isArray(p.tags) ? p.tags : (typeof p.tags === 'string' ? p.tags.split(',').map(t => t.trim()) : []);
     const imgUrl = p.image || p.screenshot || '';
     
-    let hostname = 'orvexi.com';
+    let hostname = 'orvexi.rw';
     try {
       if (p.url && p.url.startsWith('http')) {
         hostname = new URL(p.url).hostname;

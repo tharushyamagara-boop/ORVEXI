@@ -1609,7 +1609,7 @@ function renderSendEmailTab() {
             <div style="background:rgba(7,9,15,0.7); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:0.75rem 1rem; margin-bottom:1rem;">
               <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700; text-transform:uppercase; margin-bottom:0.25rem;">GENERATED SPECIAL SEO LINK:</div>
               <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-                <span id="generatedSeoLinkText" style="font-family:var(--font-mono); font-size:0.84rem; color:#84cc16;">https://orvexi.com/publications/${escapeHtml(campaign.seoSlug || 'newsletter')}</span>
+                <span id="generatedSeoLinkText" style="font-family:var(--font-mono); font-size:0.84rem; color:#84cc16;">https://orvexi.rw/publications/${escapeHtml(campaign.seoSlug || 'newsletter')}</span>
                 <span class="contacts-total-badge" style="font-size:0.7rem; padding:0.15rem 0.5rem;">SPECIAL LINK</span>
               </div>
             </div>
@@ -1678,7 +1678,7 @@ function renderSendEmailTab() {
             </div>
             <div id="ccBccWrap" style="display:none; margin-top:0.75rem;">
               <input type="text" id="campaignCcInput" class="admin-input" placeholder="CC: email1@org.rw, email2@org.rw" style="margin-bottom:0.5rem;">
-              <input type="text" id="campaignBccInput" class="admin-input" placeholder="BCC: audit@orvexi.com">
+              <input type="text" id="campaignBccInput" class="admin-input" placeholder="BCC: audit@orvexi.rw">
             </div>
           </div>
 
@@ -1893,7 +1893,7 @@ function renderDesignerCanvasBlocks(blocks) {
         innerContent = `
           <div style="background:${b.bg || '#07090f'}; padding:8px 16px; font-size:11px; color:#cbd5e1; display:flex; justify-content:space-between; border-bottom:2px solid #84cc16;">
             <span>📍 ${escapeHtml(b.address || 'Kigali, Rwanda')} &bull; 📞 ${escapeHtml(b.phone || '+250 788 810 675')}</span>
-            <span style="color:#84cc16; font-weight:bold;">${escapeHtml(b.website || 'orvexi.com')}</span>
+            <span style="color:#84cc16; font-weight:bold;">${escapeHtml(b.website || 'orvexi.rw')}</span>
           </div>
         `;
         break;
@@ -2235,7 +2235,7 @@ function renderDispatchSuccessModal(record, zohoResult = null) {
   const mount = document.getElementById('adminModalMount');
   if (!mount) return;
 
-  const mailtoLink = `mailto:${record.recipients.join(',')}?subject=${encodeURIComponent(record.subject)}&body=${encodeURIComponent(`Dear Partner,\n\nPlease find our latest official announcement and newsletter from ORVEXI:\nhttps://orvexi.com/publications/${record.seoSlug || 'newsletter'}\n\nWarm regards,\nORVEXI LTD\ninfo@orvexi.com`)}`;
+  const mailtoLink = `mailto:${record.recipients.join(',')}?subject=${encodeURIComponent(record.subject)}&body=${encodeURIComponent(`Dear Partner,\n\nPlease find our latest official announcement and newsletter from ORVEXI:\nhttps://orvexi.rw/publications/${record.seoSlug || 'newsletter'}\n\nWarm regards,\nORVEXI LTD\nceo@orvexi.rw`)}`;
 
   mount.innerHTML = `
     <div class="admin-modal-backdrop" id="adminModalBackdrop">
@@ -4295,7 +4295,7 @@ export function initAdminEvents(onContentChange) {
         if (!slugInput.value || slugInput.value.startsWith('who-are-we') || slugInput.value.length < 5) {
           const slug = val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
           if (slugInput) slugInput.value = slug;
-          if (seoLinkText) seoLinkText.textContent = `https://orvexi.com/publications/${slug}`;
+          if (seoLinkText) seoLinkText.textContent = `https://orvexi.rw/publications/${slug}`;
           emailStore.saveCampaign({ seoSlug: slug });
         }
       };
@@ -4304,7 +4304,7 @@ export function initAdminEvents(onContentChange) {
     if (slugInput) {
       slugInput.oninput = (e) => {
         const slug = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        if (seoLinkText) seoLinkText.textContent = `https://orvexi.com/publications/${slug}`;
+        if (seoLinkText) seoLinkText.textContent = `https://orvexi.rw/publications/${slug}`;
         emailStore.saveCampaign({ seoSlug: slug });
       };
     }
@@ -4321,7 +4321,7 @@ export function initAdminEvents(onContentChange) {
     if (publishOnlineBtn) {
       publishOnlineBtn.onclick = () => {
         const slug = emailStore.campaign.seoSlug || 'newsletter';
-        showAdminToast(`Publication live: https://orvexi.com/publications/${slug}`, 'success');
+        showAdminToast(`Publication live: https://orvexi.rw/publications/${slug}`, 'success');
       };
     }
 

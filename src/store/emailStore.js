@@ -33,8 +33,8 @@ export const INITIAL_EMAIL_BLOCKS = [
     textColor: '#84cc16',
     address: 'KN 3 Rd, Kigali, Rwanda',
     phone: '+250 788 810 675',
-    email: 'info@orvexi.com',
-    website: 'orvexi.com'
+    email: 'ceo@orvexi.rw',
+    website: 'orvexi.rw'
   },
   {
     id: 'blk-header',
@@ -65,7 +65,7 @@ export const INITIAL_EMAIL_BLOCKS = [
     title: 'Custom Software & Enterprise Platforms',
     desc: 'From mission-critical databases and web portals to cloud microservices and mobile ecosystems, our engineering squad delivers high-velocity solutions tailored to your operational workflows.',
     btnText: 'Read More >>',
-    btnUrl: 'https://orvexi.com/#services'
+    btnUrl: 'https://orvexi.rw/#services'
   },
   {
     id: 'blk-divider-1',
@@ -81,13 +81,13 @@ export const INITIAL_EMAIL_BLOCKS = [
     title: 'Data Processing & Cloud Infrastructure',
     desc: 'High-availability server infrastructure, automated multi-region backups, real-time Firestore synchronization, and enterprise-grade data protection complying with Rwandan and international data regulations.',
     btnText: 'Explore Cloud Vault >>',
-    btnUrl: 'https://orvexi.com/#admin'
+    btnUrl: 'https://orvexi.rw/#admin'
   },
   {
     id: 'blk-btn-cta',
     type: 'button',
     text: 'Schedule Technical Consultation',
-    url: 'https://orvexi.com/#contact',
+    url: 'https://orvexi.rw/#get-in-touch',
     align: 'center',
     btnBg: '#84cc16',
     btnColor: '#0b1402'
@@ -98,7 +98,7 @@ export const INITIAL_EMAIL_BLOCKS = [
     company: 'ORVEXI COMPANY LTD (Reg. No: 1628324)',
     address: 'KN 3 Rd, Downtown Commercial Hub, Kigali, Rwanda',
     phone: '+250 788 810 675',
-    email: 'info@orvexi.com',
+    email: 'ceo@orvexi.rw',
     disclaimer: 'You are receiving this communication as a registered institutional partner or client of ORVEXI Company LTD.'
   }
 ];
@@ -231,7 +231,7 @@ class EmailStore {
         break;
       case 'button':
         newBlock.text = 'Read Full Article >>';
-        newBlock.url = 'https://orvexi.com';
+        newBlock.url = 'https://orvexi.rw';
         newBlock.align = 'left';
         newBlock.btnBg = '#84cc16';
         newBlock.btnColor = '#0b1402';
@@ -242,7 +242,7 @@ class EmailStore {
         newBlock.title = 'New Feature / Service Highlight';
         newBlock.desc = 'Explain the key technical and strategic benefits of this feature for institutional and enterprise clients.';
         newBlock.btnText = 'Learn More >>';
-        newBlock.btnUrl = 'https://orvexi.com/#services';
+        newBlock.btnUrl = 'https://orvexi.rw/#services';
         break;
       case 'divider':
         newBlock.style = 'solid';
@@ -340,7 +340,7 @@ class EmailStore {
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td align="left" style="color:#cbd5e1;">📍 ${block.address || 'Kigali, Rwanda'} &nbsp;|&nbsp; 📞 ${block.phone || '+250 788 810 675'}</td>
-                    <td align="right" style="color:#84cc16; font-weight:bold;"><a href="https://${block.website || 'orvexi.com'}" style="color:#84cc16; text-decoration:none;">${block.website || 'orvexi.com'}</a></td>
+                    <td align="right" style="color:#84cc16; font-weight:bold;"><a href="https://${block.website || 'orvexi.rw'}" style="color:#84cc16; text-decoration:none;">${block.website || 'orvexi.rw'}</a></td>
                   </tr>
                 </table>
               </td>
@@ -475,11 +475,11 @@ class EmailStore {
                 <div style="font-size:13px; font-weight:700; color:#ffffff; margin-bottom:4px;">${block.company || 'ORVEXI COMPANY LTD'}</div>
                 <div style="font-size:11px; color:#64748b; line-height:1.5; margin-bottom:12px;">
                   ${block.address || 'Kigali, Rwanda'}<br/>
-                  Phone: ${block.phone || '+250 788 810 675'} &nbsp;|&nbsp; Email: ${block.email || 'info@orvexi.com'}
+                  Phone: ${block.phone || '+250 788 810 675'} &nbsp;|&nbsp; Email: ${block.email || 'ceo@orvexi.rw'}
                 </div>
                 <div style="font-size:10px; color:#475569; line-height:1.4;">
                   ${block.disclaimer || 'Official company outbound broadcast.'}<br/>
-                  <a href="https://orvexi.com/#unsubscribe" style="color:#64748b; text-decoration:underline;">Unsubscribe / Manage Preferences</a>
+                  <a href="https://orvexi.rw/#unsubscribe" style="color:#64748b; text-decoration:underline;">Unsubscribe / Manage Preferences</a>
                 </div>
               </td>
             </tr>
@@ -500,7 +500,7 @@ class EmailStore {
 <body style="margin:0; padding:0; background-color:#05070d; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   ${b.includeBrowserViewHeader ? `
     <div style="background:#020408; padding:8px; text-align:center; font-size:11px; color:#64748b; font-family:sans-serif;">
-      Having trouble viewing this email? <a href="https://orvexi.com/publications/${b.seoSlug || 'newsletter'}" style="color:#3eb5f1; text-decoration:underline;">View this email in your browser</a>
+      Having trouble viewing this email? <a href="https://orvexi.rw/publications/${b.seoSlug || 'newsletter'}" style="color:#3eb5f1; text-decoration:underline;">View this email in your browser</a>
     </div>
   ` : ''}
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#05070d; padding:20px 0;">
