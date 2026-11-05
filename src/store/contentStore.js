@@ -128,7 +128,12 @@ export const DEFAULT_CONTENT = {
         quote: "$2,800",
         showQuote: true,
         orderBtnText: "Get Similar",
-        btnText: "Visit"
+        btnText: "Visit",
+        features: [
+          "A live website & web application",
+          "One year management and consultancy",
+          "Audio streaming studio & social creator platform"
+        ]
       },
       {
         id: "sanex",
@@ -143,7 +148,12 @@ export const DEFAULT_CONTENT = {
         quote: "$3,500",
         showQuote: true,
         orderBtnText: "Get Similar",
-        btnText: "Visit"
+        btnText: "Visit",
+        features: [
+          "A live enterprise operations & logistics portal",
+          "One year management and consultancy",
+          "Decentralized wastewater treatment monitoring system"
+        ]
       },
       {
         id: "asserwa",
@@ -158,7 +168,12 @@ export const DEFAULT_CONTENT = {
         quote: "$2,200",
         showQuote: true,
         orderBtnText: "Get Similar",
-        btnText: "Visit"
+        btnText: "Visit",
+        features: [
+          "A live institutional portal & member directory",
+          "One year management and consultancy",
+          "National sanitation advocacy & compliance framework"
+        ]
       },
       {
         id: "equiterra",
@@ -173,7 +188,12 @@ export const DEFAULT_CONTENT = {
         quote: "$2,500",
         showQuote: true,
         orderBtnText: "Get Similar",
-        btnText: "Visit"
+        btnText: "Visit",
+        features: [
+          "A live strategic advisory & analytics platform",
+          "One year management and consultancy",
+          "Multi-sectoral intelligence dashboards & reporting tools"
+        ]
       },
       {
         id: "tontine",
@@ -188,7 +208,12 @@ export const DEFAULT_CONTENT = {
         quote: "$1,800",
         showQuote: true,
         orderBtnText: "Get Similar",
-        btnText: "Live Demo"
+        btnText: "Live Demo",
+        features: [
+          "A live cooperative microfinance web app",
+          "One year management and consultancy",
+          "Automated contribution cycles & rotating savings ledger"
+        ]
       },
       {
         id: "nbs-dashboard",
@@ -203,7 +228,12 @@ export const DEFAULT_CONTENT = {
         quote: "$3,200",
         showQuote: true,
         orderBtnText: "Get Similar",
-        btnText: "Live Demo"
+        btnText: "Live Demo",
+        features: [
+          "A live watershed impact PWA & GIS platform",
+          "One year management and consultancy",
+          "Interactive GIS mapping & climate resilience tracking"
+        ]
       }
     ]
   },
@@ -316,7 +346,8 @@ class ContentStore {
               badge,
               quote: (p.quote !== undefined && p.quote !== null && p.quote !== '') ? p.quote : (defItem.quote || ''),
               showQuote: p.showQuote !== undefined ? Boolean(p.showQuote) : (defItem.showQuote !== false),
-              orderBtnText: (p.orderBtnText && p.orderBtnText !== 'Order Similar Website') ? p.orderBtnText : (defItem.orderBtnText || 'Get Similar')
+              orderBtnText: (p.orderBtnText && p.orderBtnText !== 'Order Similar Website') ? p.orderBtnText : (defItem.orderBtnText || 'Get Similar'),
+              features: Array.isArray(p.features) ? p.features : (defItem.features || [])
             };
           });
         }

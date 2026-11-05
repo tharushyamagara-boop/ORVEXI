@@ -7,6 +7,9 @@ export function renderPortfolio(portfolioData = {}) {
   const cardsHtml = projects.map(p => {
     const imgUrl = p.image || p.screenshot || '';
     const isQuoteVisible = p.showQuote !== false && Boolean(p.quote && p.quote.trim());
+    const features = Array.isArray(p.features)
+      ? p.features.filter(Boolean)
+      : (typeof p.features === 'string' ? p.features.split('\n').map(f => f.trim()).filter(Boolean) : []);
 
     return `
       <div class="portfolio-card reveal">
@@ -48,6 +51,21 @@ export function renderPortfolio(portfolioData = {}) {
             ` : ''}
           </div>
           <p class="portfolio-desc">${p.desc || ''}</p>
+
+          ${features.length > 0 ? `
+            <div class="portfolio-features">
+              <ul class="portfolio-features-list">
+                ${features.map(f => `
+                  <li class="portfolio-feature-item">
+                    <svg class="portfolio-feature-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>${f}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          ` : ''}
         </div>
 
         <div class="portfolio-footer">

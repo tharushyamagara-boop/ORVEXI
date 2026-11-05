@@ -600,7 +600,7 @@ function renderPortfolioTab(portfolioData) {
           ${p.subtitle ? `<div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.35rem;">${p.subtitle}</div>` : ''}
           <p style="color:var(--text-muted); font-size:0.84rem; line-height:1.45; margin:0 0 0.5rem 0; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${p.desc}</p>
           <div style="font-size:0.78rem; color:var(--text-secondary); font-family:var(--font-mono);">
-            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | CTA: <span style="color:#84cc16;">${p.orderBtnText && p.orderBtnText !== 'Order Similar Website' ? p.orderBtnText : 'Get Similar'}</span> | Tags: ${tags}
+            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | CTA: <span style="color:#84cc16;">${p.orderBtnText && p.orderBtnText !== 'Order Similar Website' ? p.orderBtnText : 'Get Similar'}</span>${p.features && p.features.length ? ` | <span style="color:#3eb5f1; font-weight:600;">✓ ${p.features.length} deliverables</span>` : ''} | Tags: ${tags}
           </div>
         </div>
 
@@ -3336,6 +3336,7 @@ function renderServiceEditorModal(service = {}, isNew = false, index = -1) {
 
 function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
   const tagsStr = Array.isArray(project.tags) ? project.tags.join(', ') : (project.tags || '');
+  const featuresStr = Array.isArray(project.features) ? project.features.join('\n') : (typeof project.features === 'string' ? project.features : '');
   return `
     <div class="admin-modal-backdrop" id="adminModalBackdrop">
       <div class="admin-modal">
@@ -3394,6 +3395,12 @@ function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
           <div class="admin-form-group">
             <label class="admin-label">Description *</label>
             <textarea id="projectDescInput" class="admin-textarea" rows="3" required>${project.desc || ''}</textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-label">Included Deliverables &amp; Features (one per line, shown below description)</label>
+            <textarea id="projectFeaturesInput" class="admin-textarea" rows="3" placeholder="A live website&#10;One year management and consultancy&#10;Custom domain &amp; SSL included">${featuresStr}</textarea>
+            <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Enter key deliverables or included services (one per line). Displayed with green checkmarks directly below the card description.</span>
           </div>
 
           <div class="admin-form-row">
@@ -5736,6 +5743,11 @@ function setupProjectModalForm(onContentChange, closeModal) {
         .map(t => t.trim())
         .filter(Boolean);
 
+      const features = (document.getElementById('projectFeaturesInput')?.value || '')
+        .split('\n')
+        .map(f => f.trim())
+        .filter(Boolean);
+
       const projectObj = {
         id: isNew ? 'proj-' + Date.now() : contentStore.getContent().portfolio.items[idx]?.id || 'proj-' + Date.now(),
         title: document.getElementById('projectTitleInput').value.trim(),
@@ -5743,6 +5755,7 @@ function setupProjectModalForm(onContentChange, closeModal) {
         category: document.getElementById('projectCategoryInput').value.trim(),
         badge: document.getElementById('projectBadgeInput').value.trim(),
         desc: document.getElementById('projectDescInput').value.trim(),
+        features,
         url: document.getElementById('projectUrlInput').value.trim(),
         image: document.getElementById('projectImageInput').value.trim() || '/images/slide1_kigali_tech.jpg',
         btnText: document.getElementById('projectBtnTextInput').value.trim() || 'Visit',
