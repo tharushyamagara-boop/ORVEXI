@@ -13,51 +13,95 @@
   z-index: 9999;
 }
 
-/* --- Admin Header --- */
+/* --- Admin Header (Aligned with Public Navbar) --- */
 .admin-header {
   position: sticky;
   top: 0;
-  z-index: 100;
-  background: rgba(11, 14, 23, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(62, 181, 241, 0.15);
-  padding: 0.85rem 1.75rem;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: rgba(10, 24, 52, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(24, 150, 234, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all var(--transition-normal);
+}
+
+.admin-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(24, 150, 234, 0.35) 25%, rgba(15, 107, 184, 0.5) 50%, rgba(24, 150, 234, 0.35) 75%, transparent 100%);
+  pointer-events: none;
+}
+
+.admin-header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
+  width: 100%;
 }
 
 .admin-header-brand {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
-.admin-header-brand img {
-  height: 28px;
-  max-height: 28px;
-  width: auto;
+.admin-header-brand .nav-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.admin-header-brand .brand-logo-full {
   display: block;
+  height: var(--logo-height, 34px);
+  max-height: var(--logo-height, 34px);
+  width: auto;
   object-fit: contain;
+  transition: opacity var(--transition-fast), height var(--transition-fast);
 }
 
 .admin-brand-tag {
-  background: rgba(62, 181, 241, 0.12);
-  border: 1px solid rgba(62, 181, 241, 0.25);
+  background: rgba(24, 150, 234, 0.12);
+  border: 1px solid rgba(24, 150, 234, 0.25);
   color: var(--brand-blue-light);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.6rem;
   border-radius: var(--radius-full);
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .admin-header-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 900px) {
+  .admin-header-actions {
+    overflow-x: auto;
+    max-width: 100%;
+    scrollbar-width: none;
+  }
+  .admin-header-actions::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* --- Admin Layout --- */
@@ -76,7 +120,7 @@
   width: 260px;
   flex-shrink: 0;
   background: rgba(15, 20, 32, 0.7);
-  border: 1px solid rgba(62, 181, 241, 0.1);
+  border: 1px solid rgba(24, 150, 234, 0.1);
   border-radius: var(--radius-lg);
   padding: 1.25rem 0.75rem;
   height: fit-content;
@@ -103,7 +147,7 @@
 }
 
 .admin-nav-item:hover {
-  background: rgba(62, 181, 241, 0.08);
+  background: rgba(24, 150, 234, 0.08);
   color: var(--text-primary);
 }
 
@@ -111,7 +155,7 @@
   background: rgba(42, 143, 212, 0.2);
   color: var(--brand-blue-light);
   font-weight: 600;
-  border: 1px solid rgba(62, 181, 241, 0.25);
+  border: 1px solid rgba(24, 150, 234, 0.25);
 }
 
 .admin-nav-item svg {
@@ -131,7 +175,7 @@
 
 .admin-card {
   background: rgba(15, 20, 32, 0.7);
-  border: 1px solid rgba(62, 181, 241, 0.12);
+  border: 1px solid rgba(24, 150, 234, 0.12);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   margin-bottom: 1.5rem;
@@ -191,7 +235,7 @@
   width: 100%;
   padding: 0.75rem 1rem;
   background: rgba(7, 9, 15, 0.7);
-  border: 1px solid rgba(62, 181, 241, 0.18);
+  border: 1px solid rgba(24, 150, 234, 0.18);
   border-radius: var(--radius-md);
   color: var(--text-primary);
   font-family: var(--font-body);
@@ -204,7 +248,7 @@
 .admin-textarea:focus,
 .admin-select:focus {
   border-color: var(--brand-blue-light);
-  box-shadow: 0 0 12px rgba(62, 181, 241, 0.25);
+  box-shadow: 0 0 12px rgba(24, 150, 234, 0.25);
   background: rgba(7, 9, 15, 0.9);
 }
 
@@ -223,7 +267,7 @@
 /* --- Slide Preview Card in Admin --- */
 .admin-slide-card {
   background: rgba(11, 14, 23, 0.8);
-  border: 1px solid rgba(62, 181, 241, 0.12);
+  border: 1px solid rgba(24, 150, 234, 0.12);
   border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: 1.25rem;
@@ -232,7 +276,7 @@
 }
 
 .admin-slide-card:hover {
-  border-color: rgba(62, 181, 241, 0.3);
+  border-color: rgba(24, 150, 234, 0.3);
 }
 
 .admin-slide-thumb {
@@ -338,11 +382,11 @@
 .btn-admin-primary {
   background: var(--gradient-primary);
   color: #ffffff;
-  box-shadow: 0 2px 10px rgba(26, 111, 212, 0.35);
+  box-shadow: 0 2px 10px rgba(15, 107, 184, 0.35);
 }
 
 .btn-admin-primary:hover {
-  box-shadow: 0 4px 16px rgba(26, 111, 212, 0.5);
+  box-shadow: 0 4px 16px rgba(15, 107, 184, 0.5);
   transform: translateY(-1px);
 }
 
@@ -353,7 +397,7 @@
 }
 
 .btn-admin-secondary:hover {
-  background: rgba(62, 181, 241, 0.12);
+  background: rgba(24, 150, 234, 0.12);
   border-color: var(--brand-blue-light);
 }
 
@@ -391,10 +435,10 @@
   width: 100%;
   max-width: 420px;
   background: rgba(15, 20, 32, 0.95);
-  border: 1px solid rgba(62, 181, 241, 0.25);
+  border: 1px solid rgba(24, 150, 234, 0.25);
   border-radius: var(--radius-xl);
   padding: 2.25rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(62, 181, 241, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(24, 150, 234, 0.15);
   text-align: center;
   position: relative;
 }
@@ -403,8 +447,8 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(62, 181, 241, 0.12);
-  border: 1px solid rgba(62, 181, 241, 0.3);
+  background: rgba(24, 150, 234, 0.12);
+  border: 1px solid rgba(24, 150, 234, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -446,13 +490,13 @@
   background: rgba(11, 14, 23, 0.9);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(62, 181, 241, 0.3);
+  border: 1px solid rgba(24, 150, 234, 0.3);
   border-radius: var(--radius-full);
   padding: 0.45rem 0.65rem 0.45rem 1rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(62, 181, 241, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(24, 150, 234, 0.2);
   animation: adminBarEntrance 0.4s ease-out;
 }
 
@@ -502,7 +546,7 @@
 .admin-toast {
   background: rgba(15, 20, 32, 0.95);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(62, 181, 241, 0.35);
+  border: 1px solid rgba(24, 150, 234, 0.35);
   border-radius: var(--radius-md);
   padding: 0.85rem 1.25rem;
   color: #ffffff;
@@ -542,7 +586,7 @@
   max-height: 90vh;
   overflow-y: auto;
   background: rgba(15, 20, 32, 0.98);
-  border: 1px solid rgba(62, 181, 241, 0.25);
+  border: 1px solid rgba(24, 150, 234, 0.25);
   border-radius: var(--radius-xl);
   padding: 2rem;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
@@ -709,7 +753,7 @@
   align-items: center;
   gap: 0.6rem;
   background: rgba(15, 20, 32, 0.8);
-  border: 1px solid rgba(62, 181, 241, 0.2);
+  border: 1px solid rgba(24, 150, 234, 0.2);
   border-radius: var(--radius-full);
   padding: 0.25rem 0.75rem 0.25rem 0.4rem;
   font-size: 0.84rem;
@@ -739,7 +783,7 @@
 .admin-reset-panel {
   display: none;
   background: rgba(11, 14, 23, 0.9);
-  border: 1px solid rgba(62, 181, 241, 0.25);
+  border: 1px solid rgba(24, 150, 234, 0.25);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   margin-top: 1rem;
@@ -757,7 +801,7 @@
 
 .admin-vault-stat-card {
   background: rgba(11, 14, 23, 0.7);
-  border: 1px solid rgba(62, 181, 241, 0.14);
+  border: 1px solid rgba(24, 150, 234, 0.14);
   border-radius: var(--radius-md);
   padding: 1.1rem;
 }
@@ -785,7 +829,7 @@
 }
 
 .admin-vault-dropzone {
-  border: 2px dashed rgba(62, 181, 241, 0.3);
+  border: 2px dashed rgba(24, 150, 234, 0.3);
   border-radius: var(--radius-md);
   padding: 2rem 1.5rem;
   text-align: center;
@@ -795,12 +839,12 @@
 
 .admin-vault-dropzone.dragover {
   border-color: var(--brand-blue-light);
-  background: rgba(62, 181, 241, 0.08);
+  background: rgba(24, 150, 234, 0.08);
 }
 
 .admin-vault-item {
   background: rgba(11, 14, 23, 0.75);
-  border: 1px solid rgba(62, 181, 241, 0.12);
+  border: 1px solid rgba(24, 150, 234, 0.12);
   border-radius: var(--radius-md);
   padding: 1.25rem;
   margin-bottom: 1rem;
@@ -812,7 +856,7 @@
 }
 
 .admin-vault-item:hover {
-  border-color: rgba(62, 181, 241, 0.25);
+  border-color: rgba(24, 150, 234, 0.25);
 }
 
 .admin-vault-item-main {
@@ -840,7 +884,7 @@
 /* --- Bookings Pipeline Styles (SANEX Inspired) --- */
 .bookings-pipeline-card {
   background: rgba(11, 14, 23, 0.85);
-  border: 1px solid rgba(62, 181, 241, 0.16);
+  border: 1px solid rgba(24, 150, 234, 0.16);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
 }
@@ -874,7 +918,7 @@
   width: 100%;
   padding: 0.65rem 2rem 0.65rem 2.4rem;
   background: rgba(7, 9, 15, 0.7);
-  border: 1px solid rgba(62, 181, 241, 0.2);
+  border: 1px solid rgba(24, 150, 234, 0.2);
   border-radius: var(--radius-full);
   color: #fff;
   font-size: 0.88rem;
@@ -884,7 +928,7 @@
 .bookings-search-input:focus {
   outline: none;
   border-color: var(--brand-blue-light);
-  box-shadow: 0 0 0 3px rgba(62, 181, 241, 0.12);
+  box-shadow: 0 0 0 3px rgba(24, 150, 234, 0.12);
 }
 
 .clear-search-btn {
@@ -974,7 +1018,7 @@
 /* Booking Card Structure */
 .booking-card {
   background: rgba(14, 20, 36, 0.75);
-  border: 1px solid rgba(62, 181, 241, 0.15);
+  border: 1px solid rgba(24, 150, 234, 0.15);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   margin-bottom: 1.25rem;
@@ -1002,7 +1046,7 @@
 .booking-card.cancelled::before { background: #ef4444; }
 
 .booking-card:hover {
-  border-color: rgba(62, 181, 241, 0.3);
+  border-color: rgba(24, 150, 234, 0.3);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
@@ -1231,7 +1275,7 @@
 /* ========================================================================== */
 .contacts-header-banner {
   background: rgba(14, 20, 36, 0.95);
-  border: 1px solid rgba(62, 181, 241, 0.2);
+  border: 1px solid rgba(24, 150, 234, 0.2);
   border-radius: var(--radius-lg);
   padding: 1.5rem 1.75rem;
   margin-bottom: 1.5rem;
@@ -1369,7 +1413,7 @@
 /* Contacts Table */
 .contacts-table-wrap {
   background: rgba(14, 20, 36, 0.65);
-  border: 1px solid rgba(62, 181, 241, 0.15);
+  border: 1px solid rgba(24, 150, 234, 0.15);
   border-radius: var(--radius-lg);
   overflow-x: auto;
 }
@@ -1399,7 +1443,7 @@
 }
 
 .contacts-table tr:hover td {
-  background: rgba(62, 181, 241, 0.03);
+  background: rgba(24, 150, 234, 0.03);
 }
 
 .contact-name-cell {
@@ -1414,7 +1458,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(62, 181, 241, 0.15);
+  background: rgba(24, 150, 234, 0.15);
   color: var(--brand-blue-light);
   display: flex;
   align-items: center;
@@ -1460,7 +1504,7 @@
 /* ========================================================================== */
 .send-email-wrapper {
   background: rgba(11, 14, 23, 0.85);
-  border: 1px solid rgba(62, 181, 241, 0.16);
+  border: 1px solid rgba(24, 150, 234, 0.16);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
 }
@@ -1496,7 +1540,7 @@
 
 .email-seo-panel {
   background: rgba(14, 20, 36, 0.7);
-  border: 1px solid rgba(62, 181, 241, 0.15);
+  border: 1px solid rgba(24, 150, 234, 0.15);
   border-radius: var(--radius-md);
   padding: 1.25rem;
   margin: 1.25rem 0;
@@ -1523,7 +1567,7 @@
 .recipients-textarea {
   width: 100%;
   background: rgba(7, 9, 15, 0.8);
-  border: 1px solid rgba(62, 181, 241, 0.2);
+  border: 1px solid rgba(24, 150, 234, 0.2);
   border-radius: var(--radius-md);
   padding: 0.85rem;
   color: #fff;
@@ -1536,7 +1580,7 @@
 .recipients-textarea:focus {
   outline: none;
   border-color: var(--brand-blue-light);
-  box-shadow: 0 0 0 3px rgba(62, 181, 241, 0.12);
+  box-shadow: 0 0 0 3px rgba(24, 150, 234, 0.12);
 }
 
 /* ========================================================================== */
@@ -1685,8 +1729,8 @@
 }
 
 .designer-col-btn:hover {
-  background: rgba(62, 181, 241, 0.1);
-  border-color: rgba(62, 181, 241, 0.3);
+  background: rgba(24, 150, 234, 0.1);
+  border-color: rgba(24, 150, 234, 0.3);
   color: #fff;
 }
 
@@ -1731,7 +1775,7 @@
   max-width: 640px;
   background: #0b101f;
   border-radius: 10px;
-  border: 1px solid rgba(62, 181, 241, 0.2);
+  border: 1px solid rgba(24, 150, 234, 0.2);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
   min-height: 500px;
   height: auto;
@@ -1923,7 +1967,7 @@
 
 .perf-section-card {
   background: rgba(11, 14, 23, 0.85);
-  border: 1px solid rgba(62, 181, 241, 0.16);
+  border: 1px solid rgba(24, 150, 234, 0.16);
   border-radius: var(--radius-lg);
   padding: 1.5rem 1.75rem;
   margin-bottom: 1.5rem;
@@ -1975,7 +2019,7 @@
 
 .perf-metric-card {
   background: rgba(14, 20, 36, 0.65);
-  border: 1px solid rgba(62, 181, 241, 0.15);
+  border: 1px solid rgba(24, 150, 234, 0.15);
   border-radius: var(--radius-md);
   padding: 1.25rem;
   position: relative;
@@ -2046,7 +2090,7 @@
 
 .perf-chart-box {
   background: rgba(14, 20, 36, 0.65);
-  border: 1px solid rgba(62, 181, 241, 0.15);
+  border: 1px solid rgba(24, 150, 234, 0.15);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   display: flex;
@@ -2210,7 +2254,7 @@
 
 .admin-project-item:hover {
   background: rgba(14, 20, 36, 0.85) !important;
-  border-color: rgba(62, 181, 241, 0.28) !important;
+  border-color: rgba(24, 150, 234, 0.28) !important;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
 }
 

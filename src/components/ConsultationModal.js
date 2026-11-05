@@ -147,7 +147,7 @@ export function renderContact(contactData = {}) {
               </div>
 
               <!-- Success Card -->
-              <div class="form-success" id="contactSuccess" style="display:none; text-align:left; padding:1.5rem; background:rgba(62,181,241,0.06); border:1px solid rgba(62,181,241,0.25); border-radius:var(--radius-md);">
+              <div class="form-success" id="contactSuccess" style="display:none; text-align:left; padding:1.5rem; background:rgba(24,150,234,0.06); border:1px solid rgba(24,150,234,0.25); border-radius:var(--radius-md);">
                 <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
                   <div style="width:40px; height:40px; border-radius:50%; background:rgba(16,185,129,0.15); color:#10b981; display:flex; align-items:center; justify-content:center; font-size:1.3rem;">✓</div>
                   <div>

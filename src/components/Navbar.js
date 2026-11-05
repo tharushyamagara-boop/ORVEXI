@@ -1,9 +1,13 @@
-export function renderNavbar(isAdmin = false) {
+export function renderNavbar(isAdmin = false, settings = {}) {
+  const brandName = settings.brandName || 'ORVEXI';
+  const logoUrl = settings.logoUrl || '/Logo-WHITE.png';
+  const logoHeight = Number(settings.logoHeight) || 34;
+
   return `
     <header class="header-navbar" id="headerNavbar">
       <div class="container nav-container">
-        <a href="/" class="nav-brand" aria-label="ORVEXI Home">
-          <img src="/Logo-WHITE.png" alt="ORVEXI" class="brand-logo-full" height="34">
+        <a href="/" class="nav-brand" aria-label="${brandName} Home">
+          <img src="${logoUrl}" alt="${brandName}" class="brand-logo-full navbar-logo" style="height:${logoHeight}px; max-height:${logoHeight}px;" height="${logoHeight}">
         </a>
 
         <nav class="nav-desktop" aria-label="Primary Navigation">

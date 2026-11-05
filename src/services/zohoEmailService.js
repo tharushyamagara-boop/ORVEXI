@@ -224,9 +224,9 @@ class ZohoEmailService {
           </p>
           <div style="font-size:10px; color:#475569; text-align:center; padding-top:12px; margin-top:16px; border-top:1px solid rgba(255,255,255,0.06); line-height:1.5;">
             You are receiving this official communication from ORVEXI Limited regarding requested technology services, enterprise advisory, or active service subscriptions.<br/>
-            <a href="https://orvexi.rw/unsubscribe" style="color:#3eb5f1; text-decoration:underline;">Unsubscribe</a> &nbsp;&middot;&nbsp;
-            <a href="https://orvexi.rw/contact" style="color:#3eb5f1; text-decoration:underline;">Help &amp; Support</a> &nbsp;&middot;&nbsp;
-            <a href="https://orvexi.rw/privacy" style="color:#3eb5f1; text-decoration:underline;">Privacy Policy</a>
+            <a href="https://orvexi.rw/unsubscribe" style="color:#1896ea; text-decoration:underline;">Unsubscribe</a> &nbsp;&middot;&nbsp;
+            <a href="https://orvexi.rw/contact" style="color:#1896ea; text-decoration:underline;">Help &amp; Support</a> &nbsp;&middot;&nbsp;
+            <a href="https://orvexi.rw/privacy" style="color:#1896ea; text-decoration:underline;">Privacy Policy</a>
           </div>
         </div>
       </body>

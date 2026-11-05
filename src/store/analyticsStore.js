@@ -16,7 +16,7 @@ export const CHANNELS_LIST = [
 
 export const CHANNEL_COLORS = {
   'Google Search': '#84cc16',
-  'Website Direct': '#3eb5f1',
+  'Website Direct': '#1896ea',
   'LinkedIn': '#0077b5',
   'Referral / Partner': '#f59e0b',
   'Client Recommendation': '#ec4899',
@@ -146,7 +146,7 @@ class AnalyticsStore {
         platform: 'Google Search Ads',
         verdict: 'High Opportunity Channel',
         status: 'Launch Testing',
-        statusColor: '#3eb5f1',
+        statusColor: '#1896ea',
         reason: 'Capture high-intent searches for software and system development across Rwanda and East Africa.',
         suggestedActions: ['Run targeted Search campaigns with local geo-targeting in Kigali.']
       });

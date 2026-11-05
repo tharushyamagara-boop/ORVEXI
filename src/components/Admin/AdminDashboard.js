@@ -70,64 +70,70 @@ export function renderAdminPortal() {
   const content = contentStore.getContent();
   const adminUser = contentStore.getAdminUser();
   const syncStatus = contentStore.getSyncStatus();
+  const settings = content.settings || {};
+  const brandName = settings.brandName || 'ORVEXI';
+  const logoUrl = settings.logoUrl || '/Logo-WHITE.png';
+  const logoHeight = Number(settings.logoHeight) || 34;
 
   return `
     <div class="admin-portal-wrapper" id="adminPortalRoot">
       <!-- Admin Header -->
-      <header class="admin-header">
-        <div class="admin-header-brand">
-          <a href="/" style="display:flex; align-items:center;">
-            <img src="/Logo-WHITE.png" alt="ORVEXI" height="28" style="height:28px; max-height:28px; width:auto; display:block;">
-          </a>
-          <span class="admin-brand-tag">CMS CONSOLE</span>
-        </div>
-
-        <div class="admin-header-actions">
-          <!-- Cloud Sync Trigger & Status Badge -->
-          <button id="adminSyncAllCloudBtn" class="btn-admin btn-admin-sm" style="background:rgba(132,204,22,0.14); border:1px solid rgba(132,204,22,0.35); color:#84cc16; font-weight:700; display:inline-flex; align-items:center; gap:0.45rem;" title="Sync all website content, slides, projects, contacts and bookings to Cloud Firestore">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
-              <polyline points="16 16 12 12 8 16"></polyline>
-              <line x1="12" y1="12" x2="12" y2="21"></line>
-            </svg>
-            <span>Sync with Cloud</span>
-          </button>
-          ${syncStatus.status === 'synced' ? `
-            <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(132,204,22,0.1); border:1px solid rgba(132,204,22,0.25); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
-              ● Cloud Synced
-            </span>
-          ` : `
-            <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:var(--text-muted); font-weight:600;">
-              ● Cloud Active
-            </span>
-          `}
-
-          <!-- Admin User Badge -->
-          <div class="admin-user-badge">
-            ${adminUser.photo
-      ? `<img src="${adminUser.photo}" alt="" class="admin-user-avatar">`
-      : `<span class="admin-user-initial">${(adminUser.name || 'A')[0].toUpperCase()}</span>`
-    }
-            <span style="font-weight:600; color:var(--text-primary);">${adminUser.name || 'Admin'}</span>
-            ${adminUser.provider === 'google'
-      ? `<span style="font-size:0.7rem; color:var(--brand-blue-light);">(Google)</span>`
-      : ''
-    }
+      <header class="admin-header header-navbar" id="adminHeaderNavbar">
+        <div class="container nav-container admin-header-inner">
+          <div class="admin-header-brand">
+            <a href="/" class="nav-brand" aria-label="${brandName} Home">
+              <img src="${logoUrl}" alt="${brandName}" class="brand-logo-full navbar-logo" style="height:${logoHeight}px; max-height:${logoHeight}px;" height="${logoHeight}">
+            </a>
+            <span class="admin-brand-tag">CMS CONSOLE</span>
           </div>
 
-          <a href="/" class="btn-admin btn-admin-secondary btn-admin-sm">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            <span>Live Website</span>
-          </a>
+          <div class="admin-header-actions">
+            <!-- Cloud Sync Trigger & Status Badge -->
+            <button id="adminSyncAllCloudBtn" class="btn-admin btn-admin-sm" style="background:rgba(132,204,22,0.14); border:1px solid rgba(132,204,22,0.35); color:#84cc16; font-weight:700; display:inline-flex; align-items:center; gap:0.45rem;" title="Sync all website content, slides, projects, contacts and bookings to Cloud Firestore">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                <polyline points="16 16 12 12 8 16"></polyline>
+                <line x1="12" y1="12" x2="12" y2="21"></line>
+              </svg>
+              <span>Sync with Cloud</span>
+            </button>
+            ${syncStatus.status === 'synced' ? `
+              <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(132,204,22,0.1); border:1px solid rgba(132,204,22,0.25); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
+                ● Cloud Synced
+              </span>
+            ` : `
+              <span style="display:inline-flex; align-items:center; gap:0.4rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:0.25rem 0.65rem; font-size:0.75rem; color:var(--text-muted); font-weight:600;">
+                ● Cloud Active
+              </span>
+            `}
 
-          <button id="adminQuickExportBtn" class="btn-admin btn-admin-secondary btn-admin-sm" title="Download content backup">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Backup</span>
-          </button>
+            <!-- Admin User Badge -->
+            <div class="admin-user-badge">
+              ${adminUser.photo
+        ? `<img src="${adminUser.photo}" alt="" class="admin-user-avatar">`
+        : `<span class="admin-user-initial">${(adminUser.name || 'A')[0].toUpperCase()}</span>`
+      }
+              <span style="font-weight:600; color:var(--text-primary);">${adminUser.name || 'Admin'}</span>
+              ${adminUser.provider === 'google'
+        ? `<span style="font-size:0.7rem; color:var(--brand-blue-light);">(Google)</span>`
+        : ''
+      }
+            </div>
 
-          <button id="adminLogoutBtn" class="btn-admin btn-admin-danger btn-admin-sm">
-            <span>Sign Out</span>
-          </button>
+            <a href="/" class="btn-admin btn-admin-secondary btn-admin-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <span>Live Website</span>
+            </a>
+
+            <button id="adminQuickExportBtn" class="btn-admin btn-admin-secondary btn-admin-sm" title="Download content backup">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Backup</span>
+            </button>
+
+            <button id="adminLogoutBtn" class="btn-admin btn-admin-danger btn-admin-sm">
+              <span>Sign Out</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -268,7 +274,7 @@ function renderLoginScreen() {
 
         <!-- ================= VIEW 2: RESET PASSWORD VIEW ================= -->
         <div id="adminResetView" style="${showResetView ? 'display:block;' : 'display:none;'}">
-          <div class="admin-login-icon" style="background:rgba(62,181,241,0.12); color:var(--brand-blue-light);">
+          <div class="admin-login-icon" style="background:rgba(24,150,234,0.12); color:var(--brand-blue-light);">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2l-2 2m-1.5 1.5L16 7l-4 4-2-2-4 4 2 2-4 4 3 3 4-4 2 2 4-4-2-2 4-4 1.5-1.5z"></path></svg>
           </div>
           <h2 class="admin-login-title">Reset Admin Password</h2>
@@ -510,7 +516,7 @@ function renderServicesTab(servicesData) {
   const items = servicesData.items || [];
 
   const itemsHtml = items.map((s, index) => `
-    <div style="background:rgba(11,14,23,0.7); border:1px solid rgba(62,181,241,0.12); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+    <div style="background:rgba(11,14,23,0.7); border:1px solid rgba(24,150,234,0.12); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
       <div style="flex:1;">
         <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.35rem;">
           <span style="font-family:var(--font-mono); color:var(--accent-light); font-weight:600; font-size:0.85rem;">${s.code || 'Code'}</span>
@@ -569,15 +575,15 @@ function renderPortfolioTab(portfolioData) {
     const tags = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
     const imgUrl = p.image || '/images/slide1_kigali_tech.jpg';
     return `
-      <div class="admin-project-item" data-index="${index}" draggable="true" style="background:rgba(11,14,23,0.7); border:1px solid rgba(62,181,241,0.12); border-radius:var(--radius-md); padding:1.15rem 1.25rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; gap:1.15rem; transition: all 0.2s ease;">
+      <div class="admin-project-item" data-index="${index}" draggable="true" style="background:rgba(11,14,23,0.7); border:1px solid rgba(24,150,234,0.12); border-radius:var(--radius-md); padding:1.15rem 1.25rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; gap:1.15rem; transition: all 0.2s ease;">
         <!-- Drag Handle & Order Badge -->
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.35rem; flex-shrink:0; cursor:grab; padding:0.25rem;" class="admin-project-drag-handle" title="Drag to reorder projects">
-          <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; background:rgba(62,181,241,0.15); border:1px solid rgba(62,181,241,0.3); color:var(--brand-blue-light); padding:0.18rem 0.5rem; border-radius:6px;">#${index + 1}</span>
+          <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; background:rgba(24,150,234,0.15); border:1px solid rgba(24,150,234,0.3); color:var(--brand-blue-light); padding:0.18rem 0.5rem; border-radius:6px;">#${index + 1}</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--text-dim); opacity:0.6;"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>
         </div>
 
         <!-- Thumbnail Image -->
-        <div style="width:130px; aspect-ratio:1920/1090; border-radius:6px; overflow:hidden; background:#07090f; border:1px solid rgba(62,181,241,0.2); flex-shrink:0;">
+        <div style="width:130px; aspect-ratio:1920/1090; border-radius:6px; overflow:hidden; background:#07090f; border:1px solid rgba(24,150,234,0.2); flex-shrink:0;">
           <img src="${imgUrl}" alt="${p.title}" style="width:100%; height:100%; object-fit:cover;">
         </div>
 
@@ -600,7 +606,7 @@ function renderPortfolioTab(portfolioData) {
           ${p.subtitle ? `<div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.35rem;">${p.subtitle}</div>` : ''}
           <p style="color:var(--text-muted); font-size:0.84rem; line-height:1.45; margin:0 0 0.5rem 0; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${p.desc}</p>
           <div style="font-size:0.78rem; color:var(--text-secondary); font-family:var(--font-mono);">
-            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | CTA: <span style="color:#84cc16;">${p.orderBtnText && p.orderBtnText !== 'Order Similar Website' ? p.orderBtnText : 'Get Similar'}</span>${p.features && p.features.length ? ` | <span style="color:#3eb5f1; font-weight:600;">✓ ${p.features.length} deliverables</span>` : ''} | Tags: ${tags}
+            URL: <a href="${p.url}" target="_blank" style="color:var(--brand-blue-light); text-decoration:none;">${p.url || 'None'}</a> | CTA: <span style="color:#84cc16;">${p.orderBtnText && p.orderBtnText !== 'Order Similar Website' ? p.orderBtnText : 'Get Similar'}</span>${p.features && p.features.length ? ` | <span style="color:#1896ea; font-weight:600;">✓ ${p.features.length} deliverables</span>` : ''} | Tags: ${tags}
           </div>
         </div>
 
@@ -904,7 +910,7 @@ function renderVaultTab(selectedProject = 'all') {
       </div>
 
       <!-- Upload Form (Interactive Panel) -->
-      <div id="adminVaultUploadPanel" style="display:none; background:rgba(14,24,54,0.7); border:1px solid rgba(62,181,241,0.25); border-radius:var(--radius-md); padding:1.5rem; margin-bottom:1.5rem;">
+      <div id="adminVaultUploadPanel" style="display:none; background:rgba(14,24,54,0.7); border:1px solid rgba(24,150,234,0.25); border-radius:var(--radius-md); padding:1.5rem; margin-bottom:1.5rem;">
         <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.5rem;">
           <span>☁️</span> Upload Project Codebase Archive
         </h3>
@@ -957,7 +963,7 @@ function renderVaultTab(selectedProject = 'all') {
               <span id="vaultUploadPercent">0%</span>
             </div>
             <div style="background:rgba(255,255,255,0.08); height:8px; border-radius:4px; overflow:hidden;">
-              <div id="vaultProgressBar" style="background:linear-gradient(90deg, #3eb5f1, #1a6fd4); width:0%; height:100%; transition:width 0.2s ease;"></div>
+              <div id="vaultProgressBar" style="background:linear-gradient(90deg, #1896ea, #0f6bb8); width:0%; height:100%; transition:width 0.2s ease;"></div>
             </div>
           </div>
 
@@ -995,7 +1001,7 @@ function renderVaultTab(selectedProject = 'all') {
       <hr style="border:0; border-top:1px solid rgba(255,255,255,0.08); margin:2rem 0;">
 
       <!-- CLI & Developer Synchronization Instructions -->
-      <div style="background:rgba(11,14,23,0.8); border:1px solid rgba(62,181,241,0.15); border-radius:var(--radius-md); padding:1.25rem;">
+      <div style="background:rgba(11,14,23,0.8); border:1px solid rgba(24,150,234,0.15); border-radius:var(--radius-md); padding:1.25rem;">
         <h4 style="font-size:0.98rem; color:#fff; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.5rem;">
           <span>💻</span> Local Machine Synchronization (One-Command Sync)
         </h4>
@@ -1025,7 +1031,132 @@ function renderVaultTab(selectedProject = 'all') {
 /* TAB 6: Settings & Security                                                 */
 /* -------------------------------------------------------------------------- */
 function renderSettingsTab(settings) {
+  const logoHeight = Number(settings.logoHeight) || 34;
+  const footerLogoHeight = Number(settings.footerLogoHeight || settings.logoHeight) || 34;
+  const brandName = settings.brandName || 'ORVEXI';
+  const logoUrl = settings.logoUrl || '/Logo-WHITE.png';
+
   return `
+    <!-- Card 1: Branding & Logo Management -->
+    <div class="admin-card" style="margin-bottom: 2rem;">
+      <div class="admin-card-header">
+        <div>
+          <h2 class="admin-card-title">Branding &amp; Logo Settings</h2>
+          <p class="admin-card-subtitle">Control the brand logo dimensions, file asset, and brand identity with real-time preview.</p>
+        </div>
+      </div>
+
+      <form id="brandingSettingsForm" style="max-width: 840px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+          
+          <!-- Left Column: Dimension Sliders & Presets -->
+          <div style="background: rgba(7, 9, 15, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="font-weight: 700; color: #fff; font-size: 0.95rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              <span>Logo Size Controls</span>
+            </div>
+
+            <!-- Navbar Logo Size -->
+            <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <label class="admin-label" style="margin-bottom: 0;">Navbar Logo Height</label>
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <input type="number" id="settingLogoHeightInput" min="20" max="70" value="${logoHeight}" style="width: 58px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-medium); border-radius: 4px; color: #fff; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.2rem 0.4rem; text-align: center;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">px</span>
+                </div>
+              </div>
+              <input type="range" id="settingLogoHeightSlider" min="20" max="70" value="${logoHeight}" class="admin-range-slider" style="width: 100%; accent-color: var(--brand-blue-light); cursor: pointer;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">
+                <span>20px (Compact)</span>
+                <span>34px (Standard)</span>
+                <span>70px (Large)</span>
+              </div>
+            </div>
+
+            <!-- Footer Logo Size -->
+            <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <label class="admin-label" style="margin-bottom: 0;">Footer Logo Height</label>
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <input type="number" id="settingFooterLogoHeightInput" min="20" max="80" value="${footerLogoHeight}" style="width: 58px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-medium); border-radius: 4px; color: #fff; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.2rem 0.4rem; text-align: center;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">px</span>
+                </div>
+              </div>
+              <input type="range" id="settingFooterLogoHeightSlider" min="20" max="80" value="${footerLogoHeight}" class="admin-range-slider" style="width: 100%; accent-color: var(--brand-blue-light); cursor: pointer;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">
+                <span>20px</span>
+                <span>34px</span>
+                <span>80px</span>
+              </div>
+            </div>
+
+            <!-- Quick Size Presets -->
+            <div style="margin-top: 1rem;">
+              <label class="admin-label" style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; display: block;">Quick Presets</label>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="btn-admin btn-admin-secondary btn-admin-sm logo-preset-btn" data-size="28">28px (Compact)</button>
+                <button type="button" class="btn-admin btn-admin-secondary btn-admin-sm logo-preset-btn" data-size="34">34px (Standard)</button>
+                <button type="button" class="btn-admin btn-admin-secondary btn-admin-sm logo-preset-btn" data-size="42">42px (Medium)</button>
+                <button type="button" class="btn-admin btn-admin-secondary btn-admin-sm logo-preset-btn" data-size="52">52px (Prominent)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Interactive Preview -->
+          <div style="background: rgba(7, 9, 15, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column;">
+            <div style="font-weight: 700; color: #fff; font-size: 0.95rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span>Live Navbar Simulation</span>
+              </div>
+              <span id="brandingPreviewHeightBadge" style="font-family: var(--font-mono); font-size: 0.75rem; background: rgba(24,150,234,0.15); border: 1px solid rgba(24,150,234,0.3); color: var(--brand-blue-light); padding: 0.15rem 0.5rem; border-radius: 4px;">${logoHeight}px</span>
+            </div>
+
+            <!-- Mock Header Bar for Realism -->
+            <div style="flex: 1; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(10, 24, 52, 0.92); border: 1px solid rgba(24, 150, 234, 0.22); border-radius: 8px; padding: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+              <div style="position: absolute; top: 8px; left: 12px; font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Navbar (72px header)</div>
+              <img id="brandingLogoPreviewImg" src="${logoUrl}" alt="${brandName} Preview" style="height: ${logoHeight}px; max-height: 64px; width: auto; object-fit: contain; transition: height 0.15s ease;">
+            </div>
+
+            <div style="margin-top: 0.85rem; font-size: 0.78rem; color: var(--text-secondary); text-align: center;">
+              Drag the slider to adjust height. Live preview scales instantly.
+            </div>
+          </div>
+        </div>
+
+        <!-- Asset Details: Logo URL, File Upload & Brand Name -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+          <div class="admin-form-group">
+            <label class="admin-label">Brand Name</label>
+            <input type="text" id="settingBrandNameInput" class="admin-input" value="${escapeHtml(brandName)}" placeholder="ORVEXI">
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-label">Logo Asset URL</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="settingLogoUrlInput" class="admin-input" value="${escapeHtml(logoUrl)}" placeholder="/Logo-WHITE.png">
+              <label class="btn-admin btn-admin-secondary" style="cursor: pointer; white-space: nowrap; flex-shrink: 0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <span>Upload</span>
+                <input type="file" id="settingLogoFileInput" accept="image/*" style="display: none;">
+              </label>
+            </div>
+            <div class="admin-helper-text" id="settingLogoUploadStatus">Default: <code>/Logo-WHITE.png</code> (Transparent PNG or SVG recommended).</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button type="submit" class="btn-admin btn-admin-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Save Branding &amp; Logo Settings</span>
+          </button>
+          <button type="button" id="resetLogoSizeBtn" class="btn-admin btn-admin-secondary">
+            <span>Reset to Default (34px)</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Card 2: Security & Password Management -->
     <div class="admin-card">
       <div class="admin-card-header">
         <div>
@@ -1447,7 +1578,7 @@ function renderChannelAnalyticsModal() {
                     <span style="color:var(--text-secondary); font-family:var(--font-mono);">${count} requests (${pct}%)</span>
                   </div>
                   <div style="background:rgba(255,255,255,0.08); height:8px; border-radius:4px; overflow:hidden;">
-                    <div style="background:linear-gradient(90deg, #84cc16, #3eb5f1); width:${pct}%; height:100%; border-radius:4px;"></div>
+                    <div style="background:linear-gradient(90deg, #84cc16, #1896ea); width:${pct}%; height:100%; border-radius:4px;"></div>
                   </div>
                 </div>
               `;
@@ -2280,7 +2411,7 @@ function renderDesignerCanvasBlocks(blocks) {
         innerContent = `
           <div style="padding:24px 20px 14px; text-align:center; background:${styles.cardBg || '#0b101f'};">
             <img src="${b.logoUrl || '/Logo-WHITE.png'}" alt="${escapeHtml(b.companyName || 'ORVEXI')}" height="32" style="height:32px; margin-bottom:6px; display:inline-block;" />
-            <div class="editable-text" contenteditable="true" data-id="${b.id}" data-field="tagline" style="font-size:12px; color:#3eb5f1; text-transform:uppercase; font-weight:600; letter-spacing:1px; outline:none; cursor:text;" title="Click to edit tagline inline">
+            <div class="editable-text" contenteditable="true" data-id="${b.id}" data-field="tagline" style="font-size:12px; color:#1896ea; text-transform:uppercase; font-weight:600; letter-spacing:1px; outline:none; cursor:text;" title="Click to edit tagline inline">
               ${escapeHtml(b.tagline || 'Enterprise Software & Cloud Platforms in Rwanda')}
             </div>
           </div>
@@ -2381,7 +2512,7 @@ function renderDesignerCanvasBlocks(blocks) {
 
       case 'social':
         innerContent = `
-          <div style="padding:14px 20px; text-align:center; background:${styles.cardBg || '#0b101f'}; font-size:12px; color:#3eb5f1;">
+          <div style="padding:14px 20px; text-align:center; background:${styles.cardBg || '#0b101f'}; font-size:12px; color:#1896ea;">
             <strong>LinkedIn</strong> &bull; <strong>Twitter / X</strong> &bull; <strong>GitHub</strong>
           </div>
         `;
@@ -2390,7 +2521,7 @@ function renderDesignerCanvasBlocks(blocks) {
       case 'code':
         innerContent = `
           <div style="padding:14px 20px; background:${styles.cardBg || '#0b101f'};">
-            <div style="background:#07090f; padding:10px; border-radius:6px; font-family:monospace; color:#3eb5f1; font-size:11px;">
+            <div style="background:#07090f; padding:10px; border-radius:6px; font-family:monospace; color:#1896ea; font-size:11px;">
               ${b.html || '&lt;!-- Custom Code Block --&gt;'}
             </div>
           </div>
@@ -2409,7 +2540,7 @@ function renderDesignerCanvasBlocks(blocks) {
             <div class="editable-text" contenteditable="true" data-id="${b.id}" data-field="disclaimer" style="font-size:10px; color:#64748b; margin-top:8px; line-height:1.45; outline:none; cursor:text;" title="Click to edit legal disclaimer inline">
               ${escapeHtml(b.disclaimer || 'You are receiving this official communication from ORVEXI Limited regarding requested technology services, enterprise advisory, or active service subscriptions.')}
             </div>
-            <div style="font-size:10px; color:#3eb5f1; margin-top:8px;">
+            <div style="font-size:10px; color:#1896ea; margin-top:8px;">
               <span style="text-decoration:underline;">Unsubscribe</span> &nbsp;&middot;&nbsp;
               <span style="text-decoration:underline;">Help &amp; Support</span> &nbsp;&middot;&nbsp;
               <span style="text-decoration:underline;">Privacy Policy</span>
@@ -3251,7 +3382,7 @@ function renderSlideEditorModal(slide = {}, isNew = false, index = -1) {
               <span id="slideUploadFileName" style="font-size:0.8rem; color:var(--text-muted);"></span>
               <span id="slideUploadStatus" style="font-size:0.8rem; font-weight:600; color:var(--brand-blue-light);"></span>
             </div>
-            <div id="slideImagePreviewWrap" style="margin-top:0.75rem; width:100%; max-width:280px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; border:1px solid rgba(62,181,241,0.3); background:#07090f;">
+            <div id="slideImagePreviewWrap" style="margin-top:0.75rem; width:100%; max-width:280px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; border:1px solid rgba(24,150,234,0.3); background:#07090f;">
               <img id="slideImagePreview" src="${slide.image || '/images/slide1_kigali_tech.jpg'}" alt="Slide Preview" style="width:100%; height:100%; object-fit:cover;">
             </div>
           </div>
@@ -3387,7 +3518,7 @@ function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
               </label>
               <span id="projectUploadFileName" style="font-size:0.8rem; color:var(--text-muted);">Recommended: 1920x1090 landscape ratio</span>
             </div>
-            <div id="projectImagePreviewWrap" style="margin-top:0.75rem; width:100%; max-width:260px; aspect-ratio:1920/1090; border-radius:8px; overflow:hidden; border:1px solid rgba(62,181,241,0.3); background:#07090f;">
+            <div id="projectImagePreviewWrap" style="margin-top:0.75rem; width:100%; max-width:260px; aspect-ratio:1920/1090; border-radius:8px; overflow:hidden; border:1px solid rgba(24,150,234,0.3); background:#07090f;">
               <img id="projectImagePreview" src="${project.image || '/images/slide1_kigali_tech.jpg'}" alt="Preview" style="width:100%; height:100%; object-fit:cover;">
             </div>
           </div>
@@ -3608,6 +3739,149 @@ export function initAdminEvents(onContentChange) {
         }
       } catch (err) {
         showAdminToast(err.message || 'Could not send reset email. Please verify the email address.', 'error');
+      }
+    };
+  }
+
+  // 5b. Branding & Logo Settings in Settings Tab
+  const brandingForm = document.getElementById('brandingSettingsForm');
+  if (brandingForm) {
+    const heightSlider = document.getElementById('settingLogoHeightSlider');
+    const heightInput = document.getElementById('settingLogoHeightInput');
+    const footerSlider = document.getElementById('settingFooterLogoHeightSlider');
+    const footerInput = document.getElementById('settingFooterLogoHeightInput');
+    const previewImg = document.getElementById('brandingLogoPreviewImg');
+    const previewBadge = document.getElementById('brandingPreviewHeightBadge');
+    const logoUrlInput = document.getElementById('settingLogoUrlInput');
+    const fileInput = document.getElementById('settingLogoFileInput');
+    const uploadStatus = document.getElementById('settingLogoUploadStatus');
+    const resetBtn = document.getElementById('resetLogoSizeBtn');
+    const presetBtns = brandingForm.querySelectorAll('.logo-preset-btn');
+
+    const updateNavbarHeight = (val) => {
+      const num = Math.max(20, Math.min(70, Number(val) || 34));
+      if (heightSlider) heightSlider.value = num;
+      if (heightInput) heightInput.value = num;
+      if (previewImg) previewImg.style.height = `${num}px`;
+      if (previewBadge) previewBadge.textContent = `${num}px`;
+      document.documentElement.style.setProperty('--logo-height', `${num}px`);
+    };
+
+    const updateFooterHeight = (val) => {
+      const num = Math.max(20, Math.min(80, Number(val) || 34));
+      if (footerSlider) footerSlider.value = num;
+      if (footerInput) footerInput.value = num;
+      document.documentElement.style.setProperty('--logo-footer-height', `${num}px`);
+    };
+
+    if (heightSlider) {
+      heightSlider.oninput = (e) => updateNavbarHeight(e.target.value);
+    }
+    if (heightInput) {
+      heightInput.oninput = (e) => updateNavbarHeight(e.target.value);
+    }
+    if (footerSlider) {
+      footerSlider.oninput = (e) => updateFooterHeight(e.target.value);
+    }
+    if (footerInput) {
+      footerInput.oninput = (e) => updateFooterHeight(e.target.value);
+    }
+
+    presetBtns.forEach(btn => {
+      btn.onclick = () => {
+        const size = btn.getAttribute('data-size');
+        updateNavbarHeight(size);
+        updateFooterHeight(size);
+      };
+    });
+
+    if (logoUrlInput) {
+      logoUrlInput.oninput = () => {
+        const url = logoUrlInput.value.trim() || '/Logo-WHITE.png';
+        if (previewImg) previewImg.src = url;
+      };
+    }
+
+    if (fileInput) {
+      fileInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (uploadStatus) {
+          uploadStatus.textContent = `⚡ Uploading "${file.name}"...`;
+          uploadStatus.style.color = 'var(--brand-blue-light)';
+        }
+
+        try {
+          const optimizedUrl = await uploadImageToStorage(file, 'branding', (pct) => {
+            if (uploadStatus) uploadStatus.textContent = `⚡ Uploading ${pct}%...`;
+          });
+          if (logoUrlInput) logoUrlInput.value = optimizedUrl;
+          if (previewImg) previewImg.src = optimizedUrl;
+          if (uploadStatus) {
+            uploadStatus.textContent = '✓ Logo uploaded successfully!';
+            uploadStatus.style.color = '#84cc16';
+          }
+        } catch (err) {
+          console.error('Logo upload error:', err);
+          if (uploadStatus) {
+            uploadStatus.textContent = `Upload failed: ${err.message}`;
+            uploadStatus.style.color = '#ef4444';
+          }
+        }
+      };
+    }
+
+    if (resetBtn) {
+      resetBtn.onclick = () => {
+        updateNavbarHeight(34);
+        updateFooterHeight(34);
+        if (logoUrlInput) {
+          logoUrlInput.value = '/Logo-WHITE.png';
+          if (previewImg) previewImg.src = '/Logo-WHITE.png';
+        }
+      };
+    }
+
+    brandingForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const currentContent = contentStore.getContent();
+      const currentSettings = currentContent.settings || {};
+
+      const brandName = document.getElementById('settingBrandNameInput')?.value.trim() || 'ORVEXI';
+      const logoUrl = logoUrlInput?.value.trim() || '/Logo-WHITE.png';
+      const logoHeight = Number(heightInput?.value) || 34;
+      const footerLogoHeight = Number(footerInput?.value) || logoHeight;
+
+      const updatedSettings = {
+        ...currentSettings,
+        brandName,
+        logoUrl,
+        logoHeight,
+        footerLogoHeight
+      };
+
+      const submitBtn = brandingForm.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Saving...</span>';
+      }
+
+      try {
+        await contentStore.saveContent({ settings: updatedSettings });
+        showAdminToast('Branding & logo size settings saved successfully!', 'success');
+        if (onContentChange) onContentChange();
+      } catch (err) {
+        console.error('Failed to save branding settings:', err);
+        showAdminToast(`Failed to save settings: ${err.message}`, 'error');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Save Branding &amp; Logo Settings</span>
+          `;
+        }
       }
     };
   }
@@ -4096,7 +4370,7 @@ export function initAdminEvents(onContentChange) {
 
     item.addEventListener('dragend', () => {
       item.style.opacity = '1';
-      item.style.border = '1px solid rgba(62,181,241,0.12)';
+      item.style.border = '1px solid rgba(24,150,234,0.12)';
       projectItems.forEach(el => {
         el.style.borderTop = '';
         el.style.borderBottom = '';

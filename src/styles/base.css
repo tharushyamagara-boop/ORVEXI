@@ -32,9 +32,9 @@ body {
   background: var(--bg-elevated);
   border-radius: var(--radius-full);
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(62, 181, 241, 0.5); }
+::-webkit-scrollbar-thumb:hover { background: rgba(24, 150, 234, 0.5); }
 
-::selection { background: rgba(62, 181, 241, 0.28); color: #fff; }
+::selection { background: rgba(24, 150, 234, 0.28); color: #fff; }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
@@ -170,7 +170,7 @@ input, textarea, select {
 .ambient-orb-1 {
   width: 700px;
   height: 400px;
-  background: radial-gradient(circle, rgba(62, 181, 241, 0.09) 0%, rgba(26, 111, 212, 0.04) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(24, 150, 234, 0.09) 0%, rgba(15, 107, 184, 0.04) 50%, transparent 70%);
   top: -100px;
   left: 50%;
   transform: translateX(-50%);

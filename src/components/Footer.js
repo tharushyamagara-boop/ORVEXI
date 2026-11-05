@@ -2,6 +2,7 @@ export function renderFooter(settings = {}, contact = {}) {
   const currentYear = new Date().getFullYear();
   const brandName = settings.brandName || 'ORVEXI';
   const logoUrl = settings.logoUrl || '/Logo-WHITE.png';
+  const footerLogoHeight = Number(settings.footerLogoHeight || settings.logoHeight) || 34;
   const footerText = settings.footerText || 'We deliver technology solutions from Kigali — software, IT consultancy, data hosting, and web services.';
   const address = contact.address || 'Niboye, Kicukiro\nUmujyi wa Kigali, Rwanda';
   const phone = contact.phone || '+250 788 810 675';
@@ -16,7 +17,7 @@ export function renderFooter(settings = {}, contact = {}) {
           <!-- Brand col -->
           <div class="footer-col">
             <div style="margin-bottom: 1rem;">
-              <img src="${logoUrl}" alt="${brandName}" class="brand-logo-full" height="34">
+              <img src="${logoUrl}" alt="${brandName}" class="brand-logo-full footer-logo" style="height:${footerLogoHeight}px; max-height:${footerLogoHeight}px;" height="${footerLogoHeight}">
             </div>
             <p style="font-size: 0.88rem; max-width: 280px; color: var(--text-muted); line-height: 1.6;">
               ${footerText}

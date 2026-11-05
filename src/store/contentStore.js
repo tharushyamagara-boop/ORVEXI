@@ -279,6 +279,8 @@ export const DEFAULT_CONTENT = {
     brandName: "ORVEXI",
     tagline: "Software & IT Solutions | Kigali, Rwanda",
     logoUrl: "/Logo-WHITE.png",
+    logoHeight: 34,
+    footerLogoHeight: 34,
     footerText: "We deliver technology solutions from Kigali — software, IT consultancy, data hosting, and web services.",
     adminPassword: MASTER_DEFAULT_PASSWORD,
     recoveryEmail: "orvexi@loprok.com"

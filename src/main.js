@@ -61,6 +61,11 @@ function renderApp() {
 
   const content = contentStore.getContent();
   const isAdmin = contentStore.isAdminAuthenticated();
+  const settings = content.settings || {};
+  const logoHeight = Number(settings.logoHeight) || 34;
+  const footerLogoHeight = Number(settings.footerLogoHeight || settings.logoHeight) || 34;
+  document.documentElement.style.setProperty('--logo-height', `${logoHeight}px`);
+  document.documentElement.style.setProperty('--logo-footer-height', `${footerLogoHeight}px`);
 
   if (isCurrentRouteAdmin()) {
     // Render Admin Portal / CMS View
@@ -78,7 +83,7 @@ function renderApp() {
         <div class="ambient-orb ambient-orb-3"></div>
       </div>
 
-      ${renderNavbar(isAdmin)}
+      ${renderNavbar(isAdmin, content.settings)}
 
       <main id="mainContent" style="padding-top: 5.5rem; min-height: 80vh;">
         ${renderPrivacyPolicy()}
@@ -104,7 +109,7 @@ function renderApp() {
         <div class="ambient-orb ambient-orb-3"></div>
       </div>
 
-      ${renderNavbar(isAdmin)}
+      ${renderNavbar(isAdmin, content.settings)}
 
       <main id="mainContent" style="padding-top: 5.5rem; min-height: 80vh;">
         ${renderUnsubscribePage()}
@@ -131,7 +136,7 @@ function renderApp() {
       <div class="ambient-orb ambient-orb-3"></div>
     </div>
 
-    ${renderNavbar(isAdmin)}
+    ${renderNavbar(isAdmin, content.settings)}
 
     <main id="mainContent">
       ${renderHeroSlider(content.heroSlider)}

@@ -55,11 +55,11 @@ export const EMAIL_THEME_PRESETS = [
     id: 'slate',
     name: 'Enterprise Slate',
     desc: 'Deep slate navy with cyber blue accents',
-    previewColors: ['#0b1329', '#111c38', '#3eb5f1'],
+    previewColors: ['#0b1329', '#111c38', '#1896ea'],
     styles: {
       emailBg: '#0b1329',
       cardBg: '#111c38',
-      accentColor: '#3eb5f1',
+      accentColor: '#1896ea',
       headingColor: '#f8fafc',
       textColor: '#94a3b8',
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -355,7 +355,7 @@ export const INITIAL_EMAIL_BLOCKS = [
     id: 'blk-divider-1',
     type: 'divider',
     style: 'solid',
-    color: 'rgba(62, 181, 241, 0.2)'
+    color: 'rgba(24, 150, 234, 0.2)'
   },
   {
     id: 'blk-columns-2',
@@ -552,7 +552,7 @@ class EmailStore {
         ];
         break;
       case 'code':
-        newBlock.html = '<div style="background:#07090f; padding:12px; border-radius:6px; font-family:monospace; color:#3eb5f1; font-size:12px;">&lt;!-- Custom Embedded Widget or Code --&gt;</div>';
+        newBlock.html = '<div style="background:#07090f; padding:12px; border-radius:6px; font-family:monospace; color:#1896ea; font-size:12px;">&lt;!-- Custom Embedded Widget or Code --&gt;</div>';
         break;
       default:
         newBlock.text = 'Content block';
@@ -687,7 +687,7 @@ class EmailStore {
             <tr>
               <td align="center" style="padding:28px 20px 16px; background:${styles.cardBg}; text-align:center;">
                 <img src="${block.logoUrl || '/Logo-WHITE.png'}" alt="${block.companyName || 'ORVEXI'}" height="34" style="height:34px; margin-bottom:8px; display:inline-block;" />
-                <div style="font-size:12px; color:#3eb5f1; letter-spacing:1px; text-transform:uppercase; font-weight:600; font-family:${styles.fontFamily};">${block.tagline || ''}</div>
+                <div style="font-size:12px; color:#1896ea; letter-spacing:1px; text-transform:uppercase; font-weight:600; font-family:${styles.fontFamily};">${block.tagline || ''}</div>
               </td>
             </tr>
           `;
@@ -793,11 +793,11 @@ class EmailStore {
             <tr>
               <td align="center" style="padding:16px 24px; background:${styles.cardBg}; text-align:center;">
                 <div style="display:inline-block; font-family:${styles.fontFamily};">
-                  <a href="https://linkedin.com" style="color:#3eb5f1; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">LinkedIn</a>
+                  <a href="https://linkedin.com" style="color:#1896ea; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">LinkedIn</a>
                   <span style="color:#475569;">•</span>
-                  <a href="https://x.com" style="color:#3eb5f1; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">Twitter/X</a>
+                  <a href="https://x.com" style="color:#1896ea; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">Twitter/X</a>
                   <span style="color:#475569;">•</span>
-                  <a href="https://github.com" style="color:#3eb5f1; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">GitHub</a>
+                  <a href="https://github.com" style="color:#1896ea; text-decoration:none; margin:0 8px; font-size:13px; font-weight:600;">GitHub</a>
                 </div>
               </td>
             </tr>
@@ -810,17 +810,17 @@ class EmailStore {
                 <div style="font-size:13px; font-weight:700; color:#ffffff; margin-bottom:4px; letter-spacing:0.02em;">${block.company || 'ORVEXI COMPANY LTD'}</div>
                 <div style="font-size:11px; color:#94a3b8; line-height:1.5; margin-bottom:12px;">
                   ${block.address || 'KN 3 Rd, Downtown Commercial Hub, Kigali, Rwanda'}<br/>
-                  Phone: ${block.phone || '+250 788 810 675'} &nbsp;|&nbsp; Email: <a href="mailto:${block.email || 'ceo@orvexi.rw'}" style="color:#3eb5f1; text-decoration:none;">${block.email || 'ceo@orvexi.rw'}</a>
+                  Phone: ${block.phone || '+250 788 810 675'} &nbsp;|&nbsp; Email: <a href="mailto:${block.email || 'ceo@orvexi.rw'}" style="color:#1896ea; text-decoration:none;">${block.email || 'ceo@orvexi.rw'}</a>
                 </div>
                 <div style="font-size:11px; color:#64748b; line-height:1.55; max-width:480px; margin:0 auto 10px auto;">
                   ${block.disclaimer || 'You are receiving this official communication from ORVEXI Limited regarding requested technology services, enterprise advisory, or active service subscriptions.'}
                 </div>
                 <div style="font-size:11px; color:#64748b; padding-top:8px; border-top:1px solid rgba(255,255,255,0.05);">
-                  <a href="https://orvexi.rw/unsubscribe" target="_blank" rel="noopener noreferrer" style="color:#3eb5f1; text-decoration:underline;">Unsubscribe</a>
+                  <a href="https://orvexi.rw/unsubscribe" target="_blank" rel="noopener noreferrer" style="color:#1896ea; text-decoration:underline;">Unsubscribe</a>
                   &nbsp;&middot;&nbsp;
-                  <a href="https://orvexi.rw/contact" target="_blank" rel="noopener noreferrer" style="color:#3eb5f1; text-decoration:underline;">Help &amp; Support</a>
+                  <a href="https://orvexi.rw/contact" target="_blank" rel="noopener noreferrer" style="color:#1896ea; text-decoration:underline;">Help &amp; Support</a>
                   &nbsp;&middot;&nbsp;
-                  <a href="https://orvexi.rw/privacy" target="_blank" rel="noopener noreferrer" style="color:#3eb5f1; text-decoration:underline;">Privacy Policy</a>
+                  <a href="https://orvexi.rw/privacy" target="_blank" rel="noopener noreferrer" style="color:#1896ea; text-decoration:underline;">Privacy Policy</a>
                 </div>
               </td>
             </tr>
@@ -841,14 +841,14 @@ class EmailStore {
 <body style="margin:0; padding:0; background-color:${styles.emailBg}; font-family:${styles.fontFamily};">
   ${b.includeBrowserViewHeader ? `
     <div style="background:#020408; padding:8px; text-align:center; font-size:11px; color:#64748b; font-family:${styles.fontFamily};">
-      Having trouble viewing this email? <a href="https://orvexi.rw/publications/${b.seoSlug || 'newsletter'}" style="color:#3eb5f1; text-decoration:underline;">View this email in your browser</a>
+      Having trouble viewing this email? <a href="https://orvexi.rw/publications/${b.seoSlug || 'newsletter'}" style="color:#1896ea; text-decoration:underline;">View this email in your browser</a>
     </div>
   ` : ''}
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${styles.emailBg}; padding:20px 0;">
     <tr>
       <td align="center">
         <!-- Container Table -->
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background:${styles.cardBg}; border-radius:${styles.borderRadius}px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,0.5); border:1px solid rgba(62,181,241,0.18);">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; width:100%; background:${styles.cardBg}; border-radius:${styles.borderRadius}px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,0.5); border:1px solid rgba(24,150,234,0.18);">
           ${blocksHtml}
         </table>
       </td>
