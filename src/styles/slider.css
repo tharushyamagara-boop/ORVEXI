@@ -327,24 +327,14 @@
 
 /* --- Responsive Layout for Tablets & Mobile --- */
 @media (max-width: 1024px) {
-  .hero-slider-section {
-    min-height: max(calc(100vh - var(--header-height)), 680px);
-    height: auto;
-  }
-
-  .hero-slider-track {
-    min-height: max(calc(100vh - var(--header-height)), 680px);
-    height: auto;
-  }
-
   .hero-slide-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
   }
 
   .hero-slide-photo-frame {
-    height: 320px;
-    max-height: 38vh;
+    height: 380px;
+    max-height: 44vh;
   }
 
   .hero-slide-inner {
@@ -352,7 +342,7 @@
   }
 
   .hero-slide-info .hero-title {
-    font-size: clamp(1.85rem, 5vw, 2.6rem);
+    font-size: clamp(2rem, 5vw, 2.8rem);
   }
 
   .slider-nav-prev {
@@ -364,85 +354,34 @@
   }
 }
 
-@media (max-width: 768px) {
-  .slider-nav-arrow {
-    display: none !important;
-  }
-}
-
 @media (max-width: 640px) {
-  .hero-slider-section {
-    min-height: max(calc(100vh - var(--header-height)), 620px);
-  }
-
-  .hero-slider-track {
-    min-height: max(calc(100vh - var(--header-height)), 620px);
-  }
-
-  .hero-slide-grid {
-    gap: 1.25rem;
-  }
-
   .hero-slide-photo-frame {
-    height: clamp(190px, 28vh, 230px);
-    border-radius: var(--radius-lg);
+    height: 260px;
   }
 
   .hero-slide-inner {
-    padding: 1.25rem 1rem 4.75rem 1rem;
-  }
-
-  .hero-slide-info .hero-badge {
-    margin-bottom: 0.75rem;
-    font-size: 0.74rem;
-    padding: 0.3rem 0.85rem;
-  }
-
-  .hero-slide-info .hero-title {
-    font-size: clamp(1.6rem, 6vw, 2.15rem);
-    line-height: 1.18;
-    margin-bottom: 0.75rem;
-  }
-
-  .hero-slide-info .hero-subtitle {
-    font-size: 0.92rem;
-    line-height: 1.55;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero-slide-info .hero-cta-group {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    gap: 0.65rem;
-    margin-top: 0;
-  }
-
-  .hero-slide-info .hero-cta-group .btn {
-    width: 100%;
-    justify-content: center;
-    padding: 0.8rem 1.25rem;
-  }
-
-  .hero-slider-controls {
-    bottom: 1.25rem;
+    padding: 1.5rem 1.25rem 5rem 1.25rem;
   }
 
   .hero-slider-controls-inner {
-    padding: 0 1rem;
+    padding: 0 1.25rem;
+  }
+
+  .slider-nav-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-slide-info .hero-subtitle {
+    font-size: 0.98rem;
+    margin-bottom: 1.5rem;
   }
 
   .slider-dot {
-    width: 20px;
-    height: 5px;
+    width: 22px;
   }
 
   .slider-dot.active {
-    width: 36px;
-  }
-
-  .slider-counter {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.7rem;
+    width: 38px;
   }
 }

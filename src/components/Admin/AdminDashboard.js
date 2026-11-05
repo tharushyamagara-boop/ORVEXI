@@ -68,7 +68,7 @@ export function renderAdminPortal() {
       <header class="admin-header">
         <div class="admin-header-brand">
           <a href="#home" style="display:flex; align-items:center;">
-            <img src="/Logo-WHITE.png" alt="ORVEXI" height="28">
+            <img src="/Logo-WHITE.png" alt="ORVEXI" height="28" style="height:28px; max-height:28px; width:auto; display:block;">
           </a>
           <span class="admin-brand-tag">CMS CONSOLE</span>
         </div>

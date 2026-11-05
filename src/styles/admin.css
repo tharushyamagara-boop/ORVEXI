@@ -34,6 +34,14 @@
   gap: 1rem;
 }
 
+.admin-header-brand img {
+  height: 28px;
+  max-height: 28px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
 .admin-brand-tag {
   background: rgba(62, 181, 241, 0.12);
   border: 1px solid rgba(62, 181, 241, 0.25);
