@@ -1,51 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- 1. Homepage & Root Brand Portal -->
   <url>
     <loc>https://orvexi.com/</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://orvexi.com/logo%20Color.png</image:loc>
+      <image:title>ORVEXI Technologies Ltd. Corporate Logo</image:title>
+      <image:caption>Premier software publishing and cloud systems engineering firm in Kigali, Rwanda</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://orvexi.com/Logo-WHITE.png</image:loc>
+      <image:title>ORVEXI Logo</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://orvexi.com/images/slide1_kigali_tech.jpg</image:loc>
+      <image:title>Kigali Innovation &amp; Technology Hub</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://orvexi.com/images/slide2_software_team.jpg</image:loc>
+      <image:title>Custom Software Engineering Squad</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://orvexi.com/images/slide3_datacenter.jpg</image:loc>
+      <image:title>Enterprise Cloud Datacenter &amp; Data Hosting</image:title>
+    </image:image>
   </url>
-  <url>
-    <loc>https://orvexi.com/#home</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://orvexi.com/#about</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://orvexi.com/#services</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://orvexi.com/#portfolio</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
+  <!-- 2. Get in Touch & Online Service Booking (Primary Indexable URL) -->
   <url>
     <loc>https://orvexi.com/#get-in-touch</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
+
   <url>
     <loc>https://orvexi.com/get-in-touch</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
+
+  <!-- 3. Services & Registered Business Activities -->
+  <url>
+    <loc>https://orvexi.com/#services</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://orvexi.com/services</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- 4. About ORVEXI Corporate Architecture -->
+  <url>
+    <loc>https://orvexi.com/#about</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://orvexi.com/images/about_office.jpg</image:loc>
+      <image:title>ORVEXI Kigali Headquarters &amp; Operations</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://orvexi.com/about</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- 5. Enterprise Portfolio & Cloud Vault -->
+  <url>
+    <loc>https://orvexi.com/#portfolio</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://orvexi.com/portfolio</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- 6. Home Anchor -->
+  <url>
+    <loc>https://orvexi.com/#home</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- 7. Backwards Compatible Contact Aliases -->
   <url>
     <loc>https://orvexi.com/#contact</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://orvexi.com/contact</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- 8. Hosted Web Publications & Corporate Bulletins -->
+  <url>
+    <loc>https://orvexi.com/publications/newsletter</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
   </url>
 </urlset>

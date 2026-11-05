@@ -32,6 +32,7 @@ export function renderFooter(settings = {}, contact = {}) {
               <li><a href="#services"  class="footer-link">Services</a></li>
               <li><a href="#portfolio"    class="footer-link">Portfolio</a></li>
               <li><a href="#get-in-touch" class="footer-link">Get in Touch</a></li>
+              <li><a href="/sitemap.xml" target="_blank" class="footer-link">Sitemap</a></li>
               <li><a href="#admin"     class="footer-link footer-admin-link" style="opacity: 0.6; display: inline-flex; align-items: center; gap: 0.4rem;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 Admin Portal
@@ -75,6 +76,9 @@ export function renderFooter(settings = {}, contact = {}) {
             <span class="badge-tag">TIN ${tin}</span>
             <span class="badge-tag">PRIVATE LIMITED</span>
             <span class="badge-tag">RWANDA</span>
+            <a href="/sitemap.xml" target="_blank" class="badge-tag" title="XML Sitemap for Search Indexing" style="text-decoration: none; color: inherit;">
+              🗺 Sitemap
+            </a>
             <a href="#admin" class="badge-tag admin-badge-btn" title="Open Admin Panel" style="cursor: pointer; text-decoration: none; color: inherit;">
               ⚙ Admin
             </a>
