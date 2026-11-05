@@ -16,8 +16,8 @@ export const DEFAULT_CONTENT = {
       badge: "",
       subtitle: "A privately registered Rwandan technology company delivering software publishing, IT consultancy, data processing, and web services from Kigali.",
       image: "/images/slide1_kigali_tech.jpg",
-      ctaPrimary: { label: "Our Services", url: "#services" },
-      ctaSecondary: { label: "Explore Portfolio", url: "#portfolio" },
+      ctaPrimary: { label: "Our Services", url: "/services" },
+      ctaSecondary: { label: "Explore Portfolio", url: "/portfolio" },
       enabled: true
     },
     {
@@ -27,8 +27,8 @@ export const DEFAULT_CONTENT = {
       badge: "",
       subtitle: "Empowering businesses across Rwanda and East Africa with robust digital architecture, modern cloud solutions, and user-centric systems.",
       image: "/images/slide2_software_team.jpg",
-      ctaPrimary: { label: "View Services", url: "#services" },
-      ctaSecondary: { label: "Contact Us", url: "#contact" },
+      ctaPrimary: { label: "View Services", url: "/services" },
+      ctaSecondary: { label: "Contact Us", url: "/contact" },
       enabled: true
     },
     {
@@ -38,8 +38,8 @@ export const DEFAULT_CONTENT = {
       badge: "",
       subtitle: "Enterprise data processing, cloud virtualization, secure database pipelines, and high-availability operations for leading institutions.",
       image: "/images/slide3_datacenter.jpg",
-      ctaPrimary: { label: "Explore Portfolio", url: "#portfolio" },
-      ctaSecondary: { label: "Get in Touch", url: "#contact" },
+      ctaPrimary: { label: "Explore Portfolio", url: "/portfolio" },
+      ctaSecondary: { label: "Get in Touch", url: "/contact" },
       enabled: true
     }
   ],

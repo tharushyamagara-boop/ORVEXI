@@ -17,8 +17,8 @@ export function renderHeroSlider(slides = []) {
     const title = slide.title || 'Technology Solutions';
     const highlight = slide.highlight ? `<em>${slide.highlight}</em>` : '';
     const subtitle = slide.subtitle || '';
-    const ctaPrimary = slide.ctaPrimary || { label: 'Our Services', url: '#services' };
-    const ctaSecondary = slide.ctaSecondary || { label: 'Explore Portfolio', url: '#portfolio' };
+    const ctaPrimary = slide.ctaPrimary || { label: 'Our Services', url: '/services' };
+    const ctaSecondary = slide.ctaSecondary || { label: 'Explore Portfolio', url: '/portfolio' };
 
     return `
       <div class="hero-slide ${isFirst ? 'active' : ''}" data-index="${index}">
@@ -66,7 +66,7 @@ export function renderHeroSlider(slides = []) {
 
               <div class="hero-cta-group">
                 ${ctaPrimary.label ? `
-                  <a href="${ctaPrimary.url || '#services'}" class="btn btn-primary btn-hero">
+                  <a href="${ctaPrimary.url || '/services'}" class="btn btn-primary btn-hero">
                     <span>${ctaPrimary.label}</span>
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                       <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -74,7 +74,7 @@ export function renderHeroSlider(slides = []) {
                   </a>
                 ` : ''}
                 ${ctaSecondary.label ? `
-                  <a href="${ctaSecondary.url || '#portfolio'}" class="btn btn-secondary btn-hero">
+                  <a href="${ctaSecondary.url || '/portfolio'}" class="btn btn-secondary btn-hero">
                     <span>${ctaSecondary.label}</span>
                   </a>
                 ` : ''}

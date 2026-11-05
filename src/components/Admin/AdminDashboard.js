@@ -75,7 +75,7 @@ export function renderAdminPortal() {
       <!-- Admin Header -->
       <header class="admin-header">
         <div class="admin-header-brand">
-          <a href="#home" style="display:flex; align-items:center;">
+          <a href="/" style="display:flex; align-items:center;">
             <img src="/Logo-WHITE.png" alt="ORVEXI" height="28" style="height:28px; max-height:28px; width:auto; display:block;">
           </a>
           <span class="admin-brand-tag">CMS CONSOLE</span>
@@ -95,7 +95,7 @@ export function renderAdminPortal() {
             }
           </div>
 
-          <a href="#home" class="btn-admin btn-admin-secondary btn-admin-sm">
+          <a href="/" class="btn-admin btn-admin-secondary btn-admin-sm">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             <span>Live Website</span>
           </a>
@@ -242,7 +242,7 @@ function renderLoginScreen() {
           </form>
 
           <div style="margin-top: 1.5rem; text-align:center;">
-            <a href="#home" style="color: var(--text-muted); font-size: 0.84rem; text-decoration: none;">&larr; Return to Website</a>
+            <a href="/" style="color: var(--text-muted); font-size: 0.84rem; text-decoration: none;">&larr; Return to Website</a>
           </div>
         </div>
 
@@ -273,7 +273,7 @@ function renderLoginScreen() {
           </form>
 
           <div style="margin-top: 1.25rem; text-align:center;">
-            <a href="#home" style="color: var(--text-muted); font-size: 0.84rem; text-decoration: none;">&larr; Return to Website</a>
+            <a href="/" style="color: var(--text-muted); font-size: 0.84rem; text-decoration: none;">&larr; Return to Website</a>
           </div>
         </div>
 
@@ -3201,7 +3201,7 @@ function renderSlideEditorModal(slide = {}, isNew = false, index = -1) {
             </div>
             <div class="admin-form-group">
               <label class="admin-label">Primary Button Link</label>
-              <input type="text" id="slideCta1Url" class="admin-input" placeholder="e.g. #services" value="${slide.ctaPrimary?.url || '#services'}">
+              <input type="text" id="slideCta1Url" class="admin-input" placeholder="e.g. /services" value="${slide.ctaPrimary?.url || '/services'}">
             </div>
           </div>
 
@@ -3212,7 +3212,7 @@ function renderSlideEditorModal(slide = {}, isNew = false, index = -1) {
             </div>
             <div class="admin-form-group">
               <label class="admin-label">Secondary Button Link</label>
-              <input type="text" id="slideCta2Url" class="admin-input" placeholder="e.g. #portfolio" value="${slide.ctaSecondary?.url || '#portfolio'}">
+              <input type="text" id="slideCta2Url" class="admin-input" placeholder="e.g. /portfolio" value="${slide.ctaSecondary?.url || '/portfolio'}">
             </div>
           </div>
 
@@ -3373,7 +3373,7 @@ export function renderFloatingAdminBar() {
         <span class="admin-bar-dot"></span>
         <span>${adminUser.name || 'Admin'}</span>
       </div>
-      <a href="#admin" class="btn-admin btn-admin-primary btn-admin-sm">
+      <a href="/admin" class="btn-admin btn-admin-primary btn-admin-sm">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
         <span>Admin Console</span>
         ${bookingStore.getPendingCount() > 0 ? `<span class="admin-booking-badge" style="margin-left:0.35rem; font-size:0.7rem; padding:0.1rem 0.35rem;">${bookingStore.getPendingCount()}</span>` : ''}
@@ -3566,7 +3566,8 @@ export function initAdminEvents(onContentChange) {
     logoutBtn.onclick = () => {
       contentStore.logoutAdmin();
       showAdminToast('Signed out of Admin Console', 'info');
-      window.location.hash = '#home';
+      window.history.pushState(null, '', '/');
+      if (window.location.hash) window.location.hash = '';
       onContentChange();
     };
   }

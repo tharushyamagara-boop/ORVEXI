@@ -126,7 +126,7 @@ export const EMAIL_SECTION_PRESETS = [
       {
         type: 'button',
         text: 'Explore Architecture & Roadmap >>',
-        url: 'https://orvexi.rw/#services',
+        url: 'https://orvexi.rw/services',
         align: 'center',
         btnBg: '#84cc16',
         btnColor: '#0b1402'
@@ -178,7 +178,7 @@ export const EMAIL_SECTION_PRESETS = [
         title: 'Custom Enterprise Software Solutions',
         desc: 'Tailored ERP, portal, and API architectures engineered specifically for your business logic and regulatory requirements.',
         btnText: 'Learn More >>',
-        btnUrl: 'https://orvexi.rw/#services'
+        btnUrl: 'https://orvexi.rw/services'
       },
       {
         type: 'columns2',
@@ -187,7 +187,7 @@ export const EMAIL_SECTION_PRESETS = [
         title: 'Cloud Datacenter & Managed Infrastructure',
         desc: 'Low-latency sovereign hosting with automated backups and 24/7 technical monitoring in Kigali.',
         btnText: 'Schedule Advisory >>',
-        btnUrl: 'https://orvexi.rw/#get-in-touch'
+        btnUrl: 'https://orvexi.rw/contact'
       }
     ]
   },
@@ -349,7 +349,7 @@ export const INITIAL_EMAIL_BLOCKS = [
     title: 'Custom Software & Enterprise Platforms',
     desc: 'From mission-critical databases and web portals to cloud microservices and mobile ecosystems, our engineering squad delivers high-velocity solutions tailored to your operational workflows.',
     btnText: 'Read More >>',
-    btnUrl: 'https://orvexi.rw/#services'
+    btnUrl: 'https://orvexi.rw/services'
   },
   {
     id: 'blk-divider-1',
@@ -365,13 +365,13 @@ export const INITIAL_EMAIL_BLOCKS = [
     title: 'Data Processing & Cloud Infrastructure',
     desc: 'High-availability server infrastructure, automated multi-region backups, real-time Firestore synchronization, and enterprise-grade data protection complying with Rwandan and international data regulations.',
     btnText: 'Explore Cloud Vault >>',
-    btnUrl: 'https://orvexi.rw/#admin'
+    btnUrl: 'https://orvexi.rw/admin'
   },
   {
     id: 'blk-btn-cta',
     type: 'button',
     text: 'Schedule Technical Consultation',
-    url: 'https://orvexi.rw/#get-in-touch',
+    url: 'https://orvexi.rw/contact',
     align: 'center',
     btnBg: '#84cc16',
     btnColor: '#0b1402'

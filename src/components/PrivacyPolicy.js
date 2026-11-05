@@ -2,7 +2,7 @@ export function renderPrivacyPolicy() {
   return `
     <div class="legal-page-container">
       <div class="legal-page-header">
-        <a href="#home" class="legal-back-link">
+        <a href="/" class="legal-back-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
           <span>Return to Homepage</span>
         </a>
@@ -85,7 +85,7 @@ export function renderPrivacyPolicy() {
             <li><strong>Right of Access:</strong> Request a copy of the personal data we hold about you.</li>
             <li><strong>Right to Rectification:</strong> Request correction of inaccurate or incomplete records.</li>
             <li><strong>Right to Erasure ("Right to Be Forgotten"):</strong> Request deletion of your personal data where retention is no longer necessary.</li>
-            <li><strong>Right to Object &amp; Withdraw Consent:</strong> You may opt out of promotional communications at any time by visiting <a href="#unsubscribe" class="legal-inline-link">orvexi.rw/unsubscribe</a> or clicking the unsubscribe link in any email footer.</li>
+            <li><strong>Right to Object &amp; Withdraw Consent:</strong> You may opt out of promotional communications at any time by visiting <a href="/unsubscribe" class="legal-inline-link">orvexi.rw/unsubscribe</a> or clicking the unsubscribe link in any email footer.</li>
           </ul>
         </div>
 
@@ -104,9 +104,9 @@ export function renderPrivacyPolicy() {
         </div>
 
         <div class="legal-footer-nav">
-          <a href="#home" class="btn btn-secondary btn-sm">Return to Homepage</a>
-          <a href="#unsubscribe" class="btn btn-secondary btn-sm">Manage Email Preferences</a>
-          <a href="#get-in-touch" class="btn btn-primary btn-sm">Contact Support</a>
+          <a href="/" class="btn btn-secondary btn-sm">Return to Homepage</a>
+          <a href="/unsubscribe" class="btn btn-secondary btn-sm">Manage Email Preferences</a>
+          <a href="/contact" class="btn btn-primary btn-sm">Contact Support</a>
         </div>
       </div>
     </div>

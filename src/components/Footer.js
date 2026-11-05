@@ -27,15 +27,15 @@ export function renderFooter(settings = {}, contact = {}) {
           <div class="footer-col">
             <h4 class="footer-col-title">Navigation</h4>
             <ul class="footer-links">
-              <li><a href="#home"         class="footer-link">Home</a></li>
-              <li><a href="#about"        class="footer-link">About</a></li>
-              <li><a href="#services"     class="footer-link">Services</a></li>
-              <li><a href="#portfolio"    class="footer-link">Portfolio</a></li>
-              <li><a href="#get-in-touch" class="footer-link">Get in Touch</a></li>
+              <li><a href="/"             class="footer-link">Home</a></li>
+              <li><a href="/about"        class="footer-link">About</a></li>
+              <li><a href="/services"     class="footer-link">Services</a></li>
+              <li><a href="/portfolio"    class="footer-link">Portfolio</a></li>
+              <li><a href="/contact"      class="footer-link">Get in Touch</a></li>
               <li><a href="/privacy"      class="footer-link">Privacy Policy</a></li>
               <li><a href="/unsubscribe"  class="footer-link">Unsubscribe</a></li>
               <li><a href="/sitemap.xml" target="_blank" class="footer-link">Sitemap</a></li>
-              <li><a href="#admin"        class="footer-link footer-admin-link" style="opacity: 0.6; display: inline-flex; align-items: center; gap: 0.4rem;">
+              <li><a href="/admin"        class="footer-link footer-admin-link" style="opacity: 0.6; display: inline-flex; align-items: center; gap: 0.4rem;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 Admin Portal
               </a></li>
@@ -46,11 +46,11 @@ export function renderFooter(settings = {}, contact = {}) {
           <div class="footer-col">
             <h4 class="footer-col-title">Services</h4>
             <ul class="footer-links">
-              <li><a href="#services" class="footer-link">Software Publishing</a></li>
-              <li><a href="#services" class="footer-link">Computer Programming</a></li>
-              <li><a href="#services" class="footer-link">IT Consultancy</a></li>
-              <li><a href="#services" class="footer-link">Data Processing &amp; Hosting</a></li>
-              <li><a href="#services" class="footer-link">Web Portals</a></li>
+              <li><a href="/services" class="footer-link">Software Publishing</a></li>
+              <li><a href="/services" class="footer-link">Computer Programming</a></li>
+              <li><a href="/services" class="footer-link">IT Consultancy</a></li>
+              <li><a href="/services" class="footer-link">Data Processing &amp; Hosting</a></li>
+              <li><a href="/services" class="footer-link">Web Portals</a></li>
             </ul>
           </div>
 
@@ -68,7 +68,7 @@ export function renderFooter(settings = {}, contact = {}) {
                 <a href="mailto:${email}" class="footer-link">${email}</a>
               </li>
               <li style="margin-top: 0.25rem;">
-                <a href="#get-in-touch" class="footer-link" style="color: var(--brand-blue-light); font-weight: 600;">Help &amp; Support &rarr;</a>
+                <a href="/contact" class="footer-link" style="color: var(--brand-blue-light); font-weight: 600;">Help &amp; Support &rarr;</a>
               </li>
             </ul>
           </div>
@@ -90,7 +90,7 @@ export function renderFooter(settings = {}, contact = {}) {
             <a href="/sitemap.xml" target="_blank" class="badge-tag" title="XML Sitemap for Search Indexing" style="text-decoration: none; color: inherit;">
               🗺 Sitemap
             </a>
-            <a href="#admin" class="badge-tag admin-badge-btn" title="Open Admin Panel" style="cursor: pointer; text-decoration: none; color: inherit;">
+            <a href="/admin" class="badge-tag admin-badge-btn" title="Open Admin Panel" style="cursor: pointer; text-decoration: none; color: inherit;">
               ⚙ Admin
             </a>
           </div>

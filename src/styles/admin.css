@@ -1579,7 +1579,7 @@
 /* Left balanced column: flex: 1, aligns sidebar close to the center canvas */
 .designer-sidebar-column {
   flex: 1;
-  min-width: 0;
+  min-width: 340px;
   height: 100%;
   display: flex;
   justify-content: flex-end;
@@ -1753,20 +1753,22 @@
   pointer-events: none;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1360px) {
   .designer-workspace {
     justify-content: flex-start;
   }
   .designer-sidebar-column {
-    flex: 0 0 320px;
-    padding-right: 0.75rem;
+    flex: 0 0 330px;
+    min-width: 330px;
+    justify-content: flex-start;
+    padding-right: 1rem;
   }
   .designer-sidebar {
-    width: 320px;
+    width: 330px;
   }
   .designer-canvas-wrap {
     flex: 1;
-    padding: 1.5rem 0.75rem 6rem;
+    padding: 1.5rem 1rem 6rem;
   }
   .designer-right-spacer {
     display: none;

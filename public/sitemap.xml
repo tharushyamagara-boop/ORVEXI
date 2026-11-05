@@ -26,17 +26,17 @@
     </image:image>
   </url>
 
-  <!-- 2. Get in Touch & Online Service Booking -->
+  <!-- 2. Services & Registered Business Activities -->
   <url>
-    <loc>https://orvexi.rw/get-in-touch</loc>
+    <loc>https://orvexi.rw/services</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- 3. Services & Registered Business Activities -->
+  <!-- 3. Contact & Online Service Request -->
   <url>
-    <loc>https://orvexi.rw/services</loc>
+    <loc>https://orvexi.rw/contact</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -57,14 +57,6 @@
   <!-- 5. Enterprise Portfolio & Cloud Vault -->
   <url>
     <loc>https://orvexi.rw/portfolio</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 6. Direct Contact Alias -->
-  <url>
-    <loc>https://orvexi.rw/contact</loc>
     <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

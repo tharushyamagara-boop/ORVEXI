@@ -28,13 +28,13 @@ export function renderHero() {
           </p>
 
           <div class="hero-cta-group hero-anim-4">
-            <a href="#services" class="btn btn-primary btn-hero">
+            <a href="/services" class="btn btn-primary btn-hero">
               <span>Our Services</span>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <a href="#portfolio" class="btn btn-secondary btn-hero">Explore Portfolio</a>
+            <a href="/portfolio" class="btn btn-secondary btn-hero">Explore Portfolio</a>
           </div>
         </div>
     </section>

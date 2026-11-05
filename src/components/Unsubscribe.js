@@ -5,7 +5,7 @@ export function renderUnsubscribePage() {
   return `
     <div class="legal-page-container">
       <div class="legal-page-header">
-        <a href="#home" class="legal-back-link">
+        <a href="/" class="legal-back-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 19"></polyline></svg>
           <span>Return to Homepage</span>
         </a>
@@ -91,15 +91,15 @@ export function renderUnsubscribePage() {
             Your email address (<strong id="confirmedUnsubEmail" style="color: var(--brand-blue-light);"></strong>) has been updated in our records. Please allow up to 24 hours for all queued dispatches to synchronize.
           </p>
           <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-            <a href="#home" class="btn btn-primary btn-sm">Return to Homepage</a>
-            <a href="#get-in-touch" class="btn btn-secondary btn-sm">Need Help? Contact Us</a>
+            <a href="/" class="btn btn-primary btn-sm">Return to Homepage</a>
+            <a href="/contact" class="btn btn-secondary btn-sm">Need Help? Contact Us</a>
           </div>
         </div>
 
       </div>
 
       <div style="max-width: 640px; margin: 1.5rem auto 0 auto; text-align: center; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
-        You can also review our <a href="#privacy" style="color: var(--brand-blue-light); text-decoration: underline;">Privacy Policy</a> or reach out to our team at <a href="mailto:ceo@orvexi.rw" style="color: var(--brand-blue-light);">ceo@orvexi.rw</a>.
+        You can also review our <a href="/privacy" style="color: var(--brand-blue-light); text-decoration: underline;">Privacy Policy</a> or reach out to our team at <a href="mailto:ceo@orvexi.rw" style="color: var(--brand-blue-light);">ceo@orvexi.rw</a>.
       </div>
     </div>
   `;

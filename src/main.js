@@ -27,30 +27,32 @@ import { renderUnsubscribePage, initUnsubscribeEvents } from './components/Unsub
 
 function isCurrentRouteAdmin() {
   const hash = window.location.hash.toLowerCase();
-  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
-  return hash === '#admin' || path === '/admin';
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+  if (hash === '#admin') {
+    window.history.replaceState(null, '', '/admin');
+    return true;
+  }
+  return path === '/admin';
 }
 
 function isCurrentRoutePrivacy() {
   const hash = window.location.hash.toLowerCase();
-  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
-  if (hash === '#privacy') return true;
-  if (path === '/privacy') {
-    if (hash && hash !== '#privacy' && hash !== '#' && hash !== '#top') return false;
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+  if (hash === '#privacy') {
+    window.history.replaceState(null, '', '/privacy');
     return true;
   }
-  return false;
+  return path === '/privacy';
 }
 
 function isCurrentRouteUnsubscribe() {
   const hash = window.location.hash.toLowerCase();
-  const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
-  if (hash === '#unsubscribe') return true;
-  if (path === '/unsubscribe') {
-    if (hash && hash !== '#unsubscribe' && hash !== '#' && hash !== '#top') return false;
+  const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+  if (hash === '#unsubscribe') {
+    window.history.replaceState(null, '', '/unsubscribe');
     return true;
   }
-  return false;
+  return path === '/unsubscribe';
 }
 
 function renderApp() {
@@ -386,15 +388,28 @@ function initActiveNavLinks() {
   const sections = document.querySelectorAll('section[id]');
   const links    = document.querySelectorAll('.nav-link');
 
+  const sectionRouteMap = {
+    'home': '/',
+    'about': '/about',
+    'services': '/services',
+    'portfolio': '/portfolio',
+    'contact': '/contact',
+    'get-in-touch': '/contact'
+  };
+
   function highlightActive() {
-    let current = '';
+    let current = 'home';
     sections.forEach(sec => {
-      if (window.scrollY >= sec.offsetTop - 140) current = sec.id;
+      if (window.scrollY >= sec.offsetTop - 160) current = sec.id;
     });
+
+    const currentPath = sectionRouteMap[current] || '/';
+
     links.forEach(link => {
       const href = link.getAttribute('href');
-      const isMatch = href === `#${current}` || 
-        ((current === 'get-in-touch' || current === 'contact') && (href === '#get-in-touch' || href === '#contact'));
+      const isMatch = href === currentPath || 
+        (href === '/' && current === 'home') ||
+        (href === '/contact' && (current === 'contact' || current === 'get-in-touch'));
       link.classList.toggle('active', isMatch);
     });
   }
@@ -404,7 +419,7 @@ function initActiveNavLinks() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 6. Routing & Indexable In-Page Navigation                                    */
+/* 6. Routing & Indexable In-Page Navigation (No Hashes Exposed)               */
 /* -------------------------------------------------------------------------- */
 function scrollToHashOrPath(behavior = 'smooth') {
   if (isCurrentRouteAdmin() || isCurrentRoutePrivacy() || isCurrentRouteUnsubscribe()) return;
@@ -412,23 +427,38 @@ function scrollToHashOrPath(behavior = 'smooth') {
   const hash = window.location.hash.toLowerCase();
   const rawPath = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
 
-  let targetId = '';
-  if (hash) {
-    targetId = hash.replace(/^#/, '');
-  } else if (rawPath && ['home', 'about', 'services', 'portfolio', 'contact', 'get-in-touch'].includes(rawPath)) {
-    targetId = rawPath;
+  // Alias /get-in-touch cleanly to /contact
+  if (rawPath === 'get-in-touch' || hash === '#get-in-touch' || hash === '#contact') {
+    window.history.replaceState(null, '', '/contact');
+  } else if (hash && ['#home', '#about', '#services', '#portfolio'].includes(hash)) {
+    const cleanRoute = hash === '#home' ? '/' : hash.replace('#', '/');
+    window.history.replaceState(null, '', cleanRoute);
   }
 
-  if (targetId) {
+  let targetId = '';
+  if (rawPath) {
+    targetId = (rawPath === 'get-in-touch') ? 'contact' : rawPath;
+  } else if (hash) {
+    targetId = hash.replace(/^#/, '');
+    if (targetId === 'get-in-touch') targetId = 'contact';
+  }
+
+  if (targetId && targetId !== 'home') {
     let target = document.getElementById(targetId);
     if (!target && (targetId === 'contact' || targetId === 'get-in-touch')) {
-      target = document.getElementById('get-in-touch') || document.getElementById('contact');
+      target = document.getElementById('contact') || document.getElementById('get-in-touch');
     }
 
     if (target) {
       setTimeout(() => {
-        target.scrollIntoView({ behavior });
-      }, 80);
+        const headerOffset = 70;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior
+        });
+      }, 90);
     }
   }
 }
@@ -443,42 +473,67 @@ window.addEventListener('popstate', () => {
   scrollToHashOrPath('smooth');
 });
 
-// SPA client-side routing delegation for relative links and section anchors
+// SPA client-side routing delegation: clean paths only, no hashes exposed
 document.addEventListener('click', (e) => {
   const link = e.target.closest('a');
   if (!link) return;
   const href = link.getAttribute('href');
   if (!href) return;
 
-  // Internal path links (/privacy, /unsubscribe, /contact, etc.)
+  // Relative path links (/contact, /about, /services, /portfolio, /, /privacy, /unsubscribe, /admin)
   if (href.startsWith('/') && !href.startsWith('//') && !link.hasAttribute('target') && !link.hasAttribute('download')) {
-    const raw = href.toLowerCase().replace(/\/$/, '');
-    if (['/privacy', '/unsubscribe', '/contact', '/get-in-touch', '/about', '/services', '/portfolio', '/home', ''].includes(raw)) {
+    const raw = href.toLowerCase().replace(/\/$/, '') || '/';
+    const validRoutes = ['/', '/about', '/services', '/portfolio', '/contact', '/get-in-touch', '/privacy', '/unsubscribe', '/admin', '/home'];
+
+    if (validRoutes.includes(raw)) {
       e.preventDefault();
-      if (raw === '/privacy' || raw === '/unsubscribe') {
-        window.history.pushState(null, '', raw);
+      const canonicalRoute = (raw === '/get-in-touch' || raw === '/contact') ? '/contact' : (raw === '/home' ? '/' : raw);
+
+      const isStandaloneRoute = canonicalRoute === '/admin' || canonicalRoute === '/privacy' || canonicalRoute === '/unsubscribe';
+      const wasStandaloneRoute = isCurrentRouteAdmin() || isCurrentRoutePrivacy() || isCurrentRouteUnsubscribe();
+
+      window.history.pushState(null, '', canonicalRoute);
+
+      if (isStandaloneRoute || wasStandaloneRoute) {
         renderApp();
-      } else {
-        const targetId = raw.replace(/^\//, '');
-        window.history.pushState(null, '', raw ? raw : '/');
-        renderApp();
-        if (targetId) {
-          scrollToHashOrPath('smooth');
+      }
+
+      if (canonicalRoute === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (!isStandaloneRoute) {
+        const targetId = canonicalRoute.replace(/^\//, '');
+        const target = document.getElementById(targetId) || 
+                       (targetId === 'contact' ? document.getElementById('get-in-touch') : null);
+        if (target) {
+          const headerOffset = 70;
+          const elementPosition = target.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
         }
       }
     }
   } else if (href.startsWith('#')) {
-    // If currently on /privacy or /unsubscribe and user clicks a section anchor
-    const currentPath = window.location.pathname.toLowerCase().replace(/\/$/, '');
-    if (currentPath === '/privacy' || currentPath === '/unsubscribe') {
-      const targetHash = href;
-      if (targetHash !== '#' + currentPath.replace('/', '')) {
-        e.preventDefault();
-        window.history.pushState(null, '', '/' + targetHash);
-        renderApp();
-        scrollToHashOrPath('smooth');
-      }
-    }
+    // If a legacy hash link was somehow triggered, normalize cleanly to HTML5 pathname
+    e.preventDefault();
+    const targetId = href.replace(/^#/, '');
+    const pathMap = {
+      'home': '/',
+      'about': '/about',
+      'services': '/services',
+      'portfolio': '/portfolio',
+      'contact': '/contact',
+      'get-in-touch': '/contact',
+      'admin': '/admin',
+      'privacy': '/privacy',
+      'unsubscribe': '/unsubscribe'
+    };
+    const cleanPath = pathMap[targetId] || '/';
+    window.history.pushState(null, '', cleanPath);
+    renderApp();
+    scrollToHashOrPath('smooth');
   }
 });
 
@@ -487,10 +542,11 @@ document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
     e.preventDefault();
     if (isCurrentRouteAdmin()) {
-      window.location.hash = '#home';
+      window.history.pushState(null, '', '/');
     } else {
-      window.location.hash = '#admin';
+      window.history.pushState(null, '', '/admin');
     }
+    renderApp();
   }
 });
 
