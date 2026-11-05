@@ -9,6 +9,7 @@ import {
   setDoc, 
   getDocs, 
   deleteDoc, 
+  writeBatch,
   updateDoc, 
   query, 
   orderBy, 
@@ -16,6 +17,8 @@ import {
 } from 'firebase/firestore';
 
 const STORAGE_KEY = 'orvexi_bookings_v1';
+const DELETED_BOOKINGS_STORAGE_KEY = 'orvexi_deleted_bookings_v1';
+const BOOKINGS_INITIALIZED_KEY = 'orvexi_bookings_initialized_v1';
 
 export const SERVICE_CATEGORIES = [
   'Software Publishing & Custom Development',
@@ -46,7 +49,7 @@ export const ATTRIBUTION_CHANNELS = [
 // Seed sample request inspired by the SANEX booking system
 const DEFAULT_BOOKINGS = [
   {
-    id: 'req-' + Date.now(),
+    id: 'req-sample-default-081',
     reference: 'ORV-2026-081',
     customerName: 'Theophile Harushyamagara',
     email: 'orvexi@gmail.com',
@@ -59,33 +62,63 @@ const DEFAULT_BOOKINGS = [
     status: 'Pending', // Pending | Confirmed | Completed | Cancelled
     notes: 'Inquiry regarding enterprise digital architecture and software publishing deployment.',
     locationUrl: '',
-    createdAt: new Date().toISOString(),
-    createdAtFormatted: new Date().toLocaleDateString('en-US')
+    createdAt: '2026-11-01T10:00:00.000Z',
+    createdAtFormatted: '11/1/2026'
   }
 ];
 
 class BookingStore {
   constructor() {
+    this.deletedBookingIds = this.loadDeletedIds();
     this.bookings = this.loadLocal();
     this.listeners = [];
     this.initFirestoreSync();
   }
 
-  loadLocal() {
+  loadDeletedIds() {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(DELETED_BOOKINGS_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return new Set(parsed);
       }
     } catch (e) {}
-    return DEFAULT_BOOKINGS;
+    return new Set();
+  }
+
+  saveDeletedIds() {
+    try {
+      localStorage.setItem(DELETED_BOOKINGS_STORAGE_KEY, JSON.stringify(Array.from(this.deletedBookingIds)));
+    } catch (e) {}
+  }
+
+  loadLocal() {
+    try {
+      const isInit = localStorage.getItem(BOOKINGS_INITIALIZED_KEY);
+      const stored = localStorage.getItem(STORAGE_KEY);
+      // If initialized before, honor stored array (even if empty `[]` when all records were deleted)
+      if (isInit === 'true' && stored !== null) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(b => b && b.id && !this.deletedBookingIds.has(b.id));
+        }
+      }
+    } catch (e) {}
+
+    // First time visit / brand new storage: seed initial samples
+    const seeded = DEFAULT_BOOKINGS.filter(b => !this.deletedBookingIds.has(b.id));
+    try {
+      localStorage.setItem(BOOKINGS_INITIALIZED_KEY, 'true');
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+    } catch (e) {}
+    return seeded;
   }
 
   saveLocal(bookings) {
-    this.bookings = bookings;
+    this.bookings = (bookings || []).filter(b => b && b.id && !this.deletedBookingIds.has(b.id));
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+      localStorage.setItem(BOOKINGS_INITIALIZED_KEY, 'true');
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.bookings));
     } catch (e) {}
     this.notify();
   }
@@ -98,19 +131,25 @@ class BookingStore {
       if (!snapshot.empty) {
         const remote = [];
         snapshot.forEach(docSnap => {
+          const id = docSnap.id;
+          // If deleted by admin locally, ensure it is NOT resurrected and cleanup Firestore doc
+          if (this.deletedBookingIds.has(id)) {
+            deleteDoc(docSnap.ref).catch(() => {});
+            return;
+          }
           remote.push({ id: docSnap.id, ...docSnap.data() });
         });
-        if (remote.length > 0) {
-          // Merge remote into local by ID so locally added/updated bookings are preserved
-          const map = new Map(this.bookings.map(b => [b.id, b]));
-          remote.forEach(r => {
+
+        const map = new Map(this.bookings.filter(b => !this.deletedBookingIds.has(b.id)).map(b => [b.id, b]));
+        remote.forEach(r => {
+          if (!this.deletedBookingIds.has(r.id)) {
             const existing = map.get(r.id);
             map.set(r.id, existing ? { ...r, ...existing } : r);
-          });
-          const merged = Array.from(map.values());
-          merged.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-          this.saveLocal(merged);
-        }
+          }
+        });
+        const merged = Array.from(map.values()).filter(b => !this.deletedBookingIds.has(b.id));
+        merged.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+        this.saveLocal(merged);
       }
     } catch (e) {
       console.warn('Could not sync service requests from Firestore:', e.message || e);
@@ -172,6 +211,11 @@ class BookingStore {
       createdAtFormatted: new Date().toLocaleDateString('en-US')
     };
 
+    if (this.deletedBookingIds.has(id)) {
+      this.deletedBookingIds.delete(id);
+      this.saveDeletedIds();
+    }
+
     // 1. Immediately persist locally (instant UI feedback, never blocked by network)
     const updated = [booking, ...this.bookings];
     this.saveLocal(updated);
@@ -219,18 +263,67 @@ class BookingStore {
   }
 
   /**
-   * Delete a booking from Firestore & LocalStorage
+   * Permanently delete a booking from Firestore & LocalStorage
    */
-  deleteBooking(id) {
+  async deleteBooking(id) {
+    if (!id) return;
+    this.deletedBookingIds.add(id);
+    this.saveDeletedIds();
+
     const filtered = this.bookings.filter(b => b.id !== id);
     this.saveLocal(filtered);
 
     if (db) {
       try {
-        deleteDoc(doc(db, 'service_requests', id))
-          .catch(e => console.warn('Firestore delete skipped:', e.message || e));
+        await deleteDoc(doc(db, 'service_requests', id));
       } catch (e) {
-        console.warn('Firestore delete error:', e.message || e);
+        console.warn('Firestore delete skipped:', e.message || e);
+      }
+    }
+  }
+
+  /**
+   * Permanently delete multiple bookings
+   */
+  async deleteBookings(ids) {
+    if (!Array.isArray(ids) || ids.length === 0) return;
+    ids.forEach(id => this.deletedBookingIds.add(id));
+    this.saveDeletedIds();
+
+    const idSet = new Set(ids);
+    const filtered = this.bookings.filter(b => !idSet.has(b.id));
+    this.saveLocal(filtered);
+
+    if (db) {
+      try {
+        const batch = writeBatch(db);
+        ids.forEach(id => batch.delete(doc(db, 'service_requests', id)));
+        await batch.commit();
+      } catch (e) {
+        console.warn('Firestore batch delete skipped:', e.message || e);
+      }
+    }
+  }
+
+  /**
+   * Permanently purge all service requests and bookings
+   */
+  async purgeAll() {
+    this.bookings.forEach(b => {
+      if (b && b.id) this.deletedBookingIds.add(b.id);
+    });
+    this.saveDeletedIds();
+    this.bookings = [];
+    this.saveLocal([]);
+
+    if (db) {
+      try {
+        const snapshot = await getDocs(collection(db, 'service_requests'));
+        const batch = writeBatch(db);
+        snapshot.forEach(docSnap => batch.delete(docSnap.ref));
+        await batch.commit();
+      } catch (e) {
+        console.warn('Firestore bookings purge skipped:', e.message || e);
       }
     }
   }

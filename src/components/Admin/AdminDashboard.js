@@ -1172,6 +1172,12 @@ function renderBookingsTab() {
           </div>
 
           <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+            ${allBookings.length > 0 ? `
+              <button id="bookingsPurgeAllBtn" class="btn-admin btn-admin-danger btn-admin-sm" title="Permanently delete all service requests">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span>Purge All (${allBookings.length})</span>
+              </button>
+            ` : ''}
             <button id="bookingsRefreshBtn" class="btn-admin btn-admin-secondary btn-admin-sm" title="Refresh records from cloud">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
               <span>Refresh</span>
@@ -1501,9 +1507,15 @@ function renderContactsTab() {
         </div>
 
         <div class="contacts-header-actions">
-          <button id="contactsPurgeAllBtn" class="btn-admin btn-admin-danger btn-admin-sm">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-            <span>Purge All (${stats.total})</span>
+          ${stats.total > 0 ? `
+            <button id="contactsPurgeAllBtn" class="btn-admin btn-admin-danger btn-admin-sm" title="Permanently delete all contacts">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              <span>Purge All (${stats.total})</span>
+            </button>
+          ` : ''}
+          <button id="contactsRefreshBtn" class="btn-admin btn-admin-secondary btn-admin-sm" title="Refresh contacts from cloud">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <span>Refresh</span>
           </button>
           <button id="contactsExportCsvBtn" class="btn-admin btn-admin-secondary btn-admin-sm">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -4272,6 +4284,18 @@ export function initAdminEvents(onContentChange) {
       };
     }
 
+    // Purge All Bookings
+    const purgeBookingsBtn = document.getElementById('bookingsPurgeAllBtn');
+    if (purgeBookingsBtn) {
+      purgeBookingsBtn.onclick = async () => {
+        if (confirm(`Are you sure you want to permanently delete all ${bookingStore.bookings.length} service request and booking records? This action cannot be undone.`)) {
+          await bookingStore.purgeAll();
+          showAdminToast('All service requests permanently deleted', 'info');
+          onContentChange();
+        }
+      };
+    }
+
     // 3. Export Excel / CSV
     const exportBtn = document.getElementById('bookingsExportCsvBtn');
     if (exportBtn) {
@@ -4415,8 +4439,8 @@ export function initAdminEvents(onContentChange) {
         } else if (deleteBtn) {
           const id = deleteBtn.getAttribute('data-id');
           if (confirm('Permanently delete this service request record?')) {
-            bookingStore.deleteBooking(id);
-            showAdminToast('Request deleted', 'info');
+            await bookingStore.deleteBooking(id);
+            showAdminToast('Request permanently deleted', 'info');
             refreshBookingsUI();
             onContentChange();
           }
@@ -4456,12 +4480,22 @@ export function initAdminEvents(onContentChange) {
     const purgeBtn = document.getElementById('contactsPurgeAllBtn');
     if (purgeBtn) {
       purgeBtn.onclick = async () => {
-        if (confirm('Are you sure you want to purge all contacts from your address book? This action cannot be undone.')) {
+        if (confirm('Are you sure you want to permanently purge all contacts from your address book? This action cannot be undone.')) {
           await contactStore.purgeAll();
           selectedContactIds.clear();
-          showAdminToast('All contacts purged', 'info');
+          showAdminToast('All contacts permanently purged', 'info');
           onContentChange();
         }
+      };
+    }
+
+    const refreshContactsBtn = document.getElementById('contactsRefreshBtn');
+    if (refreshContactsBtn) {
+      refreshContactsBtn.onclick = async () => {
+        showAdminToast('Syncing contacts from cloud...', 'info');
+        await contactStore.initFirestoreSync();
+        onContentChange();
+        showAdminToast('Contacts updated from cloud', 'success');
       };
     }
 
@@ -4568,10 +4602,10 @@ export function initAdminEvents(onContentChange) {
         });
 
         mount.querySelectorAll('.btn-delete-group').forEach(b => {
-          b.onclick = () => {
+          b.onclick = async () => {
             const name = b.getAttribute('data-group');
             if (confirm(`Delete group "${name}"? Contacts in this group will be moved to default.`)) {
-              contactStore.deleteGroup(name);
+              await contactStore.deleteGroup(name);
               showAdminToast(`Group "${name}" deleted`, 'info');
               closeModal();
               onContentChange();
@@ -4649,10 +4683,10 @@ export function initAdminEvents(onContentChange) {
           }
         } else if (delBtn) {
           const id = delBtn.getAttribute('data-id');
-          if (confirm('Delete this contact?')) {
-            contactStore.deleteContact(id);
+          if (confirm('Permanently delete this contact?')) {
+            await contactStore.deleteContact(id);
             selectedContactIds.delete(id);
-            showAdminToast('Contact deleted', 'info');
+            showAdminToast('Contact permanently deleted', 'info');
             onContentChange();
           }
         }
@@ -4661,11 +4695,11 @@ export function initAdminEvents(onContentChange) {
 
     const batchDelBtn = document.getElementById('batchDeleteContactsBtn');
     if (batchDelBtn) {
-      batchDelBtn.onclick = () => {
-        if (confirm(`Delete ${selectedContactIds.size} selected contact(s)?`)) {
-          contactStore.deleteContacts(Array.from(selectedContactIds));
+      batchDelBtn.onclick = async () => {
+        if (confirm(`Permanently delete ${selectedContactIds.size} selected contact(s)?`)) {
+          await contactStore.deleteContacts(Array.from(selectedContactIds));
           selectedContactIds.clear();
-          showAdminToast('Selected contacts deleted', 'info');
+          showAdminToast('Selected contacts permanently deleted', 'info');
           onContentChange();
         }
       };
