@@ -5,7 +5,6 @@ export function renderPortfolio(portfolioData = {}) {
   const projects = portfolioData.items || [];
 
   const cardsHtml = projects.map(p => {
-    const tags = Array.isArray(p.tags) ? p.tags : (typeof p.tags === 'string' ? p.tags.split(',').map(t => t.trim()) : []);
     const imgUrl = p.image || p.screenshot || '';
     const isQuoteVisible = p.showQuote !== false && Boolean(p.quote && p.quote.trim());
 
@@ -39,11 +38,6 @@ export function renderPortfolio(portfolioData = {}) {
           </div>
         ` : ''}
 
-        <div class="portfolio-header">
-          <span class="portfolio-category">${p.category || 'Platform'}</span>
-          ${p.badge && !['Enterprise', 'Flagship Platform', 'National Forum', 'Consulting Dashboard', 'Fintech Application', 'Demo Dashboard'].includes(p.badge) ? `<span class="portfolio-badge-pill">${p.badge}</span>` : ''}
-        </div>
-
         <div class="portfolio-body">
           <h3 class="portfolio-title">
             <a href="${p.url || '#'}" target="_blank" rel="noopener noreferrer" class="portfolio-title-link">
@@ -53,7 +47,6 @@ export function renderPortfolio(portfolioData = {}) {
               </svg>
             </a>
           </h3>
-          ${p.subtitle ? `<p class="portfolio-subtitle">${p.subtitle}</p>` : ''}
           <p class="portfolio-desc">${p.desc || ''}</p>
         </div>
 
@@ -72,10 +65,6 @@ export function renderPortfolio(portfolioData = {}) {
         ` : ''}
 
         <div class="portfolio-footer">
-          <div class="portfolio-tags">
-            ${tags.map(t => `<span class="portfolio-tag">${t}</span>`).join('')}
-          </div>
-          
           <div class="portfolio-card-actions">
             ${p.url ? `
               <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn" title="View live ${p.title} platform">
