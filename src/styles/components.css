@@ -1132,13 +1132,13 @@
    ========================================================================== */
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 4rem;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 3.5rem;
   align-items: start;
 }
 
 @media (max-width: 860px) {
-  .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.25rem; }
 }
 
 .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
