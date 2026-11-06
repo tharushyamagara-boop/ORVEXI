@@ -98,7 +98,7 @@ export const INITIAL_CONTACTS = [
   {
     id: 'cnt-8',
     name: 'Theophile Harushyamagara',
-    email: 'orvexi@gmail.com',
+    email: 'ceo@orvexi.rw',
     phone: '+250 788 810 675',
     organization: 'ORVEXI LTD Core',
     group: 'Admin',
@@ -510,47 +510,214 @@ class ContactStore {
   }
 
   /**
-   * Import contacts from raw CSV or comma/newline separated emails
+   * Download a ready-to-use CSV template for bulk contact import.
+   * Can be downloaded either populated with realistic sample rows or blank.
    */
-  async importContacts(rawText, defaultGroup = '') {
-    if (!rawText) return 0;
-    const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-    const newItems = [];
-    const targetGroup = defaultGroup || this.groups[0] || 'General';
+  downloadTemplate({ populated = true } = {}) {
+    const headers = ['Contact Name', 'Email Address', 'Phone Number', 'Organization', 'Group / Sector'];
+    const sampleRows = populated ? [
+      ['Theophile Harushyamagara', 'ceo@orvexi.rw', '+250 788 810 675', 'ORVEXI LTD', 'Technology & Startups'],
+      ['Dr. Nathan Chiroma', 'nathan.chiroma@act.ac.rw', '+250 788 123 456', 'Adventist University of Central Africa', 'Education & Academic'],
+      ['Aline Ikibasumba', 'aline.ikibasumba@oneandonlyresorts.com', '+250 788 234 567', 'One&Only Nyungwe House', 'Hotels & Hospitality'],
+      ['Jean Bosco', 'bosco@bankofkigali.rw', '+250 788 345 678', 'Bank of Kigali', 'Financial & Fintech'],
+      ['Clarisse Umutoni', 'clarisse@rbc.gov.rw', '+250 788 456 789', 'Rwanda Biomedical Centre', 'Healthcare & Medical'],
+      ['Emmanuel Gasana', 'gasana@rdb.rw', '+250 788 567 890', 'Rwanda Development Board', 'Government & Public Sector']
+    ] : [];
 
-    for (const line of lines) {
-      // Check if CSV format: Name, Email, Phone, Organization
-      const parts = line.split(',').map(p => p.trim().replace(/^["']|["']$/g, ''));
-      let name = '';
+    const lines = [
+      headers.join(','),
+      ...sampleRows.map(row => row.map(cell => `"${(cell || '').replace(/"/g, '""')}"`).join(','))
+    ];
+
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = populated ? 'orvexi_contacts_populated_template.csv' : 'orvexi_contacts_blank_template.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Parse a single row of CSV/TSV/delimited text respecting quoted values
+   */
+  parseCSVRow(row) {
+    if (!row) return [];
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < row.length; i++) {
+      const char = row[i];
+      if (char === '"' || char === "'") {
+        if (inQuotes && row[i + 1] === char) {
+          current += char;
+          i++; // skip escaped quote
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if ((char === ',' || char === '\t' || char === ';') && !inQuotes) {
+        result.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    result.push(current.trim());
+    return result.map(s => s.replace(/^["']|["']$/g, '').trim());
+  }
+
+  /**
+   * Parse contacts from raw CSV text or an attached populated template file.
+   * Detects header columns dynamically, validates emails, and identifies duplicates.
+   */
+  parseContactsFromText(rawText, defaultGroup = '') {
+    if (!rawText || !rawText.trim()) {
+      return { totalLines: 0, contacts: [], duplicates: [], invalid: [], headersDetected: false };
+    }
+
+    const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) {
+      return { totalLines: 0, contacts: [], duplicates: [], invalid: [], headersDetected: false };
+    }
+
+    // Check first line for column headers
+    const firstRowParts = this.parseCSVRow(lines[0]);
+    const lowerFirst = firstRowParts.map(p => p.toLowerCase());
+    const hasHeaderSignature = lowerFirst.some(p => 
+      p.includes('name') || p.includes('email') || p.includes('phone') || 
+      p.includes('org') || p.includes('company') || p.includes('group') || p.includes('sector')
+    );
+    const firstHasNoEmail = !firstRowParts.some(p => p.includes('@'));
+    const headersDetected = hasHeaderSignature && firstHasNoEmail;
+
+    let nameIdx = 0;
+    let emailIdx = 1;
+    let phoneIdx = 2;
+    let orgIdx = 3;
+    let groupIdx = 4;
+
+    if (headersDetected) {
+      const nIdx = lowerFirst.findIndex(h => h.includes('name'));
+      const eIdx = lowerFirst.findIndex(h => h.includes('email') || h.includes('mail') || h.includes('address'));
+      const pIdx = lowerFirst.findIndex(h => h.includes('phone') || h.includes('tel') || h.includes('mobile'));
+      const oIdx = lowerFirst.findIndex(h => h.includes('org') || h.includes('company') || h.includes('firm') || h.includes('institution'));
+      const gIdx = lowerFirst.findIndex(h => h.includes('group') || h.includes('sector') || h.includes('category'));
+
+      if (nIdx !== -1) nameIdx = nIdx;
+      if (eIdx !== -1) emailIdx = eIdx;
+      if (pIdx !== -1) phoneIdx = pIdx;
+      if (oIdx !== -1) orgIdx = oIdx;
+      if (gIdx !== -1) groupIdx = gIdx;
+    }
+
+    const dataLines = headersDetected ? lines.slice(1) : lines;
+    const validContacts = [];
+    const duplicates = [];
+    const invalid = [];
+    const seenInBatch = new Set();
+    const existingEmails = new Set(this.contacts.map(c => (c.email || '').toLowerCase().trim()));
+
+    const fallbackGroup = (defaultGroup && defaultGroup !== '__AUTO__') ? defaultGroup : (this.groups[0] || 'General');
+
+    dataLines.forEach((line, lineIndex) => {
+      const parts = this.parseCSVRow(line);
+      if (parts.length === 0 || (parts.length === 1 && !parts[0])) return;
+
       let email = '';
+      let name = '';
       let phone = '';
       let organization = '';
+      let rowGroup = '';
 
-      if (parts.length >= 2 && parts[1].includes('@')) {
+      // Direct column lookup
+      if (parts[emailIdx] && parts[emailIdx].includes('@')) {
+        email = parts[emailIdx].toLowerCase().trim();
+      } else {
+        // Fallback: search all columns for the first cell containing '@'
+        const foundIdx = parts.findIndex(p => p.includes('@'));
+        if (foundIdx !== -1) {
+          email = parts[foundIdx].toLowerCase().trim();
+        }
+      }
+
+      if (!email || !email.includes('@')) {
+        invalid.push({ line: lineIndex + 1, raw: line, reason: 'Missing or invalid email address' });
+        return;
+      }
+
+      // Extract Name
+      if (nameIdx < parts.length && nameIdx !== emailIdx && parts[nameIdx]) {
+        name = parts[nameIdx];
+      } else if (parts[0] && parts[0] !== email) {
         name = parts[0];
-        email = parts[1].toLowerCase();
-        phone = parts[2] || '';
-        organization = parts[3] || '';
-      } else if (parts[0].includes('@')) {
-        email = parts[0].toLowerCase();
+      } else {
         name = email.split('@')[0];
       }
 
-      if (email && !this.contacts.some(c => c.email.toLowerCase() === email) && !newItems.some(c => c.email === email)) {
-        const id = 'cnt-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
-        newItems.push({
-          id,
-          name: name || email.split('@')[0],
-          email,
-          phone,
-          organization,
-          group: targetGroup,
-          createdAt: new Date().toISOString()
-        });
+      // Extract Phone
+      if (phoneIdx < parts.length && phoneIdx !== emailIdx && parts[phoneIdx]) {
+        phone = parts[phoneIdx];
       }
-    }
+
+      // Extract Organization
+      if (orgIdx < parts.length && orgIdx !== emailIdx && parts[orgIdx]) {
+        organization = parts[orgIdx];
+      }
+
+      // Extract Group / Sector
+      if (groupIdx < parts.length && groupIdx !== emailIdx && parts[groupIdx]) {
+        rowGroup = parts[groupIdx];
+      }
+
+      const assignedGroup = (defaultGroup && defaultGroup !== '__AUTO__')
+        ? defaultGroup
+        : (rowGroup || fallbackGroup);
+
+      if (existingEmails.has(email) || seenInBatch.has(email)) {
+        duplicates.push({ name, email, organization, group: assignedGroup });
+        return;
+      }
+
+      seenInBatch.add(email);
+      validContacts.push({
+        id: 'cnt-' + Date.now() + '-' + Math.floor(Math.random() * 100000) + '-' + validContacts.length,
+        name: name || email.split('@')[0],
+        email,
+        phone,
+        organization,
+        group: assignedGroup,
+        createdAt: new Date().toISOString()
+      });
+    });
+
+    return {
+      totalLines: lines.length,
+      dataRowsCount: dataLines.length,
+      headersDetected,
+      contacts: validContacts,
+      duplicates,
+      invalid
+    };
+  }
+
+  /**
+   * Import contacts from raw CSV text or an attached populated template
+   */
+  async importContacts(rawText, defaultGroup = '') {
+    if (!rawText) return 0;
+    const parsed = this.parseContactsFromText(rawText, defaultGroup);
+    const newItems = parsed.contacts || [];
 
     if (newItems.length > 0) {
+      // Auto-create any new groups present in the template rows
+      newItems.forEach(item => {
+        if (item.group && !this.groups.includes(item.group)) {
+          this.groups.push(item.group);
+        }
+      });
+
       newItems.forEach(item => {
         if (this.deletedContactIds.has(item.id)) {
           this.deletedContactIds.delete(item.id);

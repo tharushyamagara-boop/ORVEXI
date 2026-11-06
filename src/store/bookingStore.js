@@ -52,7 +52,7 @@ const DEFAULT_BOOKINGS = [
     id: 'req-sample-default-081',
     reference: 'ORV-2026-081',
     customerName: 'Theophile Harushyamagara',
-    email: 'orvexi@gmail.com',
+    email: 'ceo@orvexi.rw',
     phone: '+250788810675',
     service: 'Software Publishing & Custom Development',
     preferredDate: '2026-11-11',

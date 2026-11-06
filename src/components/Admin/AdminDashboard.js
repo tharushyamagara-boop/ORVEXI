@@ -1216,6 +1216,10 @@ function renderSettingsTab(settings) {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
             <span>Send Test Email (ceo@orvexi.rw)</span>
           </button>
+          <button type="button" id="settingsViewLogsBtn" class="btn-admin btn-admin-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span>Live Delivery Logs</span>
+          </button>
         </div>
       </div>
 
@@ -1653,9 +1657,13 @@ function renderContactsTab() {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             <span>Export Excel</span>
           </button>
-          <button id="contactsImportBtn" class="btn-admin btn-admin-secondary btn-admin-sm">
+          <button id="contactsDownloadTemplateBtn" class="btn-admin btn-admin-secondary btn-admin-sm" title="Download populated CSV template for bulk contacts">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Template</span>
+          </button>
+          <button id="contactsImportBtn" class="btn-admin btn-admin-secondary btn-admin-sm" title="Attach populated template or import contacts">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-            <span>Import Contacts</span>
+            <span>Attach Template / Import</span>
           </button>
           <button id="contactsAddRecipientBtn" class="btn-admin btn-admin-primary btn-admin-sm" style="background:#84cc16; color:#0b1402; font-weight:700;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -1845,6 +1853,10 @@ function renderSendEmailTab() {
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                 <span>Send Test Email (ceo@orvexi.rw)</span>
               </button>
+              <button type="button" id="viewDeliveryLogsBtn" class="btn-admin btn-admin-secondary btn-admin-sm">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                <span>Live Delivery Logs</span>
+              </button>
             </div>
           </div>
 
@@ -1975,7 +1987,7 @@ function renderSendEmailTab() {
               <button type="button" class="recipients-chip-btn chip-booking-filter" data-status="All">All (${bookingStats.total})</button>
               <button type="button" class="recipients-chip-btn chip-booking-filter" data-status="Confirmed">Confirmed (${bookingStats.confirmed})</button>
               <button type="button" class="recipients-chip-btn chip-booking-filter" data-status="Pending">Pending (${bookingStats.pending})</button>
-              <button type="button" class="recipients-chip-btn chip-booking-myself" data-email="orvexi@gmail.com">Myself</button>
+              <button type="button" class="recipients-chip-btn chip-booking-myself" data-email="${escapeHtml(zohoEmailService.getConfig().senderEmail || 'ceo@orvexi.rw')}">Myself</button>
             </div>
 
             <!-- Textarea -->
@@ -1999,7 +2011,7 @@ function renderSendEmailTab() {
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2rem; padding-top:1.25rem; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:1rem;">
             <label style="display:flex; align-items:center; gap:0.45rem; font-size:0.84rem; color:var(--text-secondary); cursor:pointer;">
               <input type="checkbox" id="sendTestCopyMyself" style="accent-color:#84cc16;">
-              <span>Also send a test copy to myself (orvexi@gmail.com)</span>
+              <span>Also send a test copy to myself (${escapeHtml(zohoEmailService.getConfig().senderEmail || 'ceo@orvexi.rw')})</span>
             </label>
 
             <div style="display:flex; gap:0.75rem;">
@@ -2727,34 +2739,98 @@ function renderImportContactsModal() {
 
   return `
     <div class="admin-modal-backdrop" id="adminModalBackdrop">
-      <div class="admin-modal" style="max-width:560px;">
-        <div class="admin-modal-header">
-          <h3 class="admin-modal-title">Import Contacts &amp; Email Lists</h3>
+      <div class="admin-modal" style="max-width:700px; width:95vw; max-height:90vh; display:flex; flex-direction:column;">
+        <div class="admin-modal-header" style="border-bottom-color:rgba(24, 150, 234, 0.3);">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div style="width:34px; height:34px; border-radius:8px; background:rgba(24, 150, 234, 0.15); color:var(--brand-blue-light); display:flex; align-items:center; justify-content:center; font-size:1.15rem;">
+              📁
+            </div>
+            <div>
+              <h3 class="admin-modal-title" style="color:#fff; margin:0;">Attach Template &amp; Import Contacts</h3>
+              <p style="font-size:0.75rem; color:var(--text-secondary); margin:0;">Attach a populated CSV template spreadsheet to bulk import directory contacts</p>
+            </div>
+          </div>
           <button class="admin-modal-close" id="modalCloseBtn">&times;</button>
         </div>
 
-        <form id="importContactsForm" style="padding:1.5rem;">
-          <div class="admin-form-group">
-            <label class="admin-label">Target Group / Sector</label>
-            <select id="importTargetGroupSelect" class="admin-select">
-              ${groups.map(g => `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join('')}
+        <form id="importContactsForm" style="padding:1.25rem 1.5rem; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:1.1rem;">
+          <!-- Download Template Banner -->
+          <div style="background:rgba(24, 150, 234, 0.08); border:1px solid rgba(24, 150, 234, 0.25); border-radius:8px; padding:0.9rem 1.1rem; display:flex; justify-content:space-between; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+            <div>
+              <div style="font-size:0.86rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:0.4rem;">
+                <span>📥 Need the pre-formatted template?</span>
+              </div>
+              <div style="font-size:0.77rem; color:var(--text-secondary); margin-top:0.2rem;">
+                Download our populated CSV with sample enterprise &amp; sector contacts, fill it in Excel / Sheets, and attach it below.
+              </div>
+            </div>
+            <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+              <button type="button" id="modalDownloadPopulatedTemplateBtn" class="btn-admin btn-admin-primary btn-admin-sm" style="background:#1896ea; color:#fff; font-weight:700;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Populated Template (.CSV)</span>
+              </button>
+              <button type="button" id="modalDownloadBlankTemplateBtn" class="btn-admin btn-admin-secondary btn-admin-sm">
+                <span>Blank Template</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Template Attachment Dropzone -->
+          <div>
+            <label class="admin-label" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <span>Attach Populated Spreadsheet Template *</span>
+              <span style="font-size:0.73rem; color:var(--text-muted); font-weight:normal;">Columns: Name, Email, Phone, Organization, Group / Sector</span>
+            </label>
+
+            <div class="contact-template-dropzone" id="contactTemplateDropzone" style="border:2px dashed rgba(24, 150, 234, 0.4); border-radius:8px; padding:1.75rem 1.25rem; text-align:center; background:rgba(7, 9, 15, 0.6); cursor:pointer; transition:all var(--transition-fast);">
+              <input type="file" id="contactTemplateFileInput" accept=".csv,.tsv,.txt,text/csv,text/plain" style="display:none;">
+              <div style="width:44px; height:44px; border-radius:50%; background:rgba(24, 150, 234, 0.12); color:#1896ea; display:flex; align-items:center; justify-content:center; margin:0 auto 0.6rem;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              </div>
+              <div style="font-size:0.92rem; font-weight:700; color:#fff; margin-bottom:0.2rem;">
+                Click to browse or drop your populated template here
+              </div>
+              <div style="font-size:0.76rem; color:var(--text-secondary);">
+                Supports <strong>.csv, .tsv, .txt</strong> files (Excel, Google Sheets, or Numbers exported CSV)
+              </div>
+            </div>
+
+            <!-- Attached File Preview Container -->
+            <div id="contactFilePreviewContainer" style="display:none; margin-top:0.75rem;"></div>
+          </div>
+
+          <!-- Target Group Assignment -->
+          <div class="admin-form-group" style="margin:0;">
+            <label class="admin-label">Assign to Sector / Group</label>
+            <select id="importTargetGroupSelect" class="admin-select" style="width:100%;">
+              <option value="__AUTO__" selected>✨ Auto-assign Sector Groups (from Template "Group / Sector" column)</option>
+              ${groups.map(g => `<option value="${escapeHtml(g)}">Assign All to: ${escapeHtml(g)}</option>`).join('')}
             </select>
+            <div style="font-size:0.74rem; color:var(--text-muted); margin-top:0.3rem;">
+              When "Auto-assign" is chosen, contacts are automatically organized by the sector specified in each template row.
+            </div>
           </div>
 
-          <div class="admin-form-group">
-            <label class="admin-label">Paste CSV Lines or Email Addresses</label>
-            <textarea id="importContactsTextarea" class="admin-textarea" rows="6" placeholder="Format 1 (CSV): Name, Email, Phone, Organization&#10;e.g. John Doe, john@corp.rw, +250788111222, Tech Ltd&#10;&#10;Format 2 (Emails only):&#10;aline@hospital.rw&#10;manager@hotel.rw" required></textarea>
-          </div>
-
-          <p style="font-size:0.8rem; color:var(--text-secondary); margin:0 0 1.25rem;">
-            Existing duplicate email addresses will be skipped automatically.
-          </p>
-
-          <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
-            <button type="button" id="modalCancelBtn" class="btn-admin btn-admin-secondary">Cancel</button>
-            <button type="submit" class="btn-admin btn-admin-primary" style="background:#84cc16; color:#0b1402; font-weight:700;">
-              <span>Import to Directory</span>
+          <!-- Collapsible Manual Paste -->
+          <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:0.6rem;">
+            <button type="button" id="toggleManualPasteBtn" style="background:none; border:none; color:var(--brand-blue-light); font-size:0.78rem; cursor:pointer; padding:0; display:flex; align-items:center; gap:0.4rem;">
+              <span>&plus; Or paste raw CSV lines / email text manually</span>
             </button>
+            <div id="manualPasteWrap" style="display:none; margin-top:0.6rem;">
+              <textarea id="importContactsTextarea" class="admin-textarea" rows="4" placeholder="Format: Contact Name, Email, Phone, Organization, Group / Sector&#10;e.g. John Doe, john@corp.rw, +250788111222, Tech Ltd, Technology &amp; Startups"></textarea>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:0.9rem; border-top:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:0.75rem;">
+            <div id="importStatsStatusText" style="font-size:0.78rem; color:var(--text-secondary);">
+              Existing duplicate email addresses will be skipped automatically.
+            </div>
+            <div style="display:flex; gap:0.75rem;">
+              <button type="button" id="modalCancelBtn" class="btn-admin btn-admin-secondary">Cancel</button>
+              <button type="submit" id="submitImportContactsBtn" class="btn-admin btn-admin-primary" style="background:#84cc16; color:#0b1402; font-weight:700;" disabled>
+                <span>Import Contacts &rarr;</span>
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -2852,6 +2928,11 @@ function renderDispatchSuccessModal(record, zohoResult = null) {
                 <span>Preview Dispatched Email</span>
               </button>
             </div>
+
+            <button type="button" id="viewDeliveryLogsFromSuccessBtn" class="btn-admin btn-admin-secondary" style="justify-content:center; margin-top:0.6rem; width:100%;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <span>Check Live Delivery Telemetry (ZeptoMail)</span>
+            </button>
           </div>
 
           <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:flex-end;">
@@ -2887,6 +2968,135 @@ function renderDispatchSuccessModal(record, zohoResult = null) {
       }
     };
   }
+
+  const logsBtn = mount.querySelector('#viewDeliveryLogsFromSuccessBtn');
+  if (logsBtn) {
+    logsBtn.onclick = () => {
+      openDeliveryLogsModal();
+    };
+  }
+}
+
+async function openDeliveryLogsModal() {
+  const mount = document.getElementById('adminModalMount') || document.body;
+  mount.innerHTML = `
+    <div class="admin-modal-backdrop" id="adminModalBackdrop">
+      <div class="admin-modal" style="max-width:820px; width:95vw; max-height:90vh; display:flex; flex-direction:column;">
+        <div class="admin-modal-header" style="border-bottom-color:rgba(132,204,22,0.3);">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div style="width:34px; height:34px; border-radius:8px; background:rgba(132,204,22,0.15); color:#84cc16; display:flex; align-items:center; justify-content:center; font-size:1.15rem;">
+              ⚡
+            </div>
+            <div>
+              <h3 class="admin-modal-title" style="color:#fff; margin:0;">Live Outbound Email Delivery Logs</h3>
+              <p style="font-size:0.75rem; color:var(--text-secondary); margin:0;">Real-time dispatch, recipient delivery, and bounce tracking via Zoho ZeptoMail</p>
+            </div>
+          </div>
+          <button class="admin-modal-close" id="modalCloseBtn">&times;</button>
+        </div>
+
+        <div style="padding:1rem 1.5rem; overflow-y:auto; flex:1;" id="deliveryLogsContainer">
+          <div style="text-align:center; padding:2rem; color:var(--text-muted);">
+            <p style="margin:0; font-size:0.88rem;">Querying live ZeptoMail dispatch telemetry...</p>
+          </div>
+        </div>
+
+        <div style="padding:1rem 1.5rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" id="refreshDeliveryLogsBtn" class="btn-admin btn-admin-secondary btn-admin-sm">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <span>Refresh Telemetry</span>
+          </button>
+          <button type="button" id="closeDeliveryLogsBtn" class="btn-admin btn-admin-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const dismiss = () => { mount.innerHTML = ''; };
+  mount.querySelector('#modalCloseBtn')?.addEventListener('click', dismiss);
+  mount.querySelector('#closeDeliveryLogsBtn')?.addEventListener('click', dismiss);
+
+  async function loadLogs() {
+    const container = mount.querySelector('#deliveryLogsContainer');
+    if (!container) return;
+    try {
+      container.innerHTML = `
+        <div style="text-align:center; padding:2rem; color:var(--text-muted); font-size:0.85rem;">
+          Querying live ZeptoMail dispatch telemetry...
+        </div>
+      `;
+      const logs = await zohoEmailService.getDeliveryLogs();
+      if (!logs || logs.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-muted); font-size:0.88rem;">No recent dispatch records returned by ZeptoMail.</div>`;
+        return;
+      }
+      container.innerHTML = `
+        <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.75rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.4rem;">
+          <span>Showing last <strong>${logs.length}</strong> dispatches</span>
+          <span>Sender: <code>ceo@orvexi.rw</code> &bull; Mail Agent: <code>1791ea76b71e26a9</code></span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:0.6rem;">
+          ${logs.map(log => {
+            const info = log.email_info || {};
+            const toList = (info.to || []).map(t => t.address).join(', ') || 'N/A';
+            const subject = info.subject || '(No Subject)';
+            const time = info.processed_time ? new Date(info.processed_time).toLocaleString() : 'N/A';
+            const delivery = log.email_delivery_details || {};
+            const hardbounces = delivery.hardbounce || [];
+            const softbounces = delivery.softbounce || [];
+            const isHardBounce = hardbounces.length > 0;
+            const isSoftBounce = softbounces.length > 0;
+
+            let statusBadge = `<span style="background:rgba(132,204,22,0.15); color:#84cc16; border:1px solid rgba(132,204,22,0.4); padding:0.18rem 0.55rem; border-radius:12px; font-size:0.72rem; font-weight:700;">✓ Dispatched</span>`;
+            let bounceDetail = '';
+
+            if (isHardBounce) {
+              const hb = hardbounces[0];
+              statusBadge = `<span style="background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.4); padding:0.18rem 0.55rem; border-radius:12px; font-size:0.72rem; font-weight:700;">✗ Bounced (${escapeHtml(hb.category || 'Hard Bounce')})</span>`;
+              bounceDetail = `
+                <div style="margin-top:0.4rem; padding:0.4rem 0.6rem; background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; border-radius:4px; font-size:0.74rem; color:#fca5a5; font-family:var(--font-mono); word-break:break-all;">
+                  <strong>Recipient Mail Server:</strong> ${escapeHtml(hb.reason || 'User not found or mailbox rejected')}
+                </div>
+              `;
+            } else if (isSoftBounce) {
+              const sb = softbounces[0];
+              statusBadge = `<span style="background:rgba(234,179,8,0.15); color:#eab308; border:1px solid rgba(234,179,8,0.4); padding:0.18rem 0.55rem; border-radius:12px; font-size:0.72rem; font-weight:700;">⚠ Soft Bounce</span>`;
+              bounceDetail = `
+                <div style="margin-top:0.4rem; padding:0.4rem 0.6rem; background:rgba(234,179,8,0.1); border-left:3px solid #eab308; border-radius:4px; font-size:0.74rem; color:#fde047; font-family:var(--font-mono);">
+                  ${escapeHtml(sb.reason || 'Temporary delivery delay')}
+                </div>
+              `;
+            }
+
+            return `
+              <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); border-radius:6px; padding:0.75rem 0.9rem;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; flex-wrap:wrap;">
+                  <div style="flex:1; min-width:240px;">
+                    <div style="font-size:0.85rem; font-weight:700; color:#fff;">${escapeHtml(subject)}</div>
+                    <div style="font-size:0.78rem; color:var(--brand-blue-light); margin-top:0.15rem;">To: <strong style="color:#fff;">${escapeHtml(toList)}</strong></div>
+                  </div>
+                  <div style="text-align:right;">
+                    ${statusBadge}
+                    <div style="font-size:0.7rem; color:var(--text-muted); margin-top:0.25rem;">${time}</div>
+                  </div>
+                </div>
+                ${bounceDetail}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    } catch (err) {
+      container.innerHTML = `
+        <div style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:6px; padding:1rem; color:#fca5a5; font-size:0.84rem;">
+          Could not load telemetry logs: ${escapeHtml(err.message || 'Check network connection')}
+        </div>
+      `;
+    }
+  }
+
+  loadLogs();
+  mount.querySelector('#refreshDeliveryLogsBtn')?.addEventListener('click', loadLogs);
 }
 
 function renderZohoConfigModal() {
@@ -4256,6 +4466,10 @@ export function initAdminEvents(onContentChange) {
   if (settingsTestZohoBtn) {
     settingsTestZohoBtn.onclick = () => handleSendTestEmail();
   }
+  const settingsLogsBtn = document.getElementById('settingsViewLogsBtn');
+  if (settingsLogsBtn) {
+    settingsLogsBtn.onclick = () => openDeliveryLogsModal();
+  }
 
   // -------------------------
   // SLIDER EVENTS
@@ -5055,22 +5269,246 @@ export function initAdminEvents(onContentChange) {
       };
     }
 
+    const downloadTemplateBtn = document.getElementById('contactsDownloadTemplateBtn');
+    if (downloadTemplateBtn) {
+      downloadTemplateBtn.onclick = () => {
+        contactStore.downloadTemplate({ populated: true });
+        showAdminToast('Populated contacts template downloaded! Fill it in Excel / Sheets and attach it to import.', 'success');
+      };
+    }
+
     const importBtn = document.getElementById('contactsImportBtn');
     if (importBtn) {
       importBtn.onclick = () => {
         const mount = document.getElementById('adminModalMount');
         mount.innerHTML = renderImportContactsModal();
         setupModalDismiss();
+
+        let attachedFileRawText = '';
         const form = document.getElementById('importContactsForm');
+        const dropzone = document.getElementById('contactTemplateDropzone');
+        const fileInput = document.getElementById('contactTemplateFileInput');
+        const previewWrap = document.getElementById('contactFilePreviewContainer');
+        const submitBtn = document.getElementById('submitImportContactsBtn');
+        const textarea = document.getElementById('importContactsTextarea');
+        const manualToggleBtn = document.getElementById('toggleManualPasteBtn');
+        const manualWrap = document.getElementById('manualPasteWrap');
+        const targetGroupSelect = document.getElementById('importTargetGroupSelect');
+        const downloadPopBtn = document.getElementById('modalDownloadPopulatedTemplateBtn');
+        const downloadBlankBtn = document.getElementById('modalDownloadBlankTemplateBtn');
+
+        if (downloadPopBtn) {
+          downloadPopBtn.onclick = () => {
+            contactStore.downloadTemplate({ populated: true });
+            showAdminToast('Populated template (.CSV) downloaded!', 'success');
+          };
+        }
+        if (downloadBlankBtn) {
+          downloadBlankBtn.onclick = () => {
+            contactStore.downloadTemplate({ populated: false });
+            showAdminToast('Blank template (.CSV) downloaded!', 'success');
+          };
+        }
+
+        if (manualToggleBtn && manualWrap) {
+          manualToggleBtn.onclick = () => {
+            const isHidden = manualWrap.style.display === 'none';
+            manualWrap.style.display = isHidden ? 'block' : 'none';
+            manualToggleBtn.innerHTML = isHidden
+              ? '<span>&minus; Hide manual paste area</span>'
+              : '<span>&plus; Or paste raw CSV lines / email text manually</span>';
+          };
+        }
+
+        function processFileText(text, fileName, fileSize) {
+          attachedFileRawText = text;
+          const currentGroup = targetGroupSelect?.value || '__AUTO__';
+          const parsed = contactStore.parseContactsFromText(text, currentGroup);
+
+          if (dropzone) dropzone.style.display = 'none';
+          if (previewWrap) {
+            previewWrap.style.display = 'block';
+            previewWrap.innerHTML = `
+              <div style="background:rgba(11, 14, 23, 0.9); border:1px solid rgba(24, 150, 234, 0.35); border-radius:8px; padding:1rem; box-shadow:0 4px 16px rgba(0,0,0,0.4);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+                  <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <div style="width:36px; height:36px; border-radius:8px; background:rgba(24,150,234,0.15); color:var(--brand-blue-light); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+                      📄
+                    </div>
+                    <div>
+                      <div style="font-size:0.88rem; font-weight:700; color:#fff;">${escapeHtml(fileName)}</div>
+                      <div style="font-size:0.74rem; color:var(--text-muted);">${(fileSize / 1024).toFixed(1)} KB &bull; ${parsed.dataRowsCount} row(s) &bull; ${parsed.headersDetected ? 'Headers auto-detected' : 'Direct CSV'}</div>
+                    </div>
+                  </div>
+                  <button type="button" id="removeAttachedFileBtn" class="btn-admin btn-admin-secondary btn-admin-sm" style="font-size:0.75rem;">
+                    Remove / Change File
+                  </button>
+                </div>
+
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem;">
+                  <span style="background:rgba(132,204,22,0.15); color:#84cc16; border:1px solid rgba(132,204,22,0.4); padding:0.2rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:700;">
+                    ✓ ${parsed.contacts.length} Ready to Import
+                  </span>
+                  ${parsed.duplicates.length > 0 ? `
+                    <span style="background:rgba(234,179,8,0.15); color:#eab308; border:1px solid rgba(234,179,8,0.4); padding:0.2rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:700;">
+                      ⚠ ${parsed.duplicates.length} Existing Duplicate(s) (Skipped)
+                    </span>
+                  ` : ''}
+                  ${parsed.invalid.length > 0 ? `
+                    <span style="background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.4); padding:0.2rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:700;">
+                      ✗ ${parsed.invalid.length} Missing / Invalid Email
+                    </span>
+                  ` : ''}
+                </div>
+
+                <div style="max-height:160px; overflow-y:auto; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.35);">
+                  <table style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
+                    <thead>
+                      <tr style="background:rgba(255,255,255,0.05); color:var(--text-muted); border-bottom:1px solid rgba(255,255,255,0.08);">
+                        <th style="padding:0.4rem 0.6rem;">Contact Name</th>
+                        <th style="padding:0.4rem 0.6rem;">Email Address</th>
+                        <th style="padding:0.4rem 0.6rem;">Phone</th>
+                        <th style="padding:0.4rem 0.6rem;">Organization</th>
+                        <th style="padding:0.4rem 0.6rem;">Sector Group</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${parsed.contacts.slice(0, 5).map(c => `
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.03);">
+                          <td style="padding:0.35rem 0.6rem; color:#fff; font-weight:600;">${escapeHtml(c.name)}</td>
+                          <td style="padding:0.35rem 0.6rem; color:var(--brand-blue-light); font-family:var(--font-mono);">${escapeHtml(c.email)}</td>
+                          <td style="padding:0.35rem 0.6rem; color:var(--text-secondary);">${escapeHtml(c.phone || '—')}</td>
+                          <td style="padding:0.35rem 0.6rem; color:var(--text-secondary);">${escapeHtml(c.organization || '—')}</td>
+                          <td style="padding:0.35rem 0.6rem;"><span style="background:rgba(255,255,255,0.08); padding:0.15rem 0.45rem; border-radius:4px; font-size:0.7rem;">${escapeHtml(c.group)}</span></td>
+                        </tr>
+                      `).join('')}
+                      ${parsed.contacts.length > 5 ? `
+                        <tr>
+                          <td colspan="5" style="padding:0.45rem 0.6rem; color:var(--text-muted); text-align:center; font-style:italic;">
+                            ... and ${parsed.contacts.length - 5} more contact(s) from template
+                          </td>
+                        </tr>
+                      ` : ''}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+
+            const removeBtn = previewWrap.querySelector('#removeAttachedFileBtn');
+            if (removeBtn) {
+              removeBtn.onclick = () => {
+                attachedFileRawText = '';
+                if (fileInput) fileInput.value = '';
+                previewWrap.style.display = 'none';
+                previewWrap.innerHTML = '';
+                if (dropzone) dropzone.style.display = 'block';
+                updateSubmitState();
+              };
+            }
+          }
+          updateSubmitState();
+        }
+
+        function updateSubmitState() {
+          const raw = attachedFileRawText || textarea?.value?.trim() || '';
+          const currentGroup = targetGroupSelect?.value || '__AUTO__';
+          const parsed = contactStore.parseContactsFromText(raw, currentGroup);
+          const count = parsed.contacts.length;
+
+          if (submitBtn) {
+            if (count > 0) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = `<span>Import ${count} Contact${count === 1 ? '' : 's'} &rarr;</span>`;
+            } else {
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = `<span>Import Contacts &rarr;</span>`;
+            }
+          }
+        }
+
+        if (dropzone && fileInput) {
+          dropzone.onclick = () => fileInput.click();
+
+          dropzone.ondragover = (e) => {
+            e.preventDefault();
+            dropzone.style.borderColor = '#1896ea';
+            dropzone.style.background = 'rgba(24, 150, 234, 0.12)';
+          };
+
+          dropzone.ondragleave = (e) => {
+            e.preventDefault();
+            dropzone.style.borderColor = 'rgba(24, 150, 234, 0.4)';
+            dropzone.style.background = 'rgba(7, 9, 15, 0.6)';
+          };
+
+          dropzone.ondrop = (e) => {
+            e.preventDefault();
+            dropzone.style.borderColor = 'rgba(24, 150, 234, 0.4)';
+            dropzone.style.background = 'rgba(7, 9, 15, 0.6)';
+            const file = e.dataTransfer?.files?.[0];
+            if (file) handleFile(file);
+          };
+
+          fileInput.onchange = (e) => {
+            const file = e.target.files?.[0];
+            if (file) handleFile(file);
+          };
+
+          function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              const text = ev.target.result;
+              processFileText(text, file.name, file.size);
+            };
+            reader.readAsText(file);
+          }
+        }
+
+        if (textarea) {
+          textarea.oninput = () => {
+            if (!attachedFileRawText) updateSubmitState();
+          };
+        }
+
+        if (targetGroupSelect) {
+          targetGroupSelect.onchange = () => {
+            if (attachedFileRawText) {
+              const parsed = contactStore.parseContactsFromText(attachedFileRawText, targetGroupSelect.value);
+              updateSubmitState();
+            }
+          };
+        }
+
         if (form) {
           form.onsubmit = async (e) => {
             e.preventDefault();
-            const raw = document.getElementById('importContactsTextarea').value;
-            const targetGroup = document.getElementById('importTargetGroupSelect').value;
-            const count = await contactStore.importContacts(raw, targetGroup);
-            showAdminToast(`Successfully imported ${count} contact(s)!`, 'success');
-            closeModal();
-            onContentChange();
+            const raw = attachedFileRawText || textarea?.value?.trim() || '';
+            const targetGroup = targetGroupSelect ? targetGroupSelect.value : '__AUTO__';
+
+            if (!raw) {
+              alert('Please attach a populated template file or paste contact lines.');
+              return;
+            }
+
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.innerHTML = '<span>Importing contacts...</span>';
+            }
+
+            try {
+              const count = await contactStore.importContacts(raw, targetGroup);
+              showAdminToast(`✓ Successfully imported ${count} contact(s) into directory!`, 'success');
+              closeModal();
+              onContentChange();
+            } catch (err) {
+              alert('Error importing contacts: ' + (err.message || err));
+            } finally {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Import Contacts &rarr;</span>';
+              }
+            }
           };
         }
       };
@@ -5331,8 +5769,9 @@ export function initAdminEvents(onContentChange) {
     const myselfChip = document.querySelector('.chip-booking-myself');
     if (myselfChip) {
       myselfChip.onclick = () => {
-        appendRecipients(['orvexi@gmail.com']);
-        showAdminToast('Added orvexi@gmail.com', 'info');
+        const myEmail = myselfChip.getAttribute('data-email') || zohoEmailService.getConfig().senderEmail || 'ceo@orvexi.rw';
+        appendRecipients([myEmail]);
+        showAdminToast(`Added ${myEmail}`, 'info');
       };
     }
 
@@ -5424,6 +5863,11 @@ export function initAdminEvents(onContentChange) {
       testZohoBtn.onclick = () => handleSendTestEmail();
     }
 
+    const viewLogsBtn = document.getElementById('viewDeliveryLogsBtn');
+    if (viewLogsBtn) {
+      viewLogsBtn.onclick = () => openDeliveryLogsModal();
+    }
+
     const dispatchForm = document.getElementById('sendEmailDispatchForm');
     if (dispatchForm) {
       dispatchForm.onsubmit = async (e) => {
@@ -5451,8 +5895,9 @@ export function initAdminEvents(onContentChange) {
           .map(r => r.trim().toLowerCase())
           .filter(r => r.includes('@'));
 
-        if (sendTestCopy && !parsedRecipients.includes('orvexi@gmail.com')) {
-          parsedRecipients.push('orvexi@gmail.com');
+        const myEmail = zohoEmailService.getConfig().senderEmail || 'ceo@orvexi.rw';
+        if (sendTestCopy && !parsedRecipients.includes(myEmail)) {
+          parsedRecipients.push(myEmail);
         }
 
         if (parsedRecipients.length === 0) {

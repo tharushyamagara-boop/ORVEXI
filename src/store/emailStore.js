@@ -396,7 +396,7 @@ const DEFAULT_CAMPAIGN = {
   category: 'Company Announcements',
   linkedNewsletters: ['ORVEXI Official Enterprise Platform Launch'],
   includeBrowserViewHeader: true,
-  recipientsText: 'aline.ikibasumba@oneandonlyresorts.com, nathan.chiroma@act.ac.rw, info@ur.ac.rw, orvexi@gmail.com',
+  recipientsText: 'aline.ikibasumba@oneandonlyresorts.com, nathan.chiroma@act.ac.rw, info@ur.ac.rw, ceo@orvexi.rw',
   blocks: INITIAL_EMAIL_BLOCKS,
   styles: DEFAULT_EMAIL_STYLES,
   lastSavedAt: new Date().toISOString()
@@ -876,8 +876,8 @@ class EmailStore {
     }
 
     if (testOnly) {
-      if (!recipientList.includes('orvexi@gmail.com')) {
-        recipientList.push('orvexi@gmail.com');
+      if (!recipientList.includes('ceo@orvexi.rw')) {
+        recipientList.push('ceo@orvexi.rw');
       }
     }
 

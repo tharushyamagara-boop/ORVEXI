@@ -133,11 +133,17 @@ class ZohoEmailService {
       const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        // Handle Zoho CPaaS specific error responses
-        const errorMsg = result.message || 
-          (result.error && result.error.message) || 
-          result.error || 
-          `Zoho API Error (HTTP ${response.status})`;
+        // Handle Zoho CPaaS specific error responses and nested detail messages
+        let errorMsg = '';
+        if (result.error && Array.isArray(result.error.details) && result.error.details.length > 0) {
+          const d = result.error.details[0];
+          errorMsg = `${d.message || result.error.message || 'Access Denied'}${d.target_value ? ` (${d.target_value})` : ''}`;
+        } else {
+          errorMsg = (result.error && result.error.message) ||
+            result.message ||
+            result.error ||
+            `Zoho API Error (HTTP ${response.status})`;
+        }
         throw new Error(errorMsg);
       }
 
@@ -238,6 +244,29 @@ class ZohoEmailService {
       subject: `[ORVEXI Test] Zoho Email Connection Verified (${new Date().toLocaleTimeString()})`,
       html: testHtml
     });
+  }
+
+  /**
+   * Fetch live dispatch & delivery logs from Zoho ZeptoMail API
+   */
+  async getDeliveryLogs() {
+    const config = this.getConfig();
+    try {
+      const response = await fetch('/api/email-logs', {
+        headers: {
+          'Accept': 'application/json',
+          'X-Zoho-Key': config.apiKey || ''
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch logs: HTTP ${response.status}`);
+      }
+      const json = await response.json();
+      return json.data?.logs || [];
+    } catch (err) {
+      console.error('Failed to get Zoho delivery logs:', err);
+      throw err;
+    }
   }
 }
 

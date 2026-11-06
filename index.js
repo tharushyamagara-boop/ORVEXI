@@ -32,6 +32,37 @@ const server = http.createServer((req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
+  // Handle Zoho Email Delivery Logs API
+  if (req.method === 'GET' && pathname === '/api/email-logs') {
+    try {
+      const DEFAULT_KEY = 'Zoho-enczapikey wSsVR60i+UP1Cf95mjWqJe5pkVpUBw7wE0t8igel6SD0S6iW8MczkBadUQCiGfgXGGdtHDIRorkpyRlShjVfh9wvyF8HWyiF9mqRe1U4J3x17qnvhDzKWGRVlhaML4kJxQttm2JjFMkl+g==';
+      const clientKey = req.headers['x-zoho-key'];
+      const activeKey = (clientKey && typeof clientKey === 'string' && clientKey.trim().length > 10)
+        ? clientKey.trim()
+        : DEFAULT_KEY;
+      const authHeader = activeKey.startsWith('Zoho-enczapikey')
+        ? activeKey
+        : `Zoho-enczapikey ${activeKey}`;
+
+      const zohoRes = await fetch('https://cpaas.zoho.com/v1.1/email/logs', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': authHeader
+        }
+      });
+
+      const zohoJson = await zohoRes.json().catch(() => ({}));
+      res.writeHead(zohoRes.status, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(zohoJson));
+    } catch (err) {
+      console.error('[Zoho Production Logs Error]:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message || 'Error fetching delivery logs' }));
+    }
+    return;
+  }
+
   // Handle Zoho Email Dispatch API
   if (req.method === 'POST' && pathname === '/api/send-email') {
     let rawBody = '';
