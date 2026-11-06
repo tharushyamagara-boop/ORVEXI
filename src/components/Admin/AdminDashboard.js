@@ -2404,7 +2404,15 @@ function renderDesignerCanvasBlocks(blocks) {
       case 'header':
         innerContent = `
           <div style="padding:24px 20px 14px; text-align:center; background:${styles.cardBg || '#0b101f'};">
-            <img src="${b.logoUrl || '/Logo-WHITE.png'}" alt="${escapeHtml(b.companyName || 'ORVEXI')}" height="32" style="height:32px; margin-bottom:6px; display:inline-block;" />
+            <div class="designer-image-wrap" data-id="${b.id}" data-field="logoUrl" style="display:inline-block; position:relative; cursor:pointer;" title="Click to replace logo">
+              <img src="${b.logoUrl || '/Logo-WHITE.png'}" alt="${escapeHtml(b.companyName || 'ORVEXI')}" height="32" style="height:32px; margin-bottom:6px; display:inline-block;" />
+              <div class="designer-image-overlay">
+                <button type="button" class="designer-replace-img-btn" data-id="${b.id}" data-field="logoUrl">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Replace Logo</span>
+                </button>
+              </div>
+            </div>
             <div class="editable-text" contenteditable="true" data-id="${b.id}" data-field="tagline" style="font-size:12px; color:#1896ea; text-transform:uppercase; font-weight:600; letter-spacing:1px; outline:none; cursor:text;" title="Click to edit tagline inline">
               ${escapeHtml(b.tagline || 'Enterprise Software & Cloud Platforms in Rwanda')}
             </div>
@@ -2437,7 +2445,15 @@ function renderDesignerCanvasBlocks(blocks) {
           <div style="padding:14px 20px; background:${styles.cardBg || '#0b101f'};">
             <div style="display:grid; grid-template-columns:1fr 1.3fr; gap:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px; align-items:center;">
               <div>
-                <img src="${b.imageUrl || '/images/slide1_kigali_tech.jpg'}" alt="" style="width:100%; border-radius:6px; max-height:140px; object-fit:cover; display:block;" />
+                <div class="designer-image-wrap" data-id="${b.id}" data-field="imageUrl" style="position:relative; cursor:pointer; border-radius:6px; overflow:hidden;" title="Click to replace image">
+                  <img src="${b.imageUrl || '/images/slide1_kigali_tech.jpg'}" alt="" style="width:100%; border-radius:6px; max-height:140px; object-fit:cover; display:block;" />
+                  <div class="designer-image-overlay">
+                    <button type="button" class="designer-replace-img-btn" data-id="${b.id}" data-field="imageUrl">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      <span>Replace</span>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div>
                 <h4 class="editable-text" contenteditable="true" data-id="${b.id}" data-field="title" style="margin:0 0 6px; font-size:15px; color:${styles.accentColor || '#84cc16'}; font-weight:700; outline:none;">
@@ -2460,8 +2476,16 @@ function renderDesignerCanvasBlocks(blocks) {
       case 'image':
         innerContent = `
           <div style="padding:14px 20px; text-align:${b.align || 'center'}; background:${styles.cardBg || '#0b101f'};">
-            <img src="${b.imageUrl || '/images/slide1_kigali_tech.jpg'}" alt="" style="width:100%; max-width:540px; border-radius:8px; display:block; margin:0 auto;" />
-            ${b.caption ? `<div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${escapeHtml(b.caption)}</div>` : ''}
+            <div class="designer-image-wrap" data-id="${b.id}" data-field="imageUrl" style="position:relative; cursor:pointer; max-width:540px; margin:0 auto; border-radius:8px; overflow:hidden;" title="Click to replace image">
+              <img src="${b.imageUrl || '/images/slide1_kigali_tech.jpg'}" alt="" style="width:100%; max-width:540px; border-radius:8px; display:block; margin:0 auto;" />
+              <div class="designer-image-overlay">
+                <button type="button" class="designer-replace-img-btn" data-id="${b.id}" data-field="imageUrl">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Replace Image</span>
+                </button>
+              </div>
+            </div>
+            ${b.caption ? `<div class="editable-text" contenteditable="true" data-id="${b.id}" data-field="caption" style="font-size:12px; color:var(--text-muted); margin-top:6px; outline:none; cursor:text;" title="Click to edit caption inline">${escapeHtml(b.caption)}</div>` : ''}
           </div>
         `;
         break;
@@ -2495,11 +2519,17 @@ function renderDesignerCanvasBlocks(blocks) {
       case 'video':
         innerContent = `
           <div style="padding:14px 20px; text-align:center; background:${styles.cardBg || '#0b101f'};">
-            <div style="position:relative; max-width:500px; margin:0 auto; background:#000; border-radius:8px; overflow:hidden;">
+            <div class="designer-image-wrap" data-id="${b.id}" data-field="thumbnailUrl" style="position:relative; max-width:500px; margin:0 auto; background:#000; border-radius:8px; overflow:hidden; cursor:pointer;" title="Click to replace video thumbnail">
               <img src="${b.thumbnailUrl || '/images/slide2_software_team.jpg'}" width="100%" style="width:100%; display:block; opacity:0.7;" />
-              <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:${styles.accentColor || '#84cc16'}; color:#0b1402; border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:bold;">▶</div>
+              <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:${styles.accentColor || '#84cc16'}; color:#0b1402; border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:bold; pointer-events:none;">▶</div>
+              <div class="designer-image-overlay">
+                <button type="button" class="designer-replace-img-btn" data-id="${b.id}" data-field="thumbnailUrl">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Replace Thumbnail</span>
+                </button>
+              </div>
             </div>
-            ${b.caption ? `<div style="font-size:12px; color:var(--text-secondary); margin-top:6px;">${escapeHtml(b.caption)}</div>` : ''}
+            ${b.caption ? `<div class="editable-text" contenteditable="true" data-id="${b.id}" data-field="caption" style="font-size:12px; color:var(--text-secondary); margin-top:6px; outline:none; cursor:text;" title="Click to edit caption inline">${escapeHtml(b.caption)}</div>` : ''}
           </div>
         `;
         break;
@@ -2548,9 +2578,17 @@ function renderDesignerCanvasBlocks(blocks) {
         break;
     }
 
+    const hasImage = b.type === 'image' || b.type === 'columns2' || b.type === 'header' || b.type === 'video';
+    const imgField = b.type === 'header' ? 'logoUrl' : (b.type === 'video' ? 'thumbnailUrl' : 'imageUrl');
+
     return `
       <div class="designer-canvas-block" data-id="${b.id}" data-type="${b.type}">
         <div class="designer-canvas-block-actions">
+          ${hasImage ? `
+            <button type="button" class="designer-block-action-btn btn-block-replace-img" data-id="${b.id}" data-field="${imgField}" title="Replace Image" style="color:#84cc16; font-weight:700; display:flex; align-items:center; gap:3px;">
+              <span>🖼</span> <span>Replace</span>
+            </button>
+          ` : ''}
           <button type="button" class="designer-block-action-btn btn-block-up" data-id="${b.id}" title="Move Up" ${idx === 0 ? 'disabled style="opacity:0.3"' : ''}>&uarr;</button>
           <button type="button" class="designer-block-action-btn btn-block-down" data-id="${b.id}" title="Move Down" ${idx === blocks.length - 1 ? 'disabled style="opacity:0.3"' : ''}>&darr;</button>
           <button type="button" class="designer-block-action-btn btn-block-dup" data-id="${b.id}" title="Duplicate">❐</button>
@@ -2943,10 +2981,106 @@ function renderZohoConfigModal() {
   `;
 }
 
+function renderReplaceImageModal(block, field = 'imageUrl') {
+  const currentUrl = block[field] || (field === 'logoUrl' ? '/Logo-WHITE.png' : '/images/slide1_kigali_tech.jpg');
+  const isLogo = field === 'logoUrl';
+
+  // Gather available presets from contentStore and standard assets
+  const content = contentStore.getContent();
+  const presets = [
+    { label: 'Kigali Tech Hub', url: '/images/slide1_kigali_tech.jpg' },
+    { label: 'Software Team', url: '/images/slide2_software_team.jpg' },
+    { label: 'Cloud Infrastructure', url: '/images/slide3_datacenter.jpg' },
+    { label: 'Workspace Office', url: '/images/about_office.jpg' },
+    { label: 'ORVEXI Logo White', url: '/Logo-WHITE.png' }
+  ];
+
+  if (Array.isArray(content.portfolio)) {
+    content.portfolio.forEach(p => {
+      if (p.image && !presets.some(pr => pr.url === p.image)) {
+        presets.push({ label: p.title || 'Project', url: p.image });
+      }
+    });
+  }
+
+  const presetsHtml = presets.slice(0, 8).map(p => `
+    <div class="media-preset-card ${p.url === currentUrl ? 'active' : ''}" data-url="${escapeHtml(p.url)}" title="${escapeHtml(p.label)}">
+      <img src="${p.url}" alt="${escapeHtml(p.label)}" loading="lazy">
+      <span class="media-preset-label">${escapeHtml(p.label)}</span>
+    </div>
+  `).join('');
+
+  return `
+    <div class="admin-modal-backdrop" id="replaceImageModalBackdrop" style="z-index:10000;">
+      <div class="admin-modal" style="max-width:560px; background:#0b101f; border:1px solid rgba(24,150,234,0.3); border-radius:var(--radius-lg); box-shadow:0 24px 60px rgba(0,0,0,0.85);">
+        <div class="admin-modal-header" style="padding:1.15rem 1.5rem; border-bottom:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div style="width:34px; height:34px; border-radius:8px; background:rgba(24,150,234,0.15); border:1px solid rgba(24,150,234,0.3); display:flex; align-items:center; justify-content:center; color:var(--brand-blue-light);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            </div>
+            <div>
+              <h3 class="admin-modal-title" style="margin:0; font-size:1.05rem; color:#fff;">Replace Email Image</h3>
+              <p style="margin:0; font-size:0.75rem; color:var(--text-muted);">${isLogo ? 'Replace company logo asset' : 'Upload a new photo or select from media'}</p>
+            </div>
+          </div>
+          <button class="admin-modal-close" id="replaceImageCloseBtn" style="background:none; border:none; font-size:1.5rem; color:var(--text-muted); cursor:pointer;">&times;</button>
+        </div>
+
+        <div style="padding:1.25rem 1.5rem;">
+          <!-- Preview Box -->
+          <div style="margin-bottom:1.15rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <label class="admin-label" style="margin:0; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px;">Image Preview</label>
+              <span id="replaceImageSelectedBadge" style="font-family:var(--font-mono); font-size:0.72rem; color:var(--brand-blue-light); background:rgba(24,150,234,0.1); border:1px solid rgba(24,150,234,0.25); padding:0.1rem 0.45rem; border-radius:4px;">Current</span>
+            </div>
+            <div style="width:100%; height:160px; background:#07090f; border:1px solid var(--border-medium); border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative;">
+              <img id="replaceModalPreviewImg" src="${currentUrl}" alt="Preview" style="max-width:100%; max-height:100%; object-fit:contain;">
+            </div>
+          </div>
+
+          <!-- Option 1: File Upload -->
+          <div style="margin-bottom:1.15rem;">
+            <label class="admin-label" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:0.4rem; display:block;">Option 1: Upload from Computer</label>
+            <label class="btn-admin btn-admin-secondary" style="display:flex; align-items:center; justify-content:center; gap:0.5rem; padding:0.75rem 1rem; border:2px dashed rgba(24,150,234,0.35); background:rgba(24,150,234,0.06); border-radius:8px; cursor:pointer; width:100%; box-sizing:border-box;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <span style="font-weight:600; color:#fff;" id="replaceUploadBtnLabel">Choose Image File (PNG, JPG, WebP)</span>
+              <input type="file" id="replaceModalFileInput" accept="image/*" style="display:none;">
+            </label>
+            <div id="replaceModalUploadStatus" class="admin-helper-text" style="color:var(--text-muted); margin-top:0.35rem;">Automatic compression &amp; Firebase Storage cloud hosting applied.</div>
+          </div>
+
+          <!-- Option 2: Choose from Media Presets -->
+          <div style="margin-bottom:1.15rem;">
+            <label class="admin-label" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:0.4rem; display:block;">Option 2: Select from Media Assets</label>
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:0.5rem;" id="replaceModalPresetsList">
+              ${presetsHtml}
+            </div>
+          </div>
+
+          <!-- Option 3: Image URL -->
+          <div class="admin-form-group" style="margin-bottom:1.25rem;">
+            <label class="admin-label" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:0.4rem; display:block;">Option 3: Or Enter Image URL / Path</label>
+            <input type="text" id="replaceModalUrlInput" class="admin-input" value="${escapeHtml(currentUrl)}" placeholder="/images/... or https://..." style="font-family:var(--font-mono); font-size:0.82rem;">
+          </div>
+
+          <!-- Buttons -->
+          <div style="display:flex; justify-content:flex-end; gap:0.75rem; border-top:1px solid rgba(255,255,255,0.08); padding-top:1rem;">
+            <button type="button" class="btn-admin btn-admin-secondary" id="replaceModalCancelBtn">Cancel</button>
+            <button type="button" class="btn-admin btn-admin-primary" id="replaceModalApplyBtn" style="background:#84cc16; color:#0b1402; font-weight:700;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Apply Image</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderBlockEditModal(block) {
   return `
     <div class="admin-modal-backdrop" id="adminModalBackdrop">
-      <div class="admin-modal" style="max-width:500px;">
+      <div class="admin-modal" style="max-width:540px;">
         <div class="admin-modal-header">
           <h3 class="admin-modal-title">Edit Block Properties (${block.type})</h3>
           <button class="admin-modal-close" id="modalCloseBtn">&times;</button>
@@ -2969,8 +3103,22 @@ function renderBlockEditModal(block) {
 
           ${block.type === 'image' || block.type === 'columns2' ? `
             <div class="admin-form-group">
-              <label class="admin-label">Image URL / Path</label>
-              <input type="text" id="blockEditImageInput" class="admin-input" value="${escapeHtml(block.imageUrl || '')}">
+              <label class="admin-label">Image Asset &amp; URL</label>
+              <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:0.4rem;">
+                <input type="text" id="blockEditImageInput" class="admin-input" value="${escapeHtml(block.imageUrl || '')}" placeholder="/images/... or https://...">
+                <label class="btn-admin btn-admin-secondary" style="cursor:pointer; white-space:nowrap; flex-shrink:0;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Upload</span>
+                  <input type="file" id="blockEditImageFileInput" accept="image/*" style="display:none;">
+                </label>
+                <button type="button" class="btn-admin btn-admin-secondary" id="blockEditOpenReplaceModalBtn" style="white-space:nowrap; flex-shrink:0;" title="Browse gallery">
+                  Gallery
+                </button>
+              </div>
+              <div id="blockEditImageUploadStatus" class="admin-helper-text" style="color:var(--text-muted);">Enter URL, click Upload from PC, or click Gallery to choose presets.</div>
+              <div style="margin-top:0.6rem; width:100%; max-width:240px; aspect-ratio:16/9; border-radius:6px; overflow:hidden; border:1px solid var(--border-medium); background:#07090f;">
+                <img id="blockEditImagePreviewThumb" src="${block.imageUrl || '/images/slide1_kigali_tech.jpg'}" style="width:100%; height:100%; object-fit:cover;">
+              </div>
             </div>
           ` : ''}
 
@@ -2996,8 +3144,15 @@ function renderBlockEditModal(block) {
           ${block.type === 'header' ? `
             <div class="admin-form-group">
               <label class="admin-label">Logo Image URL</label>
-              <input type="text" id="blockEditLogoUrl" class="admin-input" value="${escapeHtml(block.logoUrl || '/Logo-WHITE.png')}">
-              <div class="admin-helper-text">Path or URL to company logo (default: <code>/Logo-WHITE.png</code>)</div>
+              <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:0.4rem;">
+                <input type="text" id="blockEditLogoUrl" class="admin-input" value="${escapeHtml(block.logoUrl || '/Logo-WHITE.png')}">
+                <label class="btn-admin btn-admin-secondary" style="cursor:pointer; white-space:nowrap; flex-shrink:0;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Upload</span>
+                  <input type="file" id="blockEditLogoFileInput" accept="image/*" style="display:none;">
+                </label>
+              </div>
+              <div id="blockEditLogoUploadStatus" class="admin-helper-text">Path or URL to company logo (default: <code>/Logo-WHITE.png</code>)</div>
             </div>
             <div class="admin-form-group">
               <label class="admin-label">Company Name / Logo Alt</label>
@@ -5662,14 +5817,142 @@ function setupDesignerEvents(onContentChange, closeModal) {
   function setupCanvasListeners() {
     if (!mount) return;
 
+    function openReplaceImageModal(id, field = 'imageUrl') {
+      const block = emailStore.getBlocks().find(b => b.id === id);
+      if (!block) return;
+
+      const modalBackdrop = document.createElement('div');
+      modalBackdrop.innerHTML = renderReplaceImageModal(block, field);
+      document.body.appendChild(modalBackdrop);
+
+      const closeBtn = modalBackdrop.querySelector('#replaceImageCloseBtn');
+      const cancelBtn = modalBackdrop.querySelector('#replaceModalCancelBtn');
+      const applyBtn = modalBackdrop.querySelector('#replaceModalApplyBtn');
+      const fileInput = modalBackdrop.querySelector('#replaceModalFileInput');
+      const urlInput = modalBackdrop.querySelector('#replaceModalUrlInput');
+      const previewImg = modalBackdrop.querySelector('#replaceModalPreviewImg');
+      const uploadStatus = modalBackdrop.querySelector('#replaceModalUploadStatus');
+      const uploadBtnLabel = modalBackdrop.querySelector('#replaceUploadBtnLabel');
+      const badge = modalBackdrop.querySelector('#replaceImageSelectedBadge');
+      const presetCards = modalBackdrop.querySelectorAll('.media-preset-card');
+
+      let selectedUrl = block[field] || (field === 'logoUrl' ? '/Logo-WHITE.png' : '/images/slide1_kigali_tech.jpg');
+
+      const closeModal = () => modalBackdrop.remove();
+      if (closeBtn) closeBtn.onclick = closeModal;
+      if (cancelBtn) cancelBtn.onclick = closeModal;
+
+      // Presets click
+      presetCards.forEach(card => {
+        card.onclick = () => {
+          presetCards.forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          const url = card.getAttribute('data-url');
+          selectedUrl = url;
+          if (urlInput) urlInput.value = url;
+          if (previewImg) previewImg.src = url;
+          if (badge) {
+            badge.textContent = 'Selected Preset';
+            badge.style.color = '#84cc16';
+            badge.style.borderColor = '#84cc16';
+          }
+        };
+      });
+
+      // URL input change
+      if (urlInput) {
+        urlInput.oninput = () => {
+          const url = urlInput.value.trim();
+          if (url) {
+            selectedUrl = url;
+            if (previewImg) previewImg.src = url;
+            if (badge) {
+              badge.textContent = 'Custom URL';
+              badge.style.color = 'var(--brand-blue-light)';
+              badge.style.borderColor = 'rgba(24,150,234,0.3)';
+            }
+            presetCards.forEach(c => c.classList.remove('active'));
+          }
+        };
+      }
+
+      // File upload
+      if (fileInput) {
+        fileInput.onchange = async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          if (uploadBtnLabel) uploadBtnLabel.textContent = `Uploading "${file.name}"...`;
+          if (uploadStatus) {
+            uploadStatus.textContent = '⚡ Optimizing & uploading photo...';
+            uploadStatus.style.color = 'var(--brand-blue-light)';
+          }
+          if (applyBtn) applyBtn.disabled = true;
+
+          try {
+            const uploadedUrl = await uploadImageToStorage(file, 'emails', (progress) => {
+              if (uploadStatus) uploadStatus.textContent = `⚡ Uploading ${progress}%...`;
+            });
+            selectedUrl = uploadedUrl;
+            if (urlInput) urlInput.value = uploadedUrl;
+            if (previewImg) previewImg.src = uploadedUrl;
+            if (badge) {
+              badge.textContent = 'Uploaded File';
+              badge.style.color = '#84cc16';
+              badge.style.borderColor = '#84cc16';
+            }
+            if (uploadStatus) {
+              uploadStatus.textContent = '✓ Upload complete!';
+              uploadStatus.style.color = '#84cc16';
+            }
+            if (uploadBtnLabel) uploadBtnLabel.textContent = `Replace Image (${file.name})`;
+            presetCards.forEach(c => c.classList.remove('active'));
+          } catch (err) {
+            console.error('Image upload failed:', err);
+            if (uploadStatus) {
+              uploadStatus.textContent = `Upload failed: ${err.message}`;
+              uploadStatus.style.color = '#ef4444';
+            }
+          } finally {
+            if (applyBtn) applyBtn.disabled = false;
+          }
+        };
+      }
+
+      // Apply button
+      if (applyBtn) {
+        applyBtn.onclick = () => {
+          emailStore.updateBlock(id, { [field]: selectedUrl });
+          closeModal();
+          refreshDesignerCanvas();
+          showAdminToast('Image updated successfully!', 'success');
+        };
+      }
+    }
+
     mount.onclick = (e) => {
+      const replaceBtn = e.target.closest('.btn-block-replace-img');
+      const replaceImgDirectBtn = e.target.closest('.designer-replace-img-btn');
+      const imageWrap = e.target.closest('.designer-image-wrap');
       const upBtn = e.target.closest('.btn-block-up');
       const downBtn = e.target.closest('.btn-block-down');
       const dupBtn = e.target.closest('.btn-block-dup');
       const delBtn = e.target.closest('.btn-block-del');
       const editBtn = e.target.closest('.btn-block-edit');
 
-      if (upBtn) {
+      if (replaceBtn) {
+        const id = replaceBtn.getAttribute('data-id');
+        const field = replaceBtn.getAttribute('data-field') || 'imageUrl';
+        openReplaceImageModal(id, field);
+      } else if (replaceImgDirectBtn) {
+        const id = replaceImgDirectBtn.getAttribute('data-id');
+        const field = replaceImgDirectBtn.getAttribute('data-field') || 'imageUrl';
+        openReplaceImageModal(id, field);
+      } else if (imageWrap) {
+        const id = imageWrap.getAttribute('data-id');
+        const field = imageWrap.getAttribute('data-field') || 'imageUrl';
+        openReplaceImageModal(id, field);
+      } else if (upBtn) {
         const id = upBtn.getAttribute('data-id');
         emailStore.moveBlock(id, -1);
         refreshDesignerCanvas();
@@ -5711,6 +5994,70 @@ function setupDesignerEvents(onContentChange, closeModal) {
 
           const form = modalBackdrop.querySelector('#blockEditForm');
           if (form) {
+            const galleryBtn = modalBackdrop.querySelector('#blockEditOpenReplaceModalBtn');
+            if (galleryBtn) {
+              galleryBtn.onclick = () => {
+                closeSubModal();
+                openReplaceImageModal(id, 'imageUrl');
+              };
+            }
+
+            const editImgFile = modalBackdrop.querySelector('#blockEditImageFileInput');
+            if (editImgFile) {
+              editImgFile.onchange = async (ev) => {
+                const file = ev.target.files[0];
+                if (!file) return;
+                const status = modalBackdrop.querySelector('#blockEditImageUploadStatus');
+                const input = modalBackdrop.querySelector('#blockEditImageInput');
+                const thumb = modalBackdrop.querySelector('#blockEditImagePreviewThumb');
+                if (status) {
+                  status.textContent = '⚡ Uploading image...';
+                  status.style.color = 'var(--brand-blue-light)';
+                }
+                try {
+                  const url = await uploadImageToStorage(file, 'emails');
+                  if (input) input.value = url;
+                  if (thumb) thumb.src = url;
+                  if (status) {
+                    status.textContent = '✓ Upload complete!';
+                    status.style.color = '#84cc16';
+                  }
+                } catch (err) {
+                  if (status) {
+                    status.textContent = `Upload failed: ${err.message}`;
+                    status.style.color = '#ef4444';
+                  }
+                }
+              };
+            }
+
+            const editLogoFile = modalBackdrop.querySelector('#blockEditLogoFileInput');
+            if (editLogoFile) {
+              editLogoFile.onchange = async (ev) => {
+                const file = ev.target.files[0];
+                if (!file) return;
+                const status = modalBackdrop.querySelector('#blockEditLogoUploadStatus');
+                const input = modalBackdrop.querySelector('#blockEditLogoUrl');
+                if (status) {
+                  status.textContent = '⚡ Uploading logo...';
+                  status.style.color = 'var(--brand-blue-light)';
+                }
+                try {
+                  const url = await uploadImageToStorage(file, 'branding');
+                  if (input) input.value = url;
+                  if (status) {
+                    status.textContent = '✓ Logo upload complete!';
+                    status.style.color = '#84cc16';
+                  }
+                } catch (err) {
+                  if (status) {
+                    status.textContent = `Upload failed: ${err.message}`;
+                    status.style.color = '#ef4444';
+                  }
+                }
+              };
+            }
+
             form.onsubmit = (ev) => {
               ev.preventDefault();
               const text = modalBackdrop.querySelector('#blockEditTextInput')?.value;
