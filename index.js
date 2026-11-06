@@ -28,7 +28,7 @@ const MIME_TYPES = {
   '.xml': 'application/xml; charset=utf-8'
 };
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
