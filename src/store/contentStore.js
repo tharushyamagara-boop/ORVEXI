@@ -126,6 +126,8 @@ export const DEFAULT_CONTENT = {
         tags: ["Next.js", "PWA", "Live Audio Streaming", "Mobile Studio"],
         badge: "",
         quote: "$2,800",
+        discountPrice: "$2,200",
+        discountBadge: "Sale",
         showQuote: true,
         orderBtnText: "Get Similar",
         btnText: "Visit",
@@ -347,6 +349,8 @@ class ContentStore {
               image: p.image || defItem.image || '/images/slide1_kigali_tech.jpg',
               badge,
               quote: (p.quote !== undefined && p.quote !== null && p.quote !== '') ? p.quote : (defItem.quote || ''),
+              discountPrice: (p.discountPrice !== undefined && p.discountPrice !== null) ? String(p.discountPrice).trim() : (defItem.discountPrice || ''),
+              discountBadge: (p.discountBadge !== undefined && p.discountBadge !== null) ? String(p.discountBadge).trim() : (defItem.discountBadge || ''),
               showQuote: p.showQuote !== undefined ? Boolean(p.showQuote) : (defItem.showQuote !== false),
               orderBtnText: (p.orderBtnText && p.orderBtnText !== 'Order Similar Website') ? p.orderBtnText : (defItem.orderBtnText || 'Get Similar'),
               features: Array.isArray(p.features) ? p.features : (defItem.features || [])

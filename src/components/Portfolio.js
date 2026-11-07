@@ -7,6 +7,7 @@ export function renderPortfolio(portfolioData = {}) {
   const cardsHtml = projects.map(p => {
     const imgUrl = p.image || p.screenshot || '';
     const isQuoteVisible = p.showQuote !== false && Boolean(p.quote && p.quote.trim());
+    const hasDiscount = isQuoteVisible && Boolean(p.discountPrice && p.discountPrice.trim());
     const features = Array.isArray(p.features)
       ? p.features.filter(Boolean)
       : (typeof p.features === 'string' ? p.features.split('\n').map(f => f.trim()).filter(Boolean) : []);
@@ -44,9 +45,18 @@ export function renderPortfolio(portfolioData = {}) {
               </a>
             </h3>
             ${isQuoteVisible ? `
-              <div class="portfolio-card-price">
-                <span class="portfolio-price-label">Price</span>
-                <span class="portfolio-price-val">${p.quote}</span>
+              <div class="portfolio-card-price ${hasDiscount ? 'has-discount' : ''}">
+                <span class="portfolio-price-label">
+                  ${hasDiscount ? `<span class="portfolio-discount-badge">${p.discountBadge || 'Sale'}</span> Offer Price` : 'Price'}
+                </span>
+                <div class="portfolio-price-group">
+                  ${hasDiscount ? `
+                    <span class="portfolio-price-original" title="Original Price: ${p.quote}"><s>${p.quote}</s></span>
+                    <span class="portfolio-price-val portfolio-price-discounted">${p.discountPrice}</span>
+                  ` : `
+                    <span class="portfolio-price-val">${p.quote}</span>
+                  `}
+                </div>
               </div>
             ` : ''}
           </div>
@@ -80,7 +90,7 @@ export function renderPortfolio(portfolioData = {}) {
                 <span>${p.btnText || 'Visit'}</span>
               </a>
             ` : ''}
-            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${p.quote || ''}" data-project-category="${p.category || ''}" title="Get a website similar to ${p.title}">
+            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${hasDiscount ? `${p.discountPrice} (Discounted from ${p.quote})` : (p.quote || '')}" data-project-category="${p.category || ''}" title="Get a website similar to ${p.title}">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>

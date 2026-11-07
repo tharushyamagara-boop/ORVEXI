@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 function zohoEmailApiPlugin() {
-  const DEFAULT_KEY = 'Zoho-enczapikey wSsVR60i+UP1Cf95mjWqJe5pkVpUBw7wE0t8igel6SD0S6iW8MczkBadUQCiGfgXGGdtHDIRorkpyRlShjVfh9wvyF8HWyiF9mqRe1U4J3x17qnvhDzKWGRVlhaML4kJxQttm2JjFMkl+g==';
+  const DEFAULT_KEY = 'Zoho-enczapikey wSsVR61/rBSjWK57mjapI7w8zwsEVVmlQx8rigSl63X/G6vF9Mc/lEPLAACnHaQeQjM6RWcWpO94zRgC2zZcjtR8nA0ACCiF9mqRe1U4J3x17qnvhDzDV2tZlxWJLosJzgtomGZjFsAm+g==';
 
   return {
     name: 'zoho-email-api-plugin',
@@ -97,6 +97,7 @@ function zohoEmailApiPlugin() {
 export default defineConfig({
   plugins: [zohoEmailApiPlugin()],
   server: {
+    host: '0.0.0.0',
     port: 5173,
     open: false
   },

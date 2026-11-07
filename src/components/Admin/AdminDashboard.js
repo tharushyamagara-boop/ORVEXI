@@ -587,9 +587,18 @@ function renderPortfolioTab(portfolioData) {
             <h4 style="font-size:1.05rem; color:#fff; font-weight:700; margin:0;">${p.title}</h4>
             <span style="font-size:0.78rem; color:var(--accent-light);">${p.category || ''}</span>
             ${(p.showQuote !== false && p.quote) ? `
-              <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
-                💰 Price: ${p.quote} (Visible)
-              </span>
+              ${(p.discountPrice && p.discountPrice.trim()) ? `
+                <span style="display:inline-flex; align-items:center; gap:0.35rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; font-weight:700;">
+                  <span>💰</span>
+                  <span style="text-decoration:line-through; opacity:0.6; color:var(--text-muted);">${p.quote}</span>
+                  <span style="color:#84cc16; font-weight:800;">${p.discountPrice}</span>
+                  <span style="background:rgba(239,68,68,0.2); color:#ef4444; font-size:0.65rem; padding:0.05rem 0.35rem; border-radius:3px;">${p.discountBadge || 'Discount'}</span>
+                </span>
+              ` : `
+                <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(132,204,22,0.12); border:1px solid rgba(132,204,22,0.3); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:#84cc16; font-weight:700;">
+                  💰 Price: ${p.quote} (Visible)
+                </span>
+              `}
             ` : `
               <span style="display:inline-flex; align-items:center; gap:0.3rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:4px; padding:0.15rem 0.5rem; font-size:0.75rem; color:var(--text-muted); font-weight:600;">
                 👁️ Price: ${p.quote ? `${p.quote} (Hidden)` : 'Not set'}
@@ -3906,9 +3915,22 @@ function renderProjectEditorModal(project = {}, isNew = false, index = -1) {
 
           <div class="admin-form-row">
             <div class="admin-form-group">
-              <label class="admin-label">Project Price ($ or RWF) *</label>
-              <input type="text" id="projectQuoteInput" class="admin-input" placeholder="e.g. $2,500 or RWF 3,200,000 or Starting at $1,800" value="${project.quote || ''}">
-              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Enter estimated price shown on this project card.</span>
+              <label class="admin-label">Project Price ($ or RWF)</label>
+              <input type="text" id="projectQuoteInput" class="admin-input" placeholder="e.g. $2,500 or RWF 3,200,000" value="${project.quote || ''}">
+              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Regular price. Displays with strikethrough if a discount is active.</span>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-label">Discount / Offer Price (Optional)</label>
+              <input type="text" id="projectDiscountPriceInput" class="admin-input" placeholder="e.g. $2,200 or RWF 2,800,000" value="${project.discountPrice || ''}">
+              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">If set, this becomes the active price and the original price is struck through.</span>
+            </div>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label class="admin-label">Discount Badge Label (Optional)</label>
+              <input type="text" id="projectDiscountBadgeInput" class="admin-input" placeholder="e.g. Sale, 20% OFF, Limited Offer" value="${project.discountBadge || ''}">
+              <span style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Badge text shown next to the discounted price (defaults to "Sale").</span>
             </div>
             <div class="admin-form-group">
               <label class="admin-label">Order CTA Button Label</label>
@@ -6820,6 +6842,8 @@ function setupProjectModalForm(onContentChange, closeModal) {
         image: document.getElementById('projectImageInput').value.trim() || '/images/slide1_kigali_tech.jpg',
         btnText: document.getElementById('projectBtnTextInput').value.trim() || 'Visit',
         quote: document.getElementById('projectQuoteInput')?.value.trim() || '',
+        discountPrice: document.getElementById('projectDiscountPriceInput')?.value.trim() || '',
+        discountBadge: document.getElementById('projectDiscountBadgeInput')?.value.trim() || '',
         showQuote: document.getElementById('projectShowQuoteInput')?.checked ?? true,
         orderBtnText: document.getElementById('projectOrderBtnTextInput')?.value.trim() || 'Get Similar',
         tags

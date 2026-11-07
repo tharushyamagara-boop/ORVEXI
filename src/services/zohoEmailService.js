@@ -10,7 +10,7 @@ export const DEFAULT_ZOHO_CONFIG = {
   host: 'cpaas.zoho.com',
   endpoint: 'https://cpaas.zoho.com/v1.1/email',
   agentAlias: '1791ea76b71e26a9',
-  apiKey: 'Zoho-enczapikey wSsVR60i+UP1Cf95mjWqJe5pkVpUBw7wE0t8igel6SD0S6iW8MczkBadUQCiGfgXGGdtHDIRorkpyRlShjVfh9wvyF8HWyiF9mqRe1U4J3x17qnvhDzKWGRVlhaML4kJxQttm2JjFMkl+g==',
+  apiKey: 'Zoho-enczapikey wSsVR61/rBSjWK57mjapI7w8zwsEVVmlQx8rigSl63X/G6vF9Mc/lEPLAACnHaQeQjM6RWcWpO94zRgC2zZcjtR8nA0ACCiF9mqRe1U4J3x17qnvhDzDV2tZlxWJLosJzgtomGZjFsAm+g==',
   smtpHost: 'smtp.zeptomail.com',
   smtpPorts: '465 (SSL), 587 (TLS)',
   smtpUsername: 'emailapikey',

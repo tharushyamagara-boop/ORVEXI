@@ -35,7 +35,7 @@ const server = http.createServer(async (req, res) => {
   // Handle Zoho Email Delivery Logs API
   if (req.method === 'GET' && pathname === '/api/email-logs') {
     try {
-      const DEFAULT_KEY = 'Zoho-enczapikey wSsVR60i+UP1Cf95mjWqJe5pkVpUBw7wE0t8igel6SD0S6iW8MczkBadUQCiGfgXGGdtHDIRorkpyRlShjVfh9wvyF8HWyiF9mqRe1U4J3x17qnvhDzKWGRVlhaML4kJxQttm2JjFMkl+g==';
+      const DEFAULT_KEY = 'Zoho-enczapikey wSsVR61/rBSjWK57mjapI7w8zwsEVVmlQx8rigSl63X/G6vF9Mc/lEPLAACnHaQeQjM6RWcWpO94zRgC2zZcjtR8nA0ACCiF9mqRe1U4J3x17qnvhDzDV2tZlxWJLosJzgtomGZjFsAm+g==';
       const clientKey = req.headers['x-zoho-key'];
       const activeKey = (clientKey && typeof clientKey === 'string' && clientKey.trim().length > 10)
         ? clientKey.trim()
@@ -71,7 +71,7 @@ const server = http.createServer(async (req, res) => {
       try {
         const data = JSON.parse(rawBody || '{}');
         const { apiKey, from, to, subject, htmlbody, cc, bcc } = data;
-        const DEFAULT_KEY = 'Zoho-enczapikey wSsVR60i+UP1Cf95mjWqJe5pkVpUBw7wE0t8igel6SD0S6iW8MczkBadUQCiGfgXGGdtHDIRorkpyRlShjVfh9wvyF8HWyiF9mqRe1U4J3x17qnvhDzKWGRVlhaML4kJxQttm2JjFMkl+g==';
+        const DEFAULT_KEY = 'Zoho-enczapikey wSsVR61/rBSjWK57mjapI7w8zwsEVVmlQx8rigSl63X/G6vF9Mc/lEPLAACnHaQeQjM6RWcWpO94zRgC2zZcjtR8nA0ACCiF9mqRe1U4J3x17qnvhDzDV2tZlxWJLosJzgtomGZjFsAm+g==';
 
         const activeKey = (apiKey && apiKey.trim().length > 10) ? apiKey.trim() : DEFAULT_KEY;
         const authHeader = activeKey.startsWith('Zoho-enczapikey')
