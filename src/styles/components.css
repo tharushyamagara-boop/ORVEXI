@@ -839,14 +839,29 @@
 }
 
 /* ==========================================================================
-   About Section (Enterprise Dark Hierarchy)
+   About Section (Modern Corporate Light Canvas)
    ========================================================================== */
 #about {
-  background: #0a0e17;
-  color: var(--text-primary);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: #f8fafc;
+  color: #1e293b;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
   position: relative;
   z-index: 2;
+}
+
+#about .section-tag {
+  background: rgba(24, 150, 234, 0.08);
+  border: 1px solid rgba(24, 150, 234, 0.25);
+  color: #0284c7;
+}
+
+#about .section-title {
+  color: #0f172a;
+}
+
+#about .section-desc {
+  color: #475569;
 }
 
 .about-grid {
@@ -879,7 +894,7 @@
 
 .about-intro p {
   font-size: 1.05rem;
-  color: var(--text-secondary);
+  color: #334155;
   margin-bottom: 1.25rem;
   line-height: 1.75;
   overflow-wrap: break-word;
@@ -887,7 +902,7 @@
 }
 
 .about-intro p strong {
-  color: #ffffff;
+  color: #0f172a;
   font-weight: 600;
 }
 
@@ -918,10 +933,10 @@
   max-width: 100%;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: var(--bg-tertiary);
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
   aspect-ratio: 16 / 10;
-  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.1);
 }
 
 @media (max-width: 640px) {
@@ -1010,13 +1025,14 @@
 }
 
 .reg-card {
-  background: var(--bg-glass-card);
-  border: 1px solid var(--border-medium);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .reg-card-title {
@@ -1024,7 +1040,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: #64748b;
   margin-bottom: 1.25rem;
 }
 
@@ -1033,7 +1049,7 @@
   justify-content: space-between;
   align-items: baseline;
   padding: 0.75rem 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid #e2e8f0;
   gap: 1rem;
 }
 
@@ -1042,13 +1058,13 @@
 
 .reg-label {
   font-size: 0.82rem;
-  color: var(--text-muted);
+  color: #64748b;
   flex-shrink: 0;
 }
 
 .reg-value {
   font-size: 0.88rem;
-  color: var(--text-primary);
+  color: #0f172a;
   font-weight: 600;
   text-align: right;
 }
@@ -1056,20 +1072,34 @@
 /* Monospace values use brand light blue */
 .reg-value.mono {
   font-family: var(--font-mono);
-  color: var(--brand-blue-light);
+  color: #0284c7;
 }
 
 
 /* ==========================================================================
-   Services Section (Enterprise Dark Hierarchy)
+   Services Section (Modern Corporate Light Canvas)
    ========================================================================== */
 .services-section {
-  background: #0d1322;
-  color: var(--text-primary);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #f1f5f9;
+  color: #1e293b;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
   position: relative;
   z-index: 2;
+}
+
+.services-section .section-tag {
+  background: rgba(24, 150, 234, 0.08);
+  border: 1px solid rgba(24, 150, 234, 0.25);
+  color: #0284c7;
+}
+
+.services-section .section-title {
+  color: #0f172a;
+}
+
+.services-section .section-desc {
+  color: #475569;
 }
 
 .services-grid {
@@ -1082,30 +1112,27 @@
 @media (max-width: 580px) { .services-grid { grid-template-columns: 1fr; } }
 
 .service-card {
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.05);
   transition: border-color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .service-card:hover {
-  border-color: rgba(24, 150, 234, 0.4);
+  border-color: rgba(24, 150, 234, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 16px 32px -8px rgba(24, 150, 234, 0.18);
+  box-shadow: 0 16px 30px -8px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(24, 150, 234, 0.2);
 }
 
 /* Primary activity card — subtle gradient using brand blues */
 .service-card.primary-activity {
-  border-color: rgba(24, 150, 234, 0.3);
-  background: linear-gradient(145deg,
-    rgba(24, 150, 234, 0.08) 0%,
-    rgba(15, 107, 184, 0.04) 50%,
-    #111827 100%);
+  border-color: rgba(24, 150, 234, 0.35);
+  background: linear-gradient(145deg, #ffffff 0%, #f0f7ff 100%);
 }
 
 /* Service icons use the brand gradient */
@@ -1118,14 +1145,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--brand-blue-light);
+  color: #0284c7;
   flex-shrink: 0;
 }
 
 .service-code {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--text-dim);
+  color: #64748b;
   letter-spacing: 0.05em;
 }
 
@@ -1133,13 +1160,13 @@
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #0f172a;
   line-height: 1.3;
 }
 
 .service-desc {
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: #475569;
   line-height: 1.65;
 }
 
@@ -1158,8 +1185,30 @@
 }
 
 /* ==========================================================================
-   Contact Section
+   Contact Section (Modern Corporate Light Canvas)
    ========================================================================== */
+#contact {
+  background: #f1f5f9;
+  color: #1e293b;
+  border-top: 1px solid #e2e8f0;
+  position: relative;
+  z-index: 2;
+}
+
+#contact .section-tag {
+  background: rgba(24, 150, 234, 0.08);
+  border: 1px solid rgba(24, 150, 234, 0.25);
+  color: #0284c7;
+}
+
+#contact .section-title {
+  color: #0f172a;
+}
+
+#contact .section-desc {
+  color: #475569;
+}
+
 .contact-grid {
   display: grid;
   grid-template-columns: 1.25fr 1fr;
@@ -1180,11 +1229,11 @@
   height: 38px;
   border-radius: var(--radius-md);
   background: rgba(24, 150, 234, 0.08);
-  border: 1px solid rgba(24, 150, 234, 0.16);
+  border: 1px solid rgba(24, 150, 234, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--brand-blue-light);
+  color: #0284c7;
   flex-shrink: 0;
 }
 
@@ -1195,43 +1244,48 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--text-muted);
+  color: #64748b;
 }
 
 .contact-detail-value {
   font-size: 0.95rem;
-  color: var(--text-primary);
+  color: #0f172a;
   font-weight: 500;
 }
 
-.contact-detail-value a { color: var(--text-primary); transition: color var(--transition-fast); }
-.contact-detail-value a:hover { color: var(--brand-blue-light); }
+.contact-detail-value a { color: #0f172a; transition: color var(--transition-fast); }
+.contact-detail-value a:hover { color: #0284c7; }
 
 /* Contact Form */
 .contact-form-card {
-  background: var(--bg-glass-card);
-  border: 1px solid var(--border-medium);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: var(--radius-lg);
   padding: 2rem;
+  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.06);
 }
 
-.contact-form-card h3 { font-size: 1.2rem; margin-bottom: 1.5rem; }
+.contact-form-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
+}
 
 .form-field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
 
 .form-label {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #334155;
 }
 
 .form-input,
 .form-textarea {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border-medium);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
-  color: var(--text-primary);
+  color: #0f172a;
   font-size: 0.92rem;
   width: 100%;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
@@ -1240,53 +1294,74 @@
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: var(--brand-blue-light);
-  box-shadow: 0 0 0 3px rgba(24, 150, 234, 0.1);
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
 .form-input::placeholder,
-.form-textarea::placeholder { color: var(--text-dim); }
+.form-textarea::placeholder { color: #94a3b8; }
 
 .form-textarea { resize: vertical; min-height: 110px; }
 
 .form-success { display: none; text-align: center; padding: 1.5rem 0 0.5rem; }
-.form-success-icon { width: 44px; height: 44px; margin: 0 auto 0.75rem auto; color: var(--brand-blue-light); }
-.form-success h4 { font-size: 1.1rem; margin-bottom: 0.4rem; }
-.form-success p { font-size: 0.9rem; color: var(--text-muted); }
+.form-success-icon { width: 44px; height: 44px; margin: 0 auto 0.75rem auto; color: #0284c7; }
+.form-success h4 { font-size: 1.1rem; margin-bottom: 0.4rem; color: #0f172a; }
+.form-success p { font-size: 0.9rem; color: #475569; }
+
+/* Contact Success Card Overrides for Light Theme */
+#contactSuccess {
+  background: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+}
+
+#contactSuccess h4 {
+  color: #0f172a !important;
+}
+
+#contactSuccess > div:nth-child(2) {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+#contactSuccess p {
+  color: #475569 !important;
+}
 
 /* RDB verify */
 .rdb-verify {
   margin-top: 1.5rem;
   padding: 1rem 1.25rem;
-  background: rgba(24, 150, 234, 0.04);
-  border: 1px solid rgba(24, 150, 234, 0.12);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .rdb-verify-text {
   font-size: 0.82rem;
-  color: var(--text-muted);
+  color: #475569;
   line-height: 1.5;
 }
 
-.rdb-verify-text strong { color: var(--text-secondary); }
+.rdb-verify-text strong { color: #0f172a; }
 
 .rdb-verify a {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--brand-blue-light);
+  color: #0284c7;
   display: flex;
   align-items: center;
   gap: 0.3rem;
   white-space: nowrap;
 }
 
-.rdb-verify a:hover { color: var(--brand-blue-dark); }
+.rdb-verify a:hover { color: #0369a1; }
 
 /* ==========================================================================
    Footer
@@ -1349,8 +1424,31 @@
 }
 
 /* ==========================================================================
-   Portfolio Grid & Cards
+   Portfolio Grid & Cards (Modern Corporate Light Canvas)
    ========================================================================== */
+#portfolio {
+  background: #f8fafc;
+  color: #1e293b;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  position: relative;
+  z-index: 2;
+}
+
+#portfolio .section-tag {
+  background: rgba(24, 150, 234, 0.08);
+  border: 1px solid rgba(24, 150, 234, 0.25);
+  color: #0284c7;
+}
+
+#portfolio .section-title {
+  color: #0f172a;
+}
+
+#portfolio .section-desc {
+  color: #475569;
+}
+
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -1364,8 +1462,8 @@
 }
 
 .portfolio-card {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   display: flex;
@@ -1376,6 +1474,7 @@
   position: relative;
   overflow: hidden;
   container-type: inline-size;
+  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.06);
 }
 
 .portfolio-card::before {
@@ -1391,9 +1490,9 @@
 }
 
 .portfolio-card:hover {
-  border-color: rgba(24, 150, 234, 0.35);
+  border-color: rgba(24, 150, 234, 0.45);
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(24, 150, 234, 0.08);
+  box-shadow: 0 20px 35px -8px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(24, 150, 234, 0.15);
 }
 
 .portfolio-card:hover::before {
@@ -1413,7 +1512,7 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--brand-blue-light);
+  color: #0284c7;
   font-weight: 600;
 }
 
@@ -1422,8 +1521,8 @@
   font-weight: 600;
   padding: 0.2rem 0.55rem;
   border-radius: var(--radius-full);
-  background: rgba(24, 150, 234, 0.1);
-  color: var(--brand-blue-light);
+  background: rgba(24, 150, 234, 0.08);
+  color: #0284c7;
   border: 1px solid rgba(24, 150, 234, 0.2);
 }
 
@@ -1464,7 +1563,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-muted);
+  color: #64748b;
   margin-bottom: 0.15rem;
 }
 
@@ -1472,7 +1571,7 @@
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 800;
-  color: #84cc16;
+  color: #16a34a;
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
@@ -1489,11 +1588,11 @@
   font-family: var(--font-display);
   font-size: 0.92rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: #94a3b8;
   text-decoration: line-through;
   text-decoration-thickness: 1.5px;
   text-decoration-color: rgba(239, 68, 68, 0.85);
-  opacity: 0.75;
+  opacity: 0.85;
   white-space: nowrap;
 }
 
@@ -1503,16 +1602,16 @@
 }
 
 .portfolio-card-price.has-discount .portfolio-price-label {
-  color: #1896ea;
+  color: #0284c7;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
 }
 
 .portfolio-card-price.has-discount .portfolio-price-val {
-  color: #84cc16;
+  color: #16a34a;
   font-size: 1.3rem;
-  text-shadow: 0 0 16px rgba(132, 204, 22, 0.25);
+  text-shadow: none;
 }
 
 .portfolio-discount-badge {
@@ -1520,8 +1619,8 @@
   font-size: 0.58rem;
   font-weight: 800;
   text-transform: uppercase;
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
   border: 1px solid rgba(239, 68, 68, 0.35);
   padding: 0.05rem 0.35rem;
   border-radius: 3px;
@@ -1537,7 +1636,7 @@
 }
 
 .portfolio-title-link {
-  color: var(--text-primary);
+  color: #0f172a;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -1546,28 +1645,28 @@
 }
 
 .portfolio-title-link:hover {
-  color: var(--brand-blue-light);
+  color: #0284c7;
 }
 
 .portfolio-arrow-icon {
-  color: var(--text-dim);
+  color: #64748b;
   transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
 .portfolio-title-link:hover .portfolio-arrow-icon {
   transform: translate(2px, -2px);
-  color: var(--brand-blue-light);
+  color: #0284c7;
 }
 
 .portfolio-subtitle {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--text-muted);
+  color: #64748b;
 }
 
 .portfolio-desc {
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: #475569;
   line-height: 1.6;
   margin-top: 0.35rem;
 }
@@ -1576,7 +1675,7 @@
 .portfolio-features {
   margin-top: 0.85rem;
   padding-top: 0.75rem;
-  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  border-top: 1px dashed #e2e8f0;
 }
 
 .portfolio-features-list {
@@ -1593,23 +1692,23 @@
   align-items: flex-start;
   gap: 0.5rem;
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: #334155;
   line-height: 1.35;
   transition: color var(--transition-fast);
 }
 
 .portfolio-feature-icon {
   flex-shrink: 0;
-  color: #84cc16;
+  color: #16a34a;
   margin-top: 0.14rem;
 }
 
 .portfolio-card:hover .portfolio-features {
-  border-top-color: rgba(24, 150, 234, 0.2);
+  border-top-color: rgba(24, 150, 234, 0.3);
 }
 
 .portfolio-card:hover .portfolio-feature-item {
-  color: #e2e8f0;
+  color: #0f172a;
 }
 
 .portfolio-footer {
@@ -1618,7 +1717,7 @@
   gap: 0.75rem;
   margin-top: auto;
   padding-top: 0.85rem;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid #e2e8f0;
 }
 
 .portfolio-tags {
@@ -1632,9 +1731,9 @@
   font-size: 0.7rem;
   padding: 0.18rem 0.5rem;
   border-radius: var(--radius-sm);
-  background: var(--bg-surface);
-  color: var(--text-muted);
-  border: 1px solid var(--border-subtle);
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
 }
 
 .portfolio-visit-btn {
@@ -1644,9 +1743,9 @@
   gap: 0.45rem;
   padding: 0.6rem 1rem;
   border-radius: var(--radius-md);
-  background: rgba(24, 150, 234, 0.08);
-  border: 1px solid rgba(24, 150, 234, 0.25);
-  color: var(--brand-blue-light);
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  color: #0284c7;
   font-size: 0.82rem;
   font-weight: 600;
   text-decoration: none;
@@ -1655,10 +1754,10 @@
 }
 
 .portfolio-visit-btn:hover {
-  background: var(--gradient-primary);
+  background: #0284c7;
   color: #ffffff;
-  border-color: transparent;
-  box-shadow: 0 4px 14px rgba(24, 150, 234, 0.25);
+  border-color: #0284c7;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
 }
 
 /* ==========================================================================
@@ -1829,18 +1928,18 @@
   aspect-ratio: 1920 / 1090;
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: #07090f;
-  border: 1px solid rgba(24, 150, 234, 0.22);
+  background: #0f172a;
+  border: 1px solid #e2e8f0;
   margin-bottom: 0.65rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
 }
 
 .portfolio-browser-header {
   height: 25px;
-  background: rgba(15, 20, 32, 0.98);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   padding: 0 0.75rem;
@@ -1938,11 +2037,11 @@
 
 /* Online Service Request & Booking Form additions */
 .form-select {
-  background: #0f1629;
-  border: 1px solid var(--border-medium);
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
-  color: var(--text-primary);
+  color: #0f172a;
   font-size: 0.92rem;
   width: 100%;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
@@ -1951,13 +2050,13 @@
 
 .form-select:focus {
   outline: none;
-  border-color: var(--brand-blue-light);
-  box-shadow: 0 0 0 3px rgba(24, 150, 234, 0.1);
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
 .form-select option {
-  background: #0b0e17;
-  color: #fff;
+  background: #ffffff;
+  color: #0f172a;
 }
 
 .form-row-2 {
@@ -1979,9 +2078,9 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--brand-blue-light);
-  background: rgba(24, 150, 234, 0.1);
-  border: 1px solid rgba(24, 150, 234, 0.2);
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.2);
   padding: 0.2rem 0.6rem;
   border-radius: var(--radius-full);
   margin-bottom: 0.5rem;
@@ -1994,7 +2093,7 @@
   gap: 0.4rem;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--brand-blue-light);
+  color: #0284c7;
   text-decoration: none;
   margin-top: 0.85rem;
   transition: transform var(--transition-fast), color var(--transition-fast);
@@ -2002,7 +2101,7 @@
 
 .service-request-link:hover {
   transform: translateX(3px);
-  color: #fff;
+  color: #0369a1;
 }
 
 /* ==========================================================================
