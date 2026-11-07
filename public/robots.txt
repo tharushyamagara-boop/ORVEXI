@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /Logo-WHITE.png
+Allow: /Fav.png
+
 Sitemap: https://orvexi.rw/sitemap.xml

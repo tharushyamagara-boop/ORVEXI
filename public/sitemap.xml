@@ -5,39 +5,59 @@
   <!-- 1. Homepage & Root Portal -->
   <url>
     <loc>https://orvexi.rw/</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://orvexi.rw/Logo-WHITE.png</image:loc>
       <image:title>ORVEXI Technologies Ltd. Corporate Logo</image:title>
+      <image:caption>ORVEXI corporate logo - Web Development, .RW Domains, Hosting and Software Publishing in Kigali, Rwanda</image:caption>
+      <image:geo_location>Kigali, Rwanda</image:geo_location>
     </image:image>
     <image:image>
       <image:loc>https://orvexi.rw/images/slide1_kigali_tech.jpg</image:loc>
-      <image:title>Kigali Innovation Hub</image:title>
+      <image:title>Kigali Innovation Hub &amp; Technology Skyline</image:title>
+      <image:caption>Kigali innovation district skyline and headquarters of ORVEXI technology operations in Rwanda</image:caption>
+      <image:geo_location>Kigali, Rwanda</image:geo_location>
     </image:image>
     <image:image>
       <image:loc>https://orvexi.rw/images/slide2_software_team.jpg</image:loc>
-      <image:title>Custom Software Engineering Squad</image:title>
+      <image:title>Custom Software Engineering &amp; Web Development Squad</image:title>
+      <image:caption>ORVEXI full-stack software developers and web engineers in Kigali</image:caption>
+      <image:geo_location>Kigali, Rwanda</image:geo_location>
     </image:image>
     <image:image>
       <image:loc>https://orvexi.rw/images/slide3_datacenter.jpg</image:loc>
-      <image:title>Enterprise Cloud Datacenter Infrastructure</image:title>
+      <image:title>Enterprise Cloud Datacenter &amp; Web Hosting Infrastructure</image:title>
+      <image:caption>Cloud hosting server infrastructure and secure database facilities in Kigali, Rwanda</image:caption>
+      <image:geo_location>Kigali, Rwanda</image:geo_location>
     </image:image>
   </url>
 
   <!-- 2. Services & Registered Business Activities -->
   <url>
     <loc>https://orvexi.rw/services</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://orvexi.rw/images/slide3_datacenter.jpg</image:loc>
+      <image:title>.RW Domain Registration &amp; Cloud Web Hosting</image:title>
+      <image:caption>High-performance web hosting, cPanel management, corporate email and .rw domain registration services</image:caption>
+      <image:geo_location>Kigali, Rwanda</image:geo_location>
+    </image:image>
+    <image:image>
+      <image:loc>https://orvexi.rw/images/slide2_software_team.jpg</image:loc>
+      <image:title>Custom Web &amp; Software Development Services</image:title>
+      <image:caption>Enterprise web application engineering, portal development, and RDB J5820 software publishing</image:caption>
+      <image:geo_location>Kigali, Rwanda</image:geo_location>
+    </image:image>
   </url>
 
   <!-- 3. Contact & Online Service Request -->
   <url>
     <loc>https://orvexi.rw/contact</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -45,21 +65,29 @@
   <!-- 4. About ORVEXI Corporate Architecture -->
   <url>
     <loc>https://orvexi.rw/about</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://orvexi.rw/images/about_office.jpg</image:loc>
       <image:title>ORVEXI Headquarters &amp; Operations in Kigali</image:title>
+      <image:caption>ORVEXI corporate technology office and development hub in Niboye, Kicukiro, Kigali</image:caption>
+      <image:geo_location>Niboye, Kicukiro, Kigali, Rwanda</image:geo_location>
     </image:image>
   </url>
 
   <!-- 5. Enterprise Portfolio & Cloud Vault -->
   <url>
     <loc>https://orvexi.rw/portfolio</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://orvexi.rw/images/slide1_kigali_tech.jpg</image:loc>
+      <image:title>ORVEXI Production Case Studies &amp; Live Systems</image:title>
+      <image:caption>Production software systems, progressive web applications, and enterprise dashboards developed by ORVEXI</image:caption>
+      <image:geo_location>Kigali, Rwanda</image:geo_location>
+    </image:image>
   </url>
 
   <!-- 7. Web Publications & Corporate Bulletins -->
