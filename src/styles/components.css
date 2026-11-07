@@ -839,28 +839,14 @@
 }
 
 /* ==========================================================================
-   About Section (Light White Theme)
+   About Section (Enterprise Dark Hierarchy)
    ========================================================================== */
 #about {
-  background: #f8fafc;
-  color: #0f172a;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: #0a0e17;
+  color: var(--text-primary);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   z-index: 2;
-}
-
-#about .section-header .section-tag {
-  background: rgba(24, 150, 234, 0.1);
-  border: 1px solid rgba(24, 150, 234, 0.25);
-  color: #0284c7;
-}
-
-#about .section-header .section-title {
-  color: #0f172a;
-}
-
-#about .section-header .section-desc {
-  color: #475569;
 }
 
 .about-grid {
@@ -893,7 +879,7 @@
 
 .about-intro p {
   font-size: 1.05rem;
-  color: #334155;
+  color: var(--text-secondary);
   margin-bottom: 1.25rem;
   line-height: 1.75;
   overflow-wrap: break-word;
@@ -901,7 +887,8 @@
 }
 
 .about-intro p strong {
-  color: #0f172a;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 @media (max-width: 640px) {
@@ -931,10 +918,10 @@
   max-width: 100%;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-tertiary);
   aspect-ratio: 16 / 10;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.7);
 }
 
 @media (max-width: 640px) {
@@ -1074,29 +1061,15 @@
 
 
 /* ==========================================================================
-   Services Section (Light White Theme)
+   Services Section (Enterprise Dark Hierarchy)
    ========================================================================== */
 .services-section {
-  background: #f8fafc;
-  color: #0f172a;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #0d1322;
+  color: var(--text-primary);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   position: relative;
   z-index: 2;
-}
-
-.services-section .section-header .section-tag {
-  background: rgba(24, 150, 234, 0.1);
-  border: 1px solid rgba(24, 150, 234, 0.25);
-  color: #0284c7;
-}
-
-.services-section .section-header .section-title {
-  color: #0f172a;
-}
-
-.services-section .section-header .section-desc {
-  color: #475569;
 }
 
 .services-grid {
@@ -1109,30 +1082,30 @@
 @media (max-width: 580px) { .services-grid { grid-template-columns: 1fr; } }
 
 .service-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  box-shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
   transition: border-color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .service-card:hover {
-  border-color: rgba(24, 150, 234, 0.45);
+  border-color: rgba(24, 150, 234, 0.4);
   transform: translateY(-2px);
-  box-shadow: 0 12px 26px -4px rgba(24, 150, 234, 0.12);
+  box-shadow: 0 16px 32px -8px rgba(24, 150, 234, 0.18);
 }
 
 /* Primary activity card — subtle gradient using brand blues */
 .service-card.primary-activity {
-  border-color: rgba(24, 150, 234, 0.35);
+  border-color: rgba(24, 150, 234, 0.3);
   background: linear-gradient(145deg,
-    rgba(24, 150, 234, 0.04) 0%,
-    rgba(15, 107, 184, 0.02) 50%,
-    #ffffff 100%);
+    rgba(24, 150, 234, 0.08) 0%,
+    rgba(15, 107, 184, 0.04) 50%,
+    #111827 100%);
 }
 
 /* Service icons use the brand gradient */
@@ -1145,14 +1118,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #0284c7;
+  color: var(--brand-blue-light);
   flex-shrink: 0;
 }
 
 .service-code {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: #64748b;
+  color: var(--text-dim);
   letter-spacing: 0.05em;
 }
 
@@ -1160,23 +1133,14 @@
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #ffffff;
   line-height: 1.3;
 }
 
 .service-desc {
   font-size: 0.88rem;
-  color: #475569;
+  color: var(--text-secondary);
   line-height: 1.65;
-}
-
-.services-section .service-request-link {
-  color: #0284c7;
-  font-weight: 700;
-}
-
-.services-section .service-request-link:hover {
-  color: #0369a1;
 }
 
 /* Main Activity tag — brand dark blue background */
