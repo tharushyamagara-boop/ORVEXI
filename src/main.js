@@ -68,6 +68,7 @@ function renderApp() {
   document.documentElement.style.setProperty('--logo-footer-height', `${footerLogoHeight}px`);
 
   if (isCurrentRouteAdmin()) {
+    syncRouteSeo('/admin');
     // Render Admin Portal / CMS View
     app.innerHTML = renderAdminPortal();
     initAdminEvents(renderApp);
@@ -75,6 +76,7 @@ function renderApp() {
   }
 
   if (isCurrentRoutePrivacy()) {
+    syncRouteSeo('/privacy');
     app.innerHTML = `
       <div class="ambient-background">
         <div class="ambient-grid"></div>
@@ -101,6 +103,7 @@ function renderApp() {
   }
 
   if (isCurrentRouteUnsubscribe()) {
+    syncRouteSeo('/unsubscribe');
     app.innerHTML = `
       <div class="ambient-background">
         <div class="ambient-grid"></div>
@@ -181,6 +184,59 @@ function syncSocialMetaTags(content) {
     setMeta('meta[property="og:image:secure_url"]', 'content', photoUrl);
     setMeta('meta[name="twitter:image"]', 'content', photoUrl);
     setMeta('meta[property="twitter:image"]', 'content', photoUrl);
+  } catch (e) {}
+}
+
+function syncRouteSeo(path = window.location.pathname) {
+  try {
+    const cleanPath = (path || '/').toLowerCase().replace(/\/$/, '') || '/';
+    const seoMap = {
+      '/': {
+        title: 'ORVEXI — Web Development, .RW Domains, Cloud Hosting & Software | Kigali, Rwanda',
+        desc: 'ORVEXI provides professional web development, .rw domain registration, cloud hosting, software publishing, and IT consultancy services based in Kigali, Rwanda.'
+      },
+      '/about': {
+        title: 'About ORVEXI — Corporate Architecture, Leadership & Operations | Kigali, Rwanda',
+        desc: 'Learn about ORVEXI corporate structure, registered office in Niboye Kicukiro, and technology engineering team in Kigali, Rwanda.'
+      },
+      '/services': {
+        title: 'Registered Business Services, Web Development & Cloud Hosting | ORVEXI',
+        desc: 'Explore official RDB-registered business activities: custom software publishing, IT consultancy, data processing, .rw domains, and high-performance cloud hosting in Rwanda.'
+      },
+      '/portfolio': {
+        title: 'Portfolio & Live Production Platforms Showcase | ORVEXI Kigali',
+        desc: 'Discover live digital platforms, audio streaming PWAs, multi-sectoral dashboards, and client web applications designed and deployed by ORVEXI.'
+      },
+      '/contact': {
+        title: 'Get in Touch & Online Service Booking | ORVEXI Kigali, Rwanda',
+        desc: 'Book a technical consultation, order a custom web application, or inquire about .rw domain registration and cloud hosting with ORVEXI in Kigali.'
+      },
+      '/privacy': {
+        title: 'Privacy Policy & Data Protection Notice | ORVEXI Rwanda',
+        desc: 'Official data protection and privacy policy for ORVEXI Technologies Ltd. in compliance with Law N° 058/2021 relating to personal data protection.'
+      },
+      '/unsubscribe': {
+        title: 'Manage Email Communication Preferences | ORVEXI',
+        desc: 'Manage your email subscription preferences or opt out of corporate newsletters from ORVEXI.'
+      },
+      '/admin': {
+        title: 'Admin Console & Cloud Content Management | ORVEXI',
+        desc: 'Secure administrative management console for ORVEXI corporate website, live portfolio, and communication services.'
+      }
+    };
+
+    const target = seoMap[cleanPath] || seoMap['/'];
+    if (target.title) document.title = target.title;
+    const descMeta = document.querySelector('meta[name="description"]');
+    if (descMeta && target.desc) descMeta.setAttribute('content', target.desc);
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && target.title) ogTitle.setAttribute('content', target.title);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc && target.desc) ogDesc.setAttribute('content', target.desc);
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', cleanPath === '/' ? 'https://orvexi.rw/' : `https://orvexi.rw${cleanPath}`);
+    }
   } catch (e) {}
 }
 
@@ -518,6 +574,8 @@ function scrollToHashOrPath(behavior = 'smooth') {
     const cleanRoute = hash === '#home' ? '/' : hash.replace('#', '/');
     window.history.replaceState(null, '', cleanRoute);
   }
+
+  syncRouteSeo(window.location.pathname);
 
   let targetId = '';
   if (rawPath) {

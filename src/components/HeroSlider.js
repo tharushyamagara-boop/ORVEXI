@@ -32,7 +32,7 @@ export function renderHeroSlider(slides = []) {
             <!-- LEFT: Featured Photo Showcase -->
             <div class="hero-slide-media">
               <div class="hero-slide-photo-frame">
-                <img src="${bgImage}" alt="${title}" class="hero-slide-img" loading="${isFirst ? 'eager' : 'lazy'}">
+                <img src="${bgImage}" alt="${title}" class="hero-slide-img" width="1920" height="1080" loading="${isFirst ? 'eager' : 'lazy'}">
                 <div class="hero-slide-photo-overlay"></div>
                 ${badge ? `
                   <div class="hero-slide-photo-badge">
@@ -55,10 +55,17 @@ export function renderHeroSlider(slides = []) {
                 </div>
               ` : ''}
 
-              <h1 class="hero-title">
-                <span class="hero-title-line">${title}</span>
-                ${highlight ? `<span class="hero-title-line hero-title-highlight">${highlight}</span>` : ''}
-              </h1>
+              ${isFirst ? `
+                <h1 class="hero-title">
+                  <span class="hero-title-line">${title}</span>
+                  ${highlight ? `<span class="hero-title-line hero-title-highlight">${highlight}</span>` : ''}
+                </h1>
+              ` : `
+                <h2 class="hero-title">
+                  <span class="hero-title-line">${title}</span>
+                  ${highlight ? `<span class="hero-title-line hero-title-highlight">${highlight}</span>` : ''}
+                </h2>
+              `}
 
               <p class="hero-subtitle">
                 ${subtitle}

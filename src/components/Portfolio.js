@@ -23,7 +23,7 @@ export function renderPortfolio(portfolioData = {}) {
               <span class="browser-dot dot-green"></span>
             </div>
             <a href="${p.url || '#'}" target="_blank" rel="noopener noreferrer" class="portfolio-screenshot-link" tabindex="-1" aria-label="Visit ${p.title}">
-              <img src="${imgUrl}" alt="${p.title} Website Screenshot" class="portfolio-screenshot" loading="lazy">
+              <img src="${imgUrl}" alt="${p.title} Website Screenshot" class="portfolio-screenshot" width="800" height="500" loading="lazy">
               <div class="portfolio-screenshot-hover">
                 <span class="portfolio-hover-badge">
                   <span>Visit Platform</span>
@@ -81,7 +81,7 @@ export function renderPortfolio(portfolioData = {}) {
         <div class="portfolio-footer">
           <div class="portfolio-card-actions">
             ${p.url ? `
-              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn" title="Visit ${p.title}">
+              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="portfolio-visit-btn" title="Visit ${p.title}" aria-label="Visit live platform for ${p.title}">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <line x1="2" y1="12" x2="22" y2="12"></line>
@@ -90,7 +90,7 @@ export function renderPortfolio(portfolioData = {}) {
                 <span>${p.btnText || 'Visit'}</span>
               </a>
             ` : ''}
-            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${hasDiscount ? `${p.discountPrice} (Discounted from ${p.quote})` : (p.quote || '')}" data-project-category="${p.category || ''}" title="Get a website similar to ${p.title}">
+            <a href="/contact" class="portfolio-order-btn portfolio-order-link" data-project-title="${p.title}" data-project-quote="${hasDiscount ? `${p.discountPrice} (Discounted from ${p.quote})` : (p.quote || '')}" data-project-category="${p.category || ''}" title="Get a website similar to ${p.title}" aria-label="Order website similar to ${p.title}">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>

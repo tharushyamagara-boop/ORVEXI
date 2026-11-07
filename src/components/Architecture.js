@@ -35,7 +35,7 @@ export function renderAbout(aboutData = {}) {
           <!-- Right: Visual Office Photo -->
           <div class="about-side-col reveal">
             <div class="about-photo-card">
-              <img src="${photo}" alt="ORVEXI Technology Workspace in Kigali" class="about-photo" loading="lazy">
+              <img src="${photo}" alt="ORVEXI Technology Workspace in Kigali" class="about-photo" width="1000" height="667" loading="lazy">
             </div>
           </div>
         </div>
